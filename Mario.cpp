@@ -16,7 +16,7 @@ CMario::CMario(float x, float y) : CGameObject()
 	level = MARIO_LEVEL_SMALL;
 	untouchable = 0;
 	SetState(MARIO_STATE_IDLE);
-
+	SetDirection(MARIO_DIRECT_RIGHT);
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -36,9 +36,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
-	// turn off collision when die 
-	if (state != MARIO_STATE_DIE)
-		CalcPotentialCollisions(coObjects, coEvents);
+	//! turn off collision when die 
+	/*if (state != MARIO_STATE_DIE)
+		CalcPotentialCollisions(coObjects, coEvents);*/
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
@@ -105,8 +105,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								level = MARIO_LEVEL_SMALL;
 								StartUntouchable();
 							}
-							else
-								SetState(MARIO_STATE_DIE);
+							/*else
+								SetState(MARIO_STATE_DIE);*/
 						}
 					}
 				}
@@ -126,32 +126,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMario::Render()
 {
 	int ani = -1;
-	if (state == MARIO_STATE_DIE)
-		ani = MARIO_ANI_DIE;
-	else
-		if (level == MARIO_LEVEL_BIG)
-		{
-			if (vx == 0)
-			{
-				if (nx > 0) ani = MARIO_ANI_BIG_IDLE_RIGHT;
-				else ani = MARIO_ANI_BIG_IDLE_LEFT;
+	if (state == MARIO_STATE_IDLE) {
+		if (vx == 0) {
+			if (direction == MARIO_DIRECT_RIGHT) {
+				//TODO SET ANI = MARIO_ANI_RIGHT
+				ani = 0;
 			}
-			else if (vx > 0)
-				ani = MARIO_ANI_BIG_WALKING_RIGHT;
-			else ani = MARIO_ANI_BIG_WALKING_LEFT;
-		}
-		else if (level == MARIO_LEVEL_SMALL)
-		{
-			if (vx == 0)
-			{
-				if (nx > 0) ani = MARIO_WORLD_MAP_IDLE; //ani = MARIO_ANI_SMALL_IDLE_RIGHT;
-				if (nx < 0) ani = MARIO_WORLD_MAP_IDLE; //ani = MARIO_ANI_SMALL_IDLE_LEFT;
-				else ani = MARIO_WORLD_MAP_IDLE;
+			if (direction == MARIO_DIRECT_LEFT) {
+				//TODO SET ANI = MARIO_ANI_LEFT
+				ani = -1;
 			}
-			else if (vx > 0)
-				ani = MARIO_WORLD_MAP_IDLE; //MARIO_ANI_SMALL_WALKING_RIGHT;
-			else ani = MARIO_WORLD_MAP_IDLE; //MARIO_ANI_SMALL_WALKING_LEFT;
 		}
+	}
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
@@ -167,23 +153,8 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
-	case MARIO_STATE_WALKING_RIGHT:
-		vx = MARIO_WALKING_SPEED;
-		nx = 1;
-		break;
-	case MARIO_STATE_WALKING_LEFT:
-		vx = -MARIO_WALKING_SPEED;
-		nx = -1;
-		break;
-	case MARIO_STATE_JUMP:
-		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
-		vy = -MARIO_JUMP_SPEED_Y;
-		break;
 	case MARIO_STATE_IDLE:
 		vx = 0;
-		break;
-	case MARIO_STATE_DIE:
-		vy = -MARIO_DIE_DEFLECT_SPEED;
 		break;
 	}
 }
@@ -219,3 +190,22 @@ void CMario::Reset()
 	SetSpeed(0, 0);
 }
 
+
+//case MARIO_STATE_WALKING_RIGHT:
+//	vx = MARIO_WALKING_SPEED;
+//	nx = 1;
+//	break;
+//case MARIO_STATE_WALKING_LEFT:
+//	vx = -MARIO_WALKING_SPEED;
+//	nx = -1;
+//	break;
+//case MARIO_STATE_JUMP:
+//	// TODO: need to check if Mario is *current* on a platform before allowing to jump again
+//	vy = -MARIO_JUMP_SPEED_Y;
+//	break;
+//case MARIO_STATE_IDLE:
+//	vx = 0;
+//	break;
+//case MARIO_STATE_DIE:
+//	vy = -MARIO_DIE_DEFLECT_SPEED;
+//	break;

@@ -1089,4 +1089,8 @@ Resources\Tilemap\world1-1.txt
 # Red FirePiranhaPlant
 72	7100	7101	7110	7111	1420
 [OBJECTS]
-Resources\Scene\World1-1\world1-1_Grid.txt
+#Resources\Scene\World1-1\world1-1_Grid.txt
+# type	x	y	ani_set_id	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4 = Block
+# [MARIO]
+0	80	384	1
