@@ -29,7 +29,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += MARIO_GRAVITY * dt;
+	//vy += MARIO_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -40,7 +40,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	/*if (state != MARIO_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);*/
 
-	// reset untouchable timer if untouchable time has passed
+		// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
@@ -81,41 +81,41 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
-			{
-				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+			//if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
+			//{
+			//	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
-				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
-				{
-					if (goomba->GetState() != GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -MARIO_JUMP_DEFLECT_SPEED;
-					}
-				}
-				else if (e->nx != 0)
-				{
-					if (untouchable == 0)
-					{
-						if (goomba->GetState() != GOOMBA_STATE_DIE)
-						{
-							if (level > MARIO_LEVEL_SMALL)
-							{
-								level = MARIO_LEVEL_SMALL;
-								StartUntouchable();
-							}
-							/*else
-								SetState(MARIO_STATE_DIE);*/
-						}
-					}
-				}
-			} // if Goomba
-			else if (dynamic_cast<CPortal*>(e->obj))
+			//	// jump on top >> kill Goomba and deflect a bit 
+			//	if (e->ny < 0)
+			//	{
+			//		if (goomba->GetState() != GOOMBA_STATE_DIE)
+			//		{
+			//			goomba->SetState(GOOMBA_STATE_DIE);
+			//			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			//		}
+			//	}
+			//	else if (e->nx != 0)
+			//	{
+			//		if (untouchable == 0)
+			//		{
+			//			if (goomba->GetState() != GOOMBA_STATE_DIE)
+			//			{
+			//				if (level > MARIO_LEVEL_SMALL)
+			//				{
+			//					level = MARIO_LEVEL_SMALL;
+			//					StartUntouchable();
+			//				}
+			//				/*else
+			//					SetState(MARIO_STATE_DIE);*/
+			//			}
+			//		}
+			//	}
+			//} // if Goomba
+			/*else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
-			}
+			}*/
 		}
 	}
 
@@ -127,17 +127,27 @@ void CMario::Render()
 {
 	int ani = -1;
 	if (state == MARIO_STATE_IDLE) {
-		if (vx == 0) {
-			if (direction == MARIO_DIRECT_RIGHT) {
-				//TODO SET ANI = MARIO_ANI_RIGHT
-				ani = 0;
-			}
-			if (direction == MARIO_DIRECT_LEFT) {
-				//TODO SET ANI = MARIO_ANI_LEFT
-				ani = -1;
-			}
+		if (direction == MARIO_DIRECT_RIGHT) {
+			//TODO SET ANI = MARIO_ANI_RIGHT
+			ani = MARIO_SMALL_RIGHT_IDLE;
+		}
+		if (direction == MARIO_DIRECT_LEFT) {
+			//TODO SET ANI = MARIO_ANI_LEFT
+			ani = MARIO_SMALL_IDLE_LEFT;
 		}
 	}
+	if (state == MARIO_STATE_WALKING) {
+		if (vx > 0) {
+			if (direction == MARIO_DIRECT_RIGHT) {
+				ani = MARIO_SMALL_WALK_RIGHT;
+			}
+		}
+		else if (vx < 0) {
+			ani = MARIO_SMALL_WALK_LEFT;
+		}
+	}
+
+	DebugOut(L"[ani]:: %d\n", ani);
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
@@ -156,6 +166,17 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 		vx = 0;
 		break;
+	case MARIO_STATE_WALKING:
+		if (direction == MARIO_DIRECT_RIGHT) {
+			vx = MARIO_WALKING_SPEED;
+			nx = 1;
+			break;
+		}
+		if (direction == MARIO_DIRECT_LEFT) {
+			vx = -MARIO_WALKING_SPEED;
+			nx = -1;
+			break;
+		}
 	}
 }
 
@@ -185,7 +206,7 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CMario::Reset()
 {
 	SetState(MARIO_STATE_IDLE);
-	SetLevel(MARIO_LEVEL_BIG);
+	//SetLevel(MARIO_LEVEL_BIG);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 }

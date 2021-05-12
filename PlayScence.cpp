@@ -175,17 +175,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-		/*case OBJECT_TYPE_MARIO:
-			if (player != NULL)
-			{
-				DebugOut(L"[ERROR] MARIO object was created before!\n");
-				return;
-			}
-			obj = new CMario(x, y);
-			player = (CMario*)obj;
+	case OBJECT_TYPE_MARIO:
+		if (player != NULL)
+		{
+			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			return;
+		}
+		obj = new CMario(x, y);
+		player = (CMario*)obj;
 
-			DebugOut(L"[INFO] Player object created!\n");
-			break;*/
+		DebugOut(L"[INFO] Player object created!\n");
+		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
@@ -344,11 +344,18 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
 	if (mario == NULL) return;
 	// disable control key when Mario die 
-	/*if (mario->GetState() == MARIO_STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
+	//if (mario->GetState() == MARIO_STATE_DIE) return;
+	if (game->IsKeyDown(DIK_RIGHT)) {
+		mario->SetDirection(MARIO_DIRECT_RIGHT);
+		mario->SetState(MARIO_STATE_WALKING);
+	}
 	else if (game->IsKeyDown(DIK_LEFT))
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
+	{
+		mario->SetDirection(MARIO_DIRECT_LEFT);
+		mario->SetState(MARIO_STATE_WALKING);
+	}
 	else
-		mario->SetState(MARIO_STATE_IDLE);*/
+	{
+		mario->SetState(MARIO_STATE_IDLE);
+	}
 }
