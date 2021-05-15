@@ -25,5 +25,6 @@ public:
 	void SetTileMapData(int** TileMapData);
 	int GetMapWidth() { return TotalColumnsOfMap * TILE_WIDTH; }
 	int GetMapHeight() { return TotalRowsOfMap * TILE_HEIGHT; }
+	void SetCamPos(float x, float y);
 };
 

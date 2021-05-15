@@ -22,6 +22,9 @@
     <Filter Include="GameObject">
       <UniqueIdentifier>{e86b33e1-0ecd-4cda-bec9-fe096bb35b36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{2a0a952d-ed5a-4508-880d-f72685297f50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -75,6 +78,18 @@
     <ClCompile Include="StopPoint.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="MushRoom.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBrick.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -126,6 +141,18 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="StopPoint.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="MushRoom.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBrick.h">
       <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>

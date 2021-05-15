@@ -29,23 +29,28 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	//vy += MARIO_GRAVITY * dt;
+	vy += MARIO_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
+	if (vy < 0)
+		isOnGround = false;
+
 	coEvents.clear();
 
-	//! turn off collision when die 
-	/*if (state != MARIO_STATE_DIE)
-		CalcPotentialCollisions(coObjects, coEvents);*/
 
-		// reset untouchable timer if untouchable time has passed
+	//! turn off collision when die 
+	//if (state != MARIO_STATE_DIE)
+	CalcPotentialCollisions(coObjects, coEvents);
+
+	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 	}
+
 
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
@@ -81,41 +86,50 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			//if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
-			//{
-			//	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+			if (dynamic_cast<CBrick*>(e->obj))
+			{
+				if (e->ny < 0) {
+					isOnGround = true;
+				}
+				else isOnGround = false;
+			}
+			else isOnGround = false;
 
-			//	// jump on top >> kill Goomba and deflect a bit 
-			//	if (e->ny < 0)
-			//	{
-			//		if (goomba->GetState() != GOOMBA_STATE_DIE)
-			//		{
-			//			goomba->SetState(GOOMBA_STATE_DIE);
-			//			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			//		}
-			//	}
-			//	else if (e->nx != 0)
-			//	{
-			//		if (untouchable == 0)
-			//		{
-			//			if (goomba->GetState() != GOOMBA_STATE_DIE)
-			//			{
-			//				if (level > MARIO_LEVEL_SMALL)
-			//				{
-			//					level = MARIO_LEVEL_SMALL;
-			//					StartUntouchable();
-			//				}
-			//				/*else
-			//					SetState(MARIO_STATE_DIE);*/
-			//			}
-			//		}
-			//	}
-			//} // if Goomba
-			/*else if (dynamic_cast<CPortal*>(e->obj))
+			if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
+			{
+				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+
+				// jump on top >> kill Goomba and deflect a bit 
+				if (e->ny < 0)
+				{
+					if (goomba->GetState() != GOOMBA_STATE_DIE)
+					{
+						goomba->SetState(GOOMBA_STATE_DIE);
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+					}
+				}
+				//else if (e->nx != 0)
+				//{
+				//	if (untouchable == 0)
+				//	{
+				//		if (goomba->GetState() != GOOMBA_STATE_DIE)
+				//		{
+				//			if (level > MARIO_LEVEL_SMALL)
+				//			{
+				//				level = MARIO_LEVEL_SMALL;
+				//				StartUntouchable();
+				//			}
+				//			/*else
+				//				SetState(MARIO_STATE_DIE);*/
+				//		}
+				//	}
+				//}
+			} // if Goomba
+			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
-			}*/
+			}
 		}
 	}
 
@@ -128,26 +142,44 @@ void CMario::Render()
 	int ani = -1;
 	if (state == MARIO_STATE_IDLE) {
 		if (direction == MARIO_DIRECT_RIGHT) {
-			//TODO SET ANI = MARIO_ANI_RIGHT
 			ani = MARIO_SMALL_RIGHT_IDLE;
 		}
 		if (direction == MARIO_DIRECT_LEFT) {
-			//TODO SET ANI = MARIO_ANI_LEFT
-			ani = MARIO_SMALL_IDLE_LEFT;
+			ani = MARIO_SMALL_LEFT_IDLE;
 		}
 	}
 	if (state == MARIO_STATE_WALKING) {
-		if (vx > 0) {
-			if (direction == MARIO_DIRECT_RIGHT) {
+		if (vx == 0) {
+			DebugOut(L"vx == 0");
+			if (direction == MARIO_DIRECT_RIGHT && isOnGround) {
 				ani = MARIO_SMALL_WALK_RIGHT;
 			}
+			if (direction == MARIO_DIRECT_LEFT && isOnGround) {
+				ani = MARIO_SMALL_WALK_LEFT;
+			}
+		}
+		if (vx > 0) {
+			ani = MARIO_SMALL_WALK_RIGHT;
 		}
 		else if (vx < 0) {
 			ani = MARIO_SMALL_WALK_LEFT;
 		}
 	}
+	if (state == MARIO_STATE_JUMP) {
+		if (vx == 0) {
+			if (direction == MARIO_DIRECT_RIGHT) {
+				ani = MARIO_JUMP_SMALL_RIGHT;
+			}
+			else ani = MARIO_JUMP_SMALL_LEFT;
+		}
+		if (vx > 0) {
+			ani = MARIO_JUMP_SMALL_RIGHT;
+		}
+		if (vx < 0) {
+			ani = MARIO_JUMP_SMALL_LEFT;
+		}
+	}
 
-	DebugOut(L"[ani]:: %d\n", ani);
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
@@ -177,7 +209,16 @@ void CMario::SetState(int state)
 			nx = -1;
 			break;
 		}
+	case MARIO_STATE_JUMP:
+		if (vy > -0.5f) {
+			if (isOnGround) {
+				vy = -0.5f;
+			}
+		}
+		isOnGround = false;
+		break;
 	}
+
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)

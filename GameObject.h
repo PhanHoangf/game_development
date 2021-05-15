@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Windows.h>
 #include <d3dx9.h>
@@ -54,11 +54,18 @@ public:
 	float vx;
 	float vy;
 
+	float ax; //! GIA TỐC
+	float ay;
+	
 	int nx;
 
 	int state;
 
 	DWORD dt;
+	
+	int tag = 0;
+	int type = 0;
+	bool isDestroyed = false;
 
 	LPANIMATION_SET animation_set;
 

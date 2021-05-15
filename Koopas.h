@@ -15,12 +15,16 @@
 #define KOOPAS_ANI_WALKING_RIGHT 1
 #define KOOPAS_ANI_DIE 2
 
+#define NORMAL_KOOPAS	0
+#define RED_KOOPAS	1
+#define RED_KOOPAS_WITH_WING 2
+
 class CKoopas : public CGameObject
 {
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
-
+	int koopasType; // 
 public:
 	CKoopas();
 	virtual void SetState(int state);

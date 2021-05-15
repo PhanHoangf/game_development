@@ -35,6 +35,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_KOOPAS	3
 #define OBJECT_TYPE_BUSH 10
 #define OBJECT_INVISIBLE 20
+#define OBJECT_QUESTION_BRICK 142
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -75,6 +76,8 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
 		return;
 	}
+
+	DebugOut(L"[ID] %d \n", ID);
 
 	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
 	DebugOut(L"[SUCCESS] SPRITE %d ADDED!\n", ID);
@@ -188,6 +191,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_QUESTION_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_BUSH: obj = new GreenBush(); break;
 	case OBJECT_INVISIBLE: obj = new StopPoint(); break;
@@ -292,13 +296,10 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
-
-	CGame* game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
-
 	//CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
-	CGame::GetInstance()->SetCamPos(0.0f, 0.0f /*cy*/);
+	//SetCam(player->x, player->y, dt);
+	SetCam(cx, cy);
+	//CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void CPlayScene::Render()
@@ -338,6 +339,67 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	}
 }
 
+void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
+	float sw, sh, mw, mh, mx, my;
+	CGame* game = CGame::GetInstance();
+	sw = game->GetScreenWidth();
+	sh = game->GetScreenHeight();
+	mw = currentMap->GetMapWidth();
+	mh = currentMap->GetMapHeight();
+	//DebugOut(L"dt %u\n", dt);
+	//Update camera to follow mario
+	//if (id == 4)
+	//{
+	//	sum_dt += dt;
+	//	// CamX
+	//	cx = game->GetCamPosX();
+	//	if (sum_dt >= CAM_CHANGE_TIME)
+	//	{
+	//		sum_dt = 0;
+	//		cx++;
+	//	}
+	//	if (cx <= 0)//Left Edge
+	//		cx = 0;
+	//	if (cx >= mw - sw)//Right Edge
+	//		cx = mw - sw;
+
+	//	cy = mh - sh;
+	//	game->SetCamPos(cx, ceil(cy));
+	//	current_map->SetCamPos(cx, ceil(cy));
+	//	hud->SetPosition(cx, ceil(cy + sh - HUD_HEIGHT));
+	//}
+	/*else
+	{*/
+	cx -= sw / 2;
+	// CamX
+	if (cx <= 0)//Left Edge
+		cx = 0;
+	//if (cx >= mw - sw)//Right Edge
+	//	cx = mw - sw;
+
+	//CamY
+	//if (isTurnOnCamY)
+	//	cy -= sh / 2;
+	//else
+	cy = mh - sh;
+
+	//if (cy <= -HUD_HEIGHT)//Top Edge
+	//	cy = -HUD_HEIGHT;
+	//if (cy + sh >= mh)//Bottom Edge
+	//	cy = mh - sh;
+
+	//Update CamY when Flying
+/*	if (player->isFlying)
+		isTurnOnCamY = true;
+	if (cy > mh - sh && !player->isFlying)
+		isTurnOnCamY = false;*/
+
+	game->SetCamPos(ceil(cx), ceil(cy));
+	currentMap->SetCamPos(cx, cy);
+	//hud->SetPosition(ceil(cx), ceil(cy + sh - HUD_HEIGHT));
+//}
+}
+
 void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
@@ -353,6 +415,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	{
 		mario->SetDirection(MARIO_DIRECT_LEFT);
 		mario->SetState(MARIO_STATE_WALKING);
+	}
+	else if (game->IsKeyDown(DIK_SPACE)) {
+		mario->SetState(MARIO_STATE_JUMP);
 	}
 	else
 	{

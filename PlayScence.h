@@ -33,7 +33,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-
+	virtual void SetCam(float cx, float cy, DWORD dt = 0);
 	CMario * GetPlayer() { return player; } 
 
 	//friend class CPlayScenceKeyHandler;

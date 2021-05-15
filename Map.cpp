@@ -2,13 +2,15 @@
 #include "Game.h"
 
 CMap::CMap(int TileSetID, int TotalRowsOfMap, int TotalColumnsOfMap, int TotalRowsOfTileSet, int TotalColumnsOfTileSet, int TotalTiles) {
+	CGame* game = CGame::GetInstance();
 	MapTexture = CTextures::GetInstance()->Get(TileSetID);
 	this->TotalRowsOfMap = TotalRowsOfMap;
 	this->TotalColumnsOfMap = TotalColumnsOfMap;
 	this->TotalRowsOfTileSet = TotalRowsOfTileSet;
 	this->TotalColumnsOfTileSet = TotalColumnsOfTileSet;
 	this->TotalTiles = TotalTiles;
-	CamX = CamY = 0;
+	CamX = 0;
+	CamY = 0;
 	TileMap = NULL;
 }
 
@@ -54,3 +56,8 @@ void CMap::ExtractTileFromTileSet() {
 //int CMap::GetMapHeight() {
 //	return TotalRowsOfMap * TILE_HEIGHT;
 //}
+
+void CMap::SetCamPos(float x, float y) {
+	this->CamX = x;
+	this->CamY = y;
+}
