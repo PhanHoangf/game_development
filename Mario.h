@@ -3,8 +3,15 @@
 
 #define TYPE_MARIO 1
 
+#define MARIO_WALKING_SPEED_START	0.001f 
+#define MARIO_WALKING_SPEED_MAX		0.15f
+#define MARIO_RUNNING_SPEED_MAX		0.20f
+#define MARIO_SPEED_MAX				0.25f
+#define MARIO_ACCELERATION			0.0003f
+#define MARIO_WALKING_SPEED_MIN		0.05f
+
 #define MARIO_WALKING_SPEED		0.15f
-//0.1f
+#define MARIO_ACCELERATION		0.0003f
 #define MARIO_JUMP_SPEED_Y		0.18f
 #define MARIO_JUMP_DEFLECT_SPEED 0.2f
 #define MARIO_GRAVITY			0.002f
@@ -33,6 +40,8 @@
 #define MARIO_STATE_HOLD		5
 #define MARIO_STATE_FLY			6
 #define MARIO_STATE_KICK		7
+#define MARIO_STATE_JUMP_RIGHT	8
+#define MARIO_STATE_JUMP_LEFT	9
 
 #endif // !MARIO_STATE
 
@@ -77,13 +86,6 @@
 
 #endif // !MARIO_SMALL_ANI_LEFT
 
-
-
-
-
-
-
-
 #define MARIO_UNTOUCHABLE_TIME 5000
 
 #define MARIO_WORLD_MAP_IDLE 0
@@ -109,6 +111,7 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void SetDirection(int direct) { direction = direct; }
 	bool GetIsOnGround() { return isOnGround; }
+	void SetAccelerate(float accelerate);
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

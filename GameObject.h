@@ -47,6 +47,8 @@ public:
 
 	float x;
 	float y;
+	float start_x;
+	float start_y;
 
 	float dx;	// dx = vx*dt
 	float dy;	// dy = vy*dt
@@ -56,13 +58,13 @@ public:
 
 	float ax; //! GIA TỐC
 	float ay;
-	
+
 	int nx;
 
 	int state;
 
 	DWORD dt;
-	
+
 	int tag = 0;
 	int type = 0;
 	bool isDestroyed = false;
@@ -70,7 +72,7 @@ public:
 	LPANIMATION_SET animation_set;
 
 public:
-	void SetPosition(float x, float y) { this->x = x, this->y = y; }
+	void SetPosition(float x, float y) { this->x = x, this->y = y; this->start_x = x; this->start_y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	void GetSpeed(float& vx, float& vy) { vx = this->vx; vy = this->vy; }

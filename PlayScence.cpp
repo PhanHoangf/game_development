@@ -7,6 +7,8 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "StopPoint.h"
+#include "QuestionBrick.h"
+#include "Coin.h"
 
 using namespace std;
 
@@ -36,6 +38,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BUSH 10
 #define OBJECT_INVISIBLE 20
 #define OBJECT_QUESTION_BRICK 142
+#define OBJECT_TYPE_COINT 6
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -172,6 +175,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	int ani_set_id = atoi(tokens[3].c_str());
 
+	int  tag = 0, option_tag_1 = 0, option_tag_2 = 0;
+	if (tokens.size() >= 5)
+		tag = atof(tokens[4].c_str());
+	if (tokens.size() >= 6)
+		option_tag_1 = atof(tokens[5].c_str());
+	if (tokens.size() >= 7)
+		option_tag_2 = atof(tokens[6].c_str());
+
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject* obj = NULL;
@@ -191,7 +202,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_QUESTION_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_COINT: obj = new Coin(); break;
+	case OBJECT_QUESTION_BRICK: obj = new QuestionBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_BUSH: obj = new GreenBush(); break;
 	case OBJECT_INVISIBLE: obj = new StopPoint(); break;
@@ -409,18 +421,28 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	//if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT)) {
 		mario->SetDirection(MARIO_DIRECT_RIGHT);
-		mario->SetState(MARIO_STATE_WALKING);
+		if (mario->GetIsOnGround()) {
+			//mario->SetAccelerate(MARIO_ACCELERATION);
+			mario->SetState(MARIO_STATE_WALKING);
+		}
+		else mario->SetState(MARIO_STATE_JUMP_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
 		mario->SetDirection(MARIO_DIRECT_LEFT);
-		mario->SetState(MARIO_STATE_WALKING);
+		if (mario->GetIsOnGround()) {
+			mario->SetState(MARIO_STATE_WALKING);
+		}
+		else mario->SetState(MARIO_STATE_JUMP_LEFT);
 	}
-	else if (game->IsKeyDown(DIK_SPACE)) {
+	/*else if (game->IsKeyDown(DIK_SPACE)) {
 		mario->SetState(MARIO_STATE_JUMP);
-	}
+	}*/
 	else
 	{
-		mario->SetState(MARIO_STATE_IDLE);
+		if (mario->GetIsOnGround()) {
+			mario->SetState(MARIO_STATE_IDLE);
+		}
 	}
 }
+

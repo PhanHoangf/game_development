@@ -10,11 +10,13 @@
 #include "StopPoint.h"
 
 #include "GreenBush.h"
+#include "QuestionBrick.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
 	level = MARIO_LEVEL_SMALL;
 	untouchable = 0;
+	ax = MARIO_ACCELERATION;
 	SetState(MARIO_STATE_IDLE);
 	SetDirection(MARIO_DIRECT_RIGHT);
 	start_x = x;
@@ -38,6 +40,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isOnGround = false;
 
 	coEvents.clear();
+
 
 
 	//! turn off collision when die 
@@ -86,14 +89,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CBrick*>(e->obj))
+			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj))
 			{
 				if (e->ny < 0) {
 					isOnGround = true;
 				}
-				else isOnGround = false;
+				if (dynamic_cast<QuestionBrick*>(e->obj)) {
+					if (e->ny > 0) {
+						e->obj->SetState(QUESTION_BRICK_HIT);
+					}
+				}
 			}
-			else isOnGround = false;
 
 			if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
 			{
@@ -149,41 +155,30 @@ void CMario::Render()
 		}
 	}
 	if (state == MARIO_STATE_WALKING) {
-		if (vx == 0) {
-			DebugOut(L"vx == 0");
-			if (direction == MARIO_DIRECT_RIGHT && isOnGround) {
-				ani = MARIO_SMALL_WALK_RIGHT;
-			}
-			if (direction == MARIO_DIRECT_LEFT && isOnGround) {
-				ani = MARIO_SMALL_WALK_LEFT;
-			}
-		}
-		if (vx > 0) {
+		if (direction == MARIO_DIRECT_RIGHT) {
 			ani = MARIO_SMALL_WALK_RIGHT;
 		}
-		else if (vx < 0) {
+		else {
 			ani = MARIO_SMALL_WALK_LEFT;
 		}
 	}
 	if (state == MARIO_STATE_JUMP) {
-		if (vx == 0) {
-			if (direction == MARIO_DIRECT_RIGHT) {
-				ani = MARIO_JUMP_SMALL_RIGHT;
-			}
-			else ani = MARIO_JUMP_SMALL_LEFT;
-		}
-		if (vx > 0) {
+		if (nx > 0) {
 			ani = MARIO_JUMP_SMALL_RIGHT;
 		}
-		if (vx < 0) {
+		if (nx < 0) {
 			ani = MARIO_JUMP_SMALL_LEFT;
 		}
 	}
-
+	if (state == MARIO_STATE_JUMP_RIGHT) {
+		ani = MARIO_JUMP_SMALL_RIGHT;
+	}
+	if (state == MARIO_STATE_JUMP_LEFT) {
+		ani = MARIO_JUMP_SMALL_LEFT;
+	}
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
-
 	animation_set->at(ani)->Render(x, y, alpha);
 
 	RenderBoundingBox();
@@ -197,10 +192,15 @@ void CMario::SetState(int state)
 	{
 	case MARIO_STATE_IDLE:
 		vx = 0;
+		ax = MARIO_ACCELERATION;
 		break;
 	case MARIO_STATE_WALKING:
 		if (direction == MARIO_DIRECT_RIGHT) {
-			vx = MARIO_WALKING_SPEED;
+			if (vx >= MARIO_RUNNING_SPEED_MAX) {
+				vx = MARIO_RUNNING_SPEED_MAX;
+			}
+			else vx += ax * dt;
+			ax += MARIO_ACCELERATION;
 			nx = 1;
 			break;
 		}
@@ -209,15 +209,32 @@ void CMario::SetState(int state)
 			nx = -1;
 			break;
 		}
+	case MARIO_STATE_MAX_SPEED:
+		if (direction == MARIO_DIRECT_RIGHT) {
+			vx += dt * MARIO_ACCELERATION;
+			nx = 1;
+			break;
+		}
+		break;
 	case MARIO_STATE_JUMP:
 		if (vy > -0.5f) {
 			if (isOnGround) {
 				vy = -0.5f;
+				vx = MARIO_WALKING_SPEED_START;
+				ax = MARIO_ACCELERATION;
 			}
 		}
-		isOnGround = false;
+		break;
+	case MARIO_STATE_JUMP_RIGHT:
+		vx = MARIO_WALKING_SPEED;
+		nx = 1;
+		break;
+	case MARIO_STATE_JUMP_LEFT:
+		vx = -MARIO_WALKING_SPEED;
+		nx = -1;
 		break;
 	}
+
 
 }
 
@@ -250,6 +267,10 @@ void CMario::Reset()
 	//SetLevel(MARIO_LEVEL_BIG);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
+}
+
+void CMario::SetAccelerate(float accelerate = MARIO_ACCELERATION) {
+	ax += accelerate;
 }
 
 

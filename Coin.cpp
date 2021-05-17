@@ -2,19 +2,19 @@
 
 Coin::Coin() : CGameObject() {
 	//CGameObject::SetTag(tag);
-	if (tag == COIN_TYPE_INBRICK)
+	/*if (tag == COIN_TYPE_INBRICK)
 		isAppear = false;
 	else
 		isAppear = true;
 	if (tag == COIN_TYPE_TRANSFORM)
-		StartExist();
+		StartExist();*/
 	state = COIN_STATE_IDLE;
 	type = IGNORE;
 }
 
 void Coin::Render() {
-	if (!isAppear || isDestroyed)
-		return;
+	/*if (!isAppear || isDestroyed)
+		return;*/
 	animation_set->at(0)->Render(x, y);
 	RenderBoundingBox();
 }

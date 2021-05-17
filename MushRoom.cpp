@@ -8,7 +8,7 @@ void MushRoom::Render() {
 
 }
 
-void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {
+void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 }
 
