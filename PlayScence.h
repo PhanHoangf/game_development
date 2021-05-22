@@ -11,12 +11,13 @@
 #include "GreenBush.h"
 
 
-class CPlayScene: public CScene
+class CPlayScene : public CScene
 {
-protected: 
-	CMario *player;					// A play scene has to have player, right? 
+protected:
+	CMario* player;					// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;
+
 	CMap* currentMap;
 
 	void _ParseSection_TEXTURES(string line);
@@ -25,26 +26,27 @@ protected:
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_TILEMAP_DATA(string line);
-	
-public: 
-	CPlayScene(int id, LPCWSTR filePath);
 
+public:
+	CPlayScene(int id, LPCWSTR filePath);
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
 	virtual void SetCam(float cx, float cy, DWORD dt = 0);
-	CMario * GetPlayer() { return player; } 
-
+	CMario* GetPlayer() { return player; }
+	vector<LPGAMEOBJECT> GetObjects() { return objects; }
+	void AddObject(LPGAMEOBJECT obj) { this->objects.push_back(obj); }
+	void deleteLastObject() { this->objects.pop_back(); }
 	//friend class CPlayScenceKeyHandler;
 };
 
 class CPlayScenceKeyHandler : public CScenceKeyHandler
 {
-public: 
-	virtual void KeyState(BYTE *states);
+public:
+	virtual void KeyState(BYTE* states);
 	virtual void OnKeyDown(int KeyCode);
-	virtual void OnKeyUp(int KeyCode) {};
-	CPlayScenceKeyHandler(CScene *s) :CScenceKeyHandler(s) {};
+	virtual void OnKeyUp(int KeyCode);
+	CPlayScenceKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
 };
 

@@ -2,7 +2,8 @@
 #include "GameObject.h"
 
 #define COIN_BBOX_WIDTH  16
-#define COIN_BBOX_HEIGHT 15
+#define COIN_BBOX_HEIGHT 16
+
 
 #define COIN_ANI_SET_ID		6
 
@@ -39,6 +40,6 @@ public:
 	{
 		exist_start = GetTickCount64();
 	}
-	Coin();
+	Coin(int type = COIN_TYPE_NORMAL);
 	~Coin();
 };

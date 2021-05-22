@@ -74,9 +74,9 @@ public:
 public:
 	void SetPosition(float x, float y) { this->x = x, this->y = y; this->start_x = x; this->start_y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
+	void SetTag(int tag) { this->tag = tag; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	void GetSpeed(float& vx, float& vy) { vx = this->vx; vy = this->vy; }
-
 	int GetState() {
 		if (this != nullptr)
 			return this->state;
@@ -98,9 +98,9 @@ public:
 		float& ny,
 		float& rdx,
 		float& rdy);
-
+	bool isColliding(float friend_left, float friend_top, float friend_right, float friend_bottom);
 	CGameObject();
-
+	bool GetIsDestroy() { return isDestroyed; }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render() = 0;

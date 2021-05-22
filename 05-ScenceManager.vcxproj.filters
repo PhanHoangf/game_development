@@ -27,9 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,11 +87,14 @@
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Brick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -153,6 +153,12 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="QuestionBrick.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
       <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>

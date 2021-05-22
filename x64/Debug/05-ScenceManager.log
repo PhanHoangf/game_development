@@ -1,0 +1,48 @@
+﻿  Animations.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Animations.h(3,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Block.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Brick.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Camera.cpp
+  Coin.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  GreenBush.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Koopas.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Map.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Textures.h(3,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  MushRoom.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Portal.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  QuestionBrick.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  StopPoint.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Utils.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Utils.cpp(13,27): error C2664: 'void OutputDebugStringA(LPCSTR)': cannot convert argument 1 from 'wchar_t [4096]' to 'LPCSTR'
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Utils.cpp(13,20): message : Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\debugapi.h(55,1): message : see declaration of 'OutputDebugStringA'
+  Game.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Game.h(7,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  GameObject.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.cpp(1,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Goomba.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  main.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\main.cpp(16,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Mario.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\GameObject.h(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  PlayScence.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Game.h(7,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Scence.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Scence.h(3,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Generating Code...
+  Compiling...
+  Sprites.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Sprites.h(3,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Textures.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Textures.cpp(4,10): fatal error C1083: Cannot open include file: 'd3dx9.h': No such file or directory
+  Generating Code...

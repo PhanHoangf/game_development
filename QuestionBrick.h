@@ -13,19 +13,31 @@
 #define QUESTIONBRICK_PUSH_MAX_HEIGHT 8
 
 #define ITEM_COIN	0
+#define COIN_ANI_SET_ID 6
+
+#define ITEM_MUSHROOM_RED 3
+#define ITEM_MUSHROOM_ANI_SET_ID 37
+#define ITEM_CUSTOM	1
 
 class QuestionBrick :public CGameObject
 {
 	LPGAMEOBJECT item;
 	bool isBeingPushedUp = false;
 	bool isFallingDown = false;
+	int totalItems = 1;
+	vector<LPGAMEOBJECT>* items;
+	int tag;
+	int type;
 public:
+	CGameObject* obj = NULL;
 	QuestionBrick(int tag = ITEM_COIN, int type = QUESTIONBRICK_TYPE_MARK);
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void SetState(int state);
-	void SetItem(LPGAMEOBJECT item);
+	//void AddItem(LPGAMEOBJECT item);
+	void CreateItem(int itemType = ITEM_COIN);
+	CGameObject* SetUpItem(int itemType);
 	void startPushedUp();
 	void stopPushedUp();
 	LPGAMEOBJECT GetItem() {

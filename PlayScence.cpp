@@ -9,6 +9,7 @@
 #include "StopPoint.h"
 #include "QuestionBrick.h"
 #include "Coin.h"
+#include "Block.h"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_INVISIBLE 20
 #define OBJECT_QUESTION_BRICK 142
 #define OBJECT_TYPE_COINT 6
+#define OBJECT_TYPE_BLOCK_LINE 4
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -143,8 +145,11 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 
 	int ani_set_id = atoi(tokens[0].c_str());
 
-	LPANIMATION_SET s = new CAnimationSet();
-
+	LPANIMATION_SET s;
+	if (CAnimationSets::GetInstance()->animation_sets[ani_set_id] != NULL)
+		s = CAnimationSets::GetInstance()->animation_sets[ani_set_id];
+	else
+		s = new CAnimationSet();
 	CAnimations* animations = CAnimations::GetInstance();
 
 	for (int i = 1; i < tokens.size(); i++)
@@ -154,7 +159,6 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 		LPANIMATION ani = animations->Get(ani_id);
 		s->push_back(ani);
 	}
-
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
 }
 
@@ -165,7 +169,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
 
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
@@ -202,11 +206,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_COINT: obj = new Coin(); break;
-	case OBJECT_QUESTION_BRICK: obj = new QuestionBrick(); break;
+		//case OBJECT_TYPE_COINT: obj = new Coin(); break;
+	case OBJECT_QUESTION_BRICK: obj = new QuestionBrick(option_tag_1, option_tag_2); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_BUSH: obj = new GreenBush(); break;
 	case OBJECT_INVISIBLE: obj = new StopPoint(); break;
+	case OBJECT_TYPE_BLOCK_LINE: obj = new Block(); break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -318,7 +323,11 @@ void CPlayScene::Render()
 {
 	currentMap->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	{
+		if (!objects[i]->isDestroyed) {
+			objects[i]->Render();
+		}
+	}
 }
 
 /*
@@ -347,6 +356,20 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_A:
 		mario->Reset();
+		break;
+	case DIK_T:
+		mario->SetState(MARIO_STATE_TRANSFORM);
+		mario->StartTransform(MARIO_LEVEL_BIG);
+		break;
+	}
+}
+
+void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
+	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	switch (KeyCode)
+	{
+	case DIK_SPACE:
+		mario->ay = MARIO_GRAVITY;
 		break;
 	}
 }
@@ -386,8 +409,8 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	// CamX
 	if (cx <= 0)//Left Edge
 		cx = 0;
-	//if (cx >= mw - sw)//Right Edge
-	//	cx = mw - sw;
+	if (cx >= mw - sw)//Right Edge
+		cx = mw - sw;
 
 	//CamY
 	//if (isTurnOnCamY)
@@ -420,29 +443,19 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// disable control key when Mario die 
 	//if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT)) {
-		mario->SetDirection(MARIO_DIRECT_RIGHT);
-		if (mario->GetIsOnGround()) {
-			//mario->SetAccelerate(MARIO_ACCELERATION);
-			mario->SetState(MARIO_STATE_WALKING);
-		}
-		else mario->SetState(MARIO_STATE_JUMP_RIGHT);
+		mario->SetState(MARIO_STATE_WALKING_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		mario->SetDirection(MARIO_DIRECT_LEFT);
-		if (mario->GetIsOnGround()) {
-			mario->SetState(MARIO_STATE_WALKING);
-		}
-		else mario->SetState(MARIO_STATE_JUMP_LEFT);
+		mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	/*else if (game->IsKeyDown(DIK_SPACE)) {
-		mario->SetState(MARIO_STATE_JUMP);
-	}*/
+	else if (game->IsKeyDown(DIK_X)) {
+		mario->SetState(MARIO_STATE_JUMP_X);
+	}
 	else
 	{
-		if (mario->GetIsOnGround()) {
+		if (mario->GetIsOnGround())
 			mario->SetState(MARIO_STATE_IDLE);
-		}
 	}
 }
 
