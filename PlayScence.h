@@ -16,7 +16,8 @@ class CPlayScene : public CScene
 protected:
 	CMario* player;					// A play scene has to have player, right? 
 
-	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> objects;  // Static objects
+	vector<LPGAMEOBJECT> mObjects; //! Moving objects
 
 	CMap* currentMap;
 
@@ -37,6 +38,7 @@ public:
 	CMario* GetPlayer() { return player; }
 	vector<LPGAMEOBJECT> GetObjects() { return objects; }
 	void AddObject(LPGAMEOBJECT obj) { this->objects.push_back(obj); }
+	void AddMovingObject(LPGAMEOBJECT obj) { this->mObjects.push_back(obj); }
 	void deleteLastObject() { this->objects.pop_back(); }
 	//friend class CPlayScenceKeyHandler;
 };

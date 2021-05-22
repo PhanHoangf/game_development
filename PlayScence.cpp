@@ -10,6 +10,7 @@
 #include "QuestionBrick.h"
 #include "Coin.h"
 #include "Block.h"
+#include "MushRoom.h"
 
 using namespace std;
 
@@ -231,7 +232,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+	if (dynamic_cast<MushRoom*>(obj)) {
+		mObjects.push_back(obj);
+	}
+	else objects.push_back(obj);
 }
 
 void CPlayScene::Load()
@@ -299,12 +303,23 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
+		if (!objects[i]->GetIsDestroy())
+			coObjects.push_back(objects[i]);
+	}
+
+	for (size_t i = 1; i < mObjects.size(); i++)
+	{
+		if (!objects[i]->GetIsDestroy())
+			coObjects.push_back(mObjects[i]);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
+	}
+
+	for (size_t i = 0; i < mObjects.size(); i++) {
+		mObjects[i]->Update(dt, &coObjects);
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -322,6 +337,14 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	currentMap->DrawMap();
+
+	for (int i = 0; i < mObjects.size(); i++)
+	{
+		if (!mObjects[i]->isDestroyed) {
+			mObjects[i]->Render();
+		}
+	}
+
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (!objects[i]->isDestroyed) {

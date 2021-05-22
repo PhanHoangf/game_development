@@ -71,51 +71,77 @@ void CGameObject::CalcPotentialCollisions(
 	vector<LPGAMEOBJECT>* coObjects,
 	vector<LPCOLLISIONEVENT>& coEvents)
 {
-	if (dynamic_cast<CGoomba*>(this))
+	//if (dynamic_cast<CGoomba*>(this))
+	//{
+	//	for (UINT i = 0; i < coObjects->size(); i++)
+	//	{
+	//		LPGAMEOBJECT object = coObjects->at(i);
+	//		if (object != nullptr)
+	//		{
+	//			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+	//			if (e->t > 0 && e->t <= 1.0f)
+	//				coEvents.push_back(e);
+	//			else
+	//				delete e;
+	//		}
+	//	}
+	//}
+	//else {
+	//	for (UINT i = 0; i < coObjects->size(); i++)
+	//	{
+	//		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+	//		if (dynamic_cast<Coin*>(e->obj)) {
+	//			if (e->obj->isDestroyed) {
+	//				delete e;
+	//				continue;
+	//			}
+	//		}
+	//		if (dynamic_cast<MushRoom*>(e->obj)) {
+	//			if (e->obj->isDestroyed) {
+	//				delete e;
+	//				continue;
+	//			}
+	//		}
+	//		if (dynamic_cast<CGoomba*>(e->obj)) {
+	//			LPGAMEOBJECT obj = coObjects->at(i);
+	//			if (obj->GetIsDestroy()) {
+	//				delete e;
+	//				continue;
+	//			}
+	//		}
+	//		if (e->t > 0 && e->t <= 1.0f)
+	//			coEvents.push_back(e);
+	//		else
+	//			delete e;
+	//	}
+	//}
+	for (UINT i = 0; i < coObjects->size(); i++)
 	{
-		for (UINT i = 0; i < coObjects->size(); i++)
-		{
-			LPGAMEOBJECT object = coObjects->at(i);
-			if (object != nullptr)
-			{
-				LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
-				if (e->t > 0 && e->t <= 1.0f)
-					coEvents.push_back(e);
-				else
-					delete e;
-			}
-		}
-	}
-	else {
-		for (UINT i = 0; i < coObjects->size(); i++)
-		{
-			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
-			if (dynamic_cast<Coin*>(e->obj)) {
-				if (e->obj->isDestroyed) {
-					delete e;
-					continue;
-				}
-			}
-			if (dynamic_cast<MushRoom*>(e->obj)) {
-				if (e->obj->isDestroyed) {
-					delete e;
-					continue;
-				}
-			}
-			if (dynamic_cast<CGoomba*>(e->obj)) {
-				LPGAMEOBJECT obj = coObjects->at(i);
-				if (obj->GetIsDestroy()) {
-					delete e;
-					continue;
-				}
-			}
-			if (e->t > 0 && e->t <= 1.0f)
-				coEvents.push_back(e);
-			else
+		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+		/*if (dynamic_cast<Coin*>(e->obj)) {
+			if (e->obj->isDestroyed) {
 				delete e;
+				continue;
+			}
 		}
+		if (dynamic_cast<MushRoom*>(e->obj)) {
+			if (e->obj->isDestroyed) {
+				delete e;
+				continue;
+			}
+		}
+		if (dynamic_cast<CGoomba*>(e->obj)) {
+			LPGAMEOBJECT obj = coObjects->at(i);
+			if (obj->GetIsDestroy()) {
+				delete e;
+				continue;
+			}
+		}*/
+		if (e->t > 0 && e->t <= 1.0f)
+			coEvents.push_back(e);
+		else
+			delete e;
 	}
-
 	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
 }
 

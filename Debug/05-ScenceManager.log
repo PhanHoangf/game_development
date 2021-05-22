@@ -1,6 +1,26 @@
-﻿  Mario.cpp
+﻿  PlayScence.cpp
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(172,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(68,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(37,32): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(41,31): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(103,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(156,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(178,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(179,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(185,13): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(187,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(189,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(218,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(219,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(341,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(348,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(361,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(403,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(404,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(405,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(406,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(401,28): warning C4101: 'my': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(401,24): warning C4101: 'mx': unreferenced local variable
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe

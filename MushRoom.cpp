@@ -12,8 +12,8 @@ MushRoom::MushRoom() {
 void MushRoom::Render() {
 	if (isAppear) {
 		animation_set->at(0)->Render(x, y);
-		//RenderBoundingBox();
 	}
+	RenderBoundingBox();
 }
 
 void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
@@ -28,7 +28,7 @@ void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		if (isColliding(mLeft, mTop, mRight, mBottom))
 		{
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
-				mario->StartTransform(MARIO_LEVEL_BIG); 
+				mario->StartTransform(MARIO_LEVEL_BIG);
 				isAppear = false;
 				isDestroyed = true;
 			}

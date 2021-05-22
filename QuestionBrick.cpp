@@ -87,7 +87,7 @@ void QuestionBrick::CreateItem(int itemType) {
 		obj->SetAppear(true);
 		obj->SetPosition(x, y);
 		obj->SetState(MUSHROOM_STATE_UP);
-		currentScene->AddObject(obj);
+		currentScene->AddMovingObject(obj);
 	}
 
 

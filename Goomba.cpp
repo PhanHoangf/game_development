@@ -38,17 +38,21 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//
 	// TO-DO: make sure Goomba can interact with the world and to each of them too!
 	// 
-	//vy += GOOMBA_GRAVITY * dt;
 
 	coEvents.clear();
 
-	if (state != GOOMBA_STATE_DIE)
+	if (state != GOOMBA_STATE_DIE) {
+		vy += GOOMBA_GRAVITY * dt;
 		CalcPotentialCollisions(coObjects, coEvents);
+	}
 
+	float mLeft, mTop, mRight, mBottom;
+	float oLeft, oTop, oRight, oBottom;
 
 	if (coEvents.size() == 0) {
 		x += dx;
 		y += dy;
+		//vy += GOOMBA_GRAVITY * dt;
 	}
 	else {
 		float min_tx, min_ty, nx = 0, ny;
@@ -60,16 +64,34 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		x += min_tx * dx + nx * 0.4f;		// nx*PUSHBACK : need to push out a bit to avoid overlapping next frame
 		y += min_ty * dy + ny * 0.4f;
-		//DebugOut(L"Goomba[nx]::%f\n", nx);
 
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
+			GetBoundingBox(mLeft, mTop, mRight, mBottom);
 			if (e->obj != NULL)
 				if (e->obj->isDestroyed == true)
 					continue;
-			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj)) {
-				if (nx != 0) {
+			if (dynamic_cast<CBrick*>(e->obj)) {
+				CBrick* object = dynamic_cast<CBrick*>(e->obj);
+				if (e->obj != NULL)
+					object->GetBoundingBox(oLeft, oTop, oRight, oBottom);
+				if (e->ny != 0) {
+					vy = 0;
+				}
+				if (e->nx != 0)
+				{
+					if (ceil(mBottom) != oTop)
+					{
+						vx = -vx;
+						this->nx = -this->nx;
+					}
+				}
+			}
+			if (dynamic_cast<QuestionBrick*>(e->obj)) {
+				if (e->nx != 0)
+				{
 					vx = -vx;
+					this->nx = -this->nx;
 				}
 			}
 			if (dynamic_cast<CGoomba*>(e->obj)) {
@@ -85,9 +107,6 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x = 0; vx = -vx;
 	}
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-	/*if (vx > 0 && x > 290) {
-		x = 290; vx = -vx;
-	}*/
 }
 
 void CGoomba::Render()

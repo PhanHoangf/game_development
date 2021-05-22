@@ -1432,3 +1432,7 @@ Resources\Tilemap\world1-1.txt
 # === Fire PiranhaPlant ===
 70	358	368	72	1	2	2
 70	1862	368	71	0	2	13
+# === Koopas === 
+# --- Red ---
+3	592	356	3	1	2	4
+3	2100	355	3	1	2	15
