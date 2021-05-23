@@ -186,6 +186,10 @@ void CMario::Render()
 	if (state == MARIO_STATE_TRANSFORM) {
 		animation_set->at(ani)->Render(x, y - 9, alpha);
 	}
+	else if (state == MARIO_STATE_SITDOWN) {
+		animation_set->at(ani)->Render(x, y + 9, alpha);
+
+	}
 	else animation_set->at(ani)->Render(x, y, alpha);
 
 	RenderBoundingBox();
@@ -289,6 +293,9 @@ void CMario::RenderMarioAniBig(int& ani) {
 			ani = MARIO_ANI_BIG_JUMPINGUP_LEFT;
 		}
 	}
+	if (state == MARIO_STATE_SITDOWN) {
+		RenderMarioSit(ani);
+	}
 }
 
 void CMario::SetState(int state)
@@ -356,6 +363,9 @@ void CMario::SetState(int state)
 		vy = 0;
 		//StartTransform();
 		break;
+	case MARIO_STATE_SITDOWN:
+		handleSitDown();
+		break;
 	}
 
 }
@@ -364,15 +374,16 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	left = x;
 	top = y;
-
+	//DebugOut(L"y::%f\n", y);
 	if (level == MARIO_LEVEL_BIG)
 	{
+		
 		right = x + MARIO_BIG_BBOX_WIDTH;
 		bottom = y + MARIO_BIG_BBOX_HEIGHT;
-
 		/*	right = x + MARIO_SMALL_BBOX_WIDTH;
 			bottom = y + MARIO_SMALL_BBOX_HEIGHT;*/
 	}
+
 	else
 	{
 		right = x + MARIO_SMALL_BBOX_WIDTH;
@@ -466,5 +477,27 @@ void CMario::HandleTransform(int level) {
 			StopTransform();
 			SetState(MARIO_STATE_JUMP_X);
 		}
+	}
+}
+
+void CMario::handleSitDown() {
+	if (isOnGround) {
+		isReadyToSit = true;
+		if (isReadyToSit) {
+			isSitting = true;
+		}
+		vx /= 1.15f;
+		ax = 0;
+	}
+	else {
+		isReadyToSit = false;
+		isSitting = false;
+	}
+}
+
+void CMario::RenderMarioSit(int& ani) {
+	if (isSitting) {
+		if (nx > 0) ani = MARIO_ANI_BIG_SITTING_RIGHT;
+		else ani = MARIO_ANI_BIG_SITTING_LEFT;
 	}
 }

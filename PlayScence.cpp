@@ -475,6 +475,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	else if (game->IsKeyDown(DIK_X)) {
 		mario->SetState(MARIO_STATE_JUMP_X);
 	}
+	else if (game->IsKeyDown(DIK_DOWN)) {
+		if (mario->GetLevel() == MARIO_LEVEL_BIG)
+			mario->SetState(MARIO_STATE_SITDOWN);
+	}
 	else
 	{
 		if (mario->GetIsOnGround())

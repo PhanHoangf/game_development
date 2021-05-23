@@ -148,6 +148,7 @@ class CMario : public CGameObject
 	bool isRunning = false;
 	bool isJumping = false;
 	bool isSitting = false;
+	bool isReadyToSit = true;
 	bool isChangeDirection = false;
 	bool isJumpingWithXButton = false;
 	bool isTransforming = false;
@@ -176,5 +177,7 @@ public:
 	void RenderMarioAniBig(int& ani);
 	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount(); SetLevel(level); }
 	void StopTransform() { isTransforming = false; start_transform = 0; }
+	void handleSitDown();
 	void HandleTransform(int level);
+	void RenderMarioSit(int &ani);
 };
