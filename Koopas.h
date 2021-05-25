@@ -42,13 +42,32 @@
 
 #define KOOPAS_TURN_DIFF	4
 
+#define LIMIT_KOOPAS_BLOCK_X_RIGHT 596
+#define LIMIT_KOOPAS_BLOCK_X_LEFT 510
+
 class CKoopas : public CGameObject
 {
-	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
+	DWORD reviving_start = 0;
+	DWORD shell_start = 0;
+	DWORD dying_start = 0;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
-	int koopasType; // 
 public:
+	bool isBeingHeld = false;
+	bool isKillable = false;
+	float lastStanding_Y;
+	bool CanPullBack = false;
+	float start_x = 0, start_y = 0;
+	int start_tag = 0;
+	void StartReviving() { reviving_start = GetTickCount64(); }
+	void StartShell() { shell_start = GetTickCount64(); reviving_start = 0; }
 	CKoopas();
+	void SetIsBeingHeld(bool m) { isBeingHeld = m; };
 	virtual void SetState(int state);
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void StartDying() { dying_start = GetTickCount64(); }
+	void Reset();
+	int CalRevivable();
+	bool CalKillable(vector<LPGAMEOBJECT>* coObjects);
+	bool CalTurnable(LPGAMEOBJECT object, vector<LPGAMEOBJECT>* coObjects);
 };

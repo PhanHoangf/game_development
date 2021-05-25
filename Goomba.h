@@ -58,6 +58,7 @@ class CGoomba : public CGameObject
 	bool isHighJumping = false;
 	int jumping_stacks = 0;
 
+	bool isDiedByKoopas = false;
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();

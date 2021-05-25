@@ -53,6 +53,7 @@
 #define MARIO_STATE_JUMP_LEFT	9
 #define MARIO_STATE_JUMP_X		10
 #define MARIO_STATE_TRANSFORM	11
+#define MARIO_STATE_DIE			12
 
 #endif // !MARIO_STATE
 
@@ -71,6 +72,8 @@
 
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 16
+
+#define MARIO_BBOX_SIT_HEIGHT	18
 
 #endif // !MARIO_BBOX
 
@@ -125,11 +128,14 @@
 
 #define MARIO_ANI_TRANSFORM_SMALL_RIGHT			115
 #define MARIO_ANI_TRANSFORM_SMALL_LEFT			116
+#define MARIO_ANI_DIE	62
 
 #define MARIO_UNTOUCHABLE_TIME 5000
 #define MARIO_TRANSFORM_TIME 500
 
 #define MARIO_WORLD_MAP_IDLE 0
+
+#define MARIO_DIE_DEFLECT_SPEED		0.5f
 
 
 class CMario : public CGameObject
@@ -153,6 +159,8 @@ class CMario : public CGameObject
 	bool isJumpingWithXButton = false;
 	bool isTransforming = false;
 	int runningStack;
+
+	float tempY;
 public:
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);

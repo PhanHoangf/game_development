@@ -2,6 +2,10 @@
 #include "Brick.h"
 #include "Utils.h"
 #include "QuestionBrick.h"
+#include "Mario.h"
+#include "PlayScence.h"
+#include "Game.h"
+#include "Koopas.h"
 CGoomba::CGoomba()
 {
 	SetState(GOOMBA_STATE_WALKING);
@@ -62,8 +66,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx + nx * 0.4f;		// nx*PUSHBACK : need to push out a bit to avoid overlapping next frame
-		y += min_ty * dy + ny * 0.4f;
+		//x += min_tx * dx + nx * 0.4f;		// nx*PUSHBACK : need to push out a bit to avoid overlapping next frame
+		//y += min_ty * dy + ny * 0.4f;
 
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -75,7 +79,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CBrick* object = dynamic_cast<CBrick*>(e->obj);
 				if (e->obj != NULL)
 					object->GetBoundingBox(oLeft, oTop, oRight, oBottom);
-				if (e->ny != 0) {
+				if (ny != 0) {
 					vy = 0;
 				}
 				if (e->nx != 0)
@@ -99,6 +103,19 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					x += dx;
 				}
 			}
+			if (dynamic_cast<CKoopas*>(e->obj)) {
+				if (e->nx != 0 && e->obj->GetState() == KOOPAS_STATE_SPINNING) {
+					isDiedByKoopas = true;
+					SetState(GOOMBA_STATE_DIE);
+				}
+			}
+			/*if (dynamic_cast<CMario*>(e->obj)) {
+				CPlayScene* current_scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+				CMario* mario = current_scene->GetPlayer();
+				if (e->nx != 0) {
+					mario->SetState(MARIO_STATE_DIE);
+				}
+			}*/
 		}
 	}
 
@@ -113,7 +130,8 @@ void CGoomba::Render()
 {
 	int ani = GOOMBA_NORMAL_ANI_WALKING;
 	if (state == GOOMBA_STATE_DIE) {
-		ani = GOOMBA_NORMAL_ANI_DIE;
+		if (isDiedByKoopas) ani = GOOMBA_RED_ANI_WALKING;
+		else ani = GOOMBA_NORMAL_ANI_DIE;
 	}
 
 	animation_set->at(ani)->Render(x, y);
@@ -123,6 +141,7 @@ void CGoomba::Render()
 
 void CGoomba::SetState(int state)
 {
+	int previousState = state;
 	CGameObject::SetState(state);
 	switch (state)
 	{

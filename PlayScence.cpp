@@ -11,6 +11,7 @@
 #include "Coin.h"
 #include "Block.h"
 #include "MushRoom.h"
+#include "PiranhaPlant.h"
 
 using namespace std;
 
@@ -42,6 +43,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_QUESTION_BRICK 142
 #define OBJECT_TYPE_COINT 6
 #define OBJECT_TYPE_BLOCK_LINE 4
+#define OBJECT_TYPE_PIRANHA_PLANT 7
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -205,14 +207,37 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-		//case OBJECT_TYPE_COINT: obj = new Coin(); break;
-	case OBJECT_QUESTION_BRICK: obj = new QuestionBrick(option_tag_1, option_tag_2); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
-	case OBJECT_TYPE_BUSH: obj = new GreenBush(); break;
-	case OBJECT_INVISIBLE: obj = new StopPoint(); break;
-	case OBJECT_TYPE_BLOCK_LINE: obj = new Block(); break;
+	case OBJECT_TYPE_GOOMBA:
+		obj = new CGoomba();
+		break;
+	case OBJECT_TYPE_BRICK:
+		obj = new CBrick();
+		break;
+	case OBJECT_TYPE_COINT: obj = new Coin(); break;
+	case OBJECT_QUESTION_BRICK:
+		obj = new QuestionBrick(option_tag_1, option_tag_2);
+		break;
+	case OBJECT_TYPE_KOOPAS:
+		obj = new CKoopas();
+		obj->SetTag(tag);
+		((CKoopas*)obj)->start_tag = tag;
+		//obj->SetType(MOVING);
+		((CKoopas*)obj)->start_x = x;
+		((CKoopas*)obj)->start_y = y;
+		break;
+	case OBJECT_TYPE_PIRANHA_PLANT:
+		obj = new PiranhaPlant();
+		((PiranhaPlant*)obj)->SetLimitY(y);
+		break;
+	case OBJECT_TYPE_BUSH:
+		obj = new GreenBush();
+		break;
+	case OBJECT_INVISIBLE:
+		obj = new StopPoint();
+		break;
+	case OBJECT_TYPE_BLOCK_LINE:
+		obj = new Block();
+		break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -232,7 +257,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
-	if (dynamic_cast<MushRoom*>(obj)) {
+	if (dynamic_cast<MushRoom*>(obj) || dynamic_cast<PiranhaPlant*>(obj)) {
 		mObjects.push_back(obj);
 	}
 	else objects.push_back(obj);
@@ -464,7 +489,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
 	if (mario == NULL) return;
 	// disable control key when Mario die 
-	//if (mario->GetState() == MARIO_STATE_DIE) return;
+	if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT)) {
 		mario->SetState(MARIO_STATE_WALKING_RIGHT);
 	}
@@ -476,7 +501,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		mario->SetState(MARIO_STATE_JUMP_X);
 	}
 	else if (game->IsKeyDown(DIK_DOWN)) {
-		if (mario->GetLevel() == MARIO_LEVEL_BIG)
+		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround())
 			mario->SetState(MARIO_STATE_SITDOWN);
 	}
 	else

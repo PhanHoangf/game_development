@@ -105,8 +105,12 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
-
-
+	float GetWidth()
+	{
+		float left, top, right, bottom;
+		GetBoundingBox(left, top, right, bottom);
+		return right - left;
+	}
 	~CGameObject();
 };
 

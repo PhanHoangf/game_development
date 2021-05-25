@@ -159,8 +159,8 @@ void CGameObject::FilterCollision(
 	int min_ix = -1;
 	int min_iy = -1;
 
-	nx = 0.0f;
-	ny = 0.0f;
+	nx = 0;
+	ny = 0;
 
 	coEventsResult.clear();
 
@@ -190,15 +190,9 @@ void CGameObject::RenderBoundingBox()
 	RECT rect;
 
 	//! Initial rect
-	/*rect.left = 0;
-	rect.top = 0;
-	rect.right = 0;
-	rect.bottom = 0;*/
-
 	LPDIRECT3DTEXTURE9 bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX);
 
 	float l, t, r, b;
-
 	GetBoundingBox(l, t, r, b);
 	rect.left = 0;
 	rect.top = 0;
