@@ -44,6 +44,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(KOOPAS_STATE_WALKING);
 	}
 
+	if (isBeingHeld) {
+
+	}
+
 	CGameObject::Update(dt, coObjects);
 
 	vector<LPCOLLISIONEVENT> coEvents;

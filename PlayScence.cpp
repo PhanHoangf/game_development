@@ -397,12 +397,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	if (mario->GetState() == MARIO_STATE_DIE) return;
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
 		mario->SetState(MARIO_STATE_JUMP);
 		break;
-	case DIK_A:
+	case DIK_R:
 		mario->Reset();
 		break;
 	case DIK_T:
@@ -414,11 +415,14 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	if (mario->GetState() == MARIO_STATE_DIE) return;
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
 		mario->ay = MARIO_GRAVITY;
 		break;
+	case DIK_A:
+		mario->SetIsReadyToHold(false);
 	}
 }
 
@@ -503,6 +507,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	else if (game->IsKeyDown(DIK_DOWN)) {
 		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround())
 			mario->SetState(MARIO_STATE_SITDOWN);
+	}
+	else if (game->IsKeyDown(DIK_A)) {
+		mario->SetIsReadyToHold(true);
 	}
 	else
 	{

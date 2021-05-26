@@ -25,7 +25,6 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
 	CGameObject::Update(dt, coObjects);
 
 	if (GetTickCount64() - dying_start >= GOOMBA_TIME_DIYING && isDying)
@@ -37,6 +36,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
+	vy = GOOMBA_GRAVITY * dt;
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	//
@@ -45,10 +46,9 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
-	if (state != GOOMBA_STATE_DIE) {
-		vy += GOOMBA_GRAVITY * dt;
-		CalcPotentialCollisions(coObjects, coEvents);
-	}
+	//if (state != GOOMBA_STATE_DIE) {
+	CalcPotentialCollisions(coObjects, coEvents);
+	//}
 
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
@@ -70,6 +70,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//y += min_ty * dy + ny * 0.4f;
 
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
+			if (state == GOOMBA_STATE_DIE) return;
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			GetBoundingBox(mLeft, mTop, mRight, mBottom);
 			if (e->obj != NULL)
@@ -130,7 +131,7 @@ void CGoomba::Render()
 {
 	int ani = GOOMBA_NORMAL_ANI_WALKING;
 	if (state == GOOMBA_STATE_DIE) {
-		if (isDiedByKoopas) ani = GOOMBA_RED_ANI_WALKING;
+		if (isDiedByKoopas) ani = GOOMBA_NORMAL_ANI_DIE;
 		else ani = GOOMBA_NORMAL_ANI_DIE;
 	}
 
@@ -146,9 +147,10 @@ void CGoomba::SetState(int state)
 	switch (state)
 	{
 	case GOOMBA_STATE_DIE:
-		y += GOOMBA_NORMAL_BBOX_WIDTH - GOOMBA_BBOX_HEIGHT_DIE + 1;
+		y += GOOMBA_NORMAL_BBOX_WIDTH - GOOMBA_BBOX_HEIGHT_DIE - 1;
 		vx = 0;
 		vy = 0;
+		if (isDiedByKoopas) vy = -MARIO_DIE_DEFLECT_SPEED;
 		StartDying();
 		break;
 	case GOOMBA_STATE_WALKING:

@@ -86,6 +86,7 @@
 #define MARIO_JUMP_SMALL_RIGHT	4
 #define MARIO_JUMP_DOWN_SMALL_RIGHT	5
 #define MARIO_BRAKE_SMALL_RIGHT	6
+#define MARIO_ANI_SMALL_KICKING_RIGHT 66
 
 #endif // !MARIO_SMALL_ANI_RIGHT
 
@@ -97,6 +98,7 @@
 #define MARIO_JUMP_SMALL_LEFT	11
 #define MARIO_JUMP_DOWN_SMALL_LEFT	12
 #define MARIO_BRAKE_SMALL_LEFT	13
+#define MARIO_ANI_SMALL_KICKING_LEFT 70
 
 #endif // !MARIO_SMALL_ANI_LEFT
 
@@ -110,6 +112,7 @@
 #define MARIO_ANI_BIG_JUMPINGDOWN_RIGHT		19
 #define MARIO_ANI_BIG_BRAKING_RIGHT			20
 #define MARIO_ANI_BIG_SITTING_RIGHT			21
+#define MARIO_ANI_BIG_KICKING_RIGHT			74
 
 #endif // !MARIO_BIG_ANI_RIGHT
 
@@ -123,6 +126,7 @@
 #define MARIO_ANI_BIG_JUMPINGDOWN_LEFT		27
 #define MARIO_ANI_BIG_BRAKING_LEFT			28
 #define MARIO_ANI_BIG_SITTING_LEFT			29
+#define MARIO_ANI_BIG_KICKING_LEFT			78
 
 #endif // !MARIO_BIG_ANI_LEFT
 
@@ -132,6 +136,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME 5000
 #define MARIO_TRANSFORM_TIME 500
+#define MARIO_KICKING_TIME	200	
 
 #define MARIO_WORLD_MAP_IDLE 0
 
@@ -146,6 +151,7 @@ class CMario : public CGameObject
 	DWORD start_running;
 	DWORD start_slowdown;
 	DWORD start_transform;
+	DWORD start_kicking;
 	int direction;
 
 	float start_x;			// initial position of Mario at scene
@@ -158,6 +164,10 @@ class CMario : public CGameObject
 	bool isChangeDirection = false;
 	bool isJumpingWithXButton = false;
 	bool isTransforming = false;
+	bool isChangingY = false;
+	bool isKicking = false;
+	bool isReadyToHold = false;
+	bool isHolding = false;
 	int runningStack;
 
 	float tempY;
@@ -166,26 +176,44 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 
+	void Reset();
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
-	int GetLevel() { return level; }
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
-	void StartRunning() { start_running = GetTickCount(); }
-	void SetDirection(int direct) { direction = direct; }
-	bool GetIsOnGround() { return isOnGround; }
 	void SetAccelerate(float accelerate);
-	void Reset();
+	void SetDirection(int direct) { direction = direct; }
+	void SetHolding(bool hold) { isHolding = hold; }
+	void SetIsReadyToHold(bool hold) { isReadyToHold = hold; }
+
+	bool GetIsOnGround() { return isOnGround; }
+	int GetLevel() { return level; }
+	bool GetHolding() { return isHolding; }
+	bool GetIsReadyToHold() { return isReadyToHold; }
+
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount(); SetLevel(level); }
+	void StartKicking() { start_kicking = GetTickCount64(); isKicking = true; }
+	void StartRunning() { start_running = GetTickCount64(); }
+
+	void StopTransform() { isTransforming = false; start_transform = 0; isChangingY = false; }
+	void StopKicking() { start_kicking = 0; isKicking = false; }
+
 	void limitMarioSpeed(float& vx, int nx);
-	void handleMarioJump();
-	void HandleChangeDirection();
 	void slowDownVx() { vx = int(abs(vx) / 2); }
-	void pullDown() { ay = MARIO_GRAVITY; isJumping = false; isOnGround = true; }
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
 	void RenderMarioAniSmall(int& ani);
 	void RenderMarioAniBig(int& ani);
-	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount(); SetLevel(level); }
-	void StopTransform() { isTransforming = false; start_transform = 0; }
+
+	void handleMarioJump();
 	void handleSitDown();
 	void HandleTransform(int level);
-	void RenderMarioSit(int &ani);
+	void RenderMarioSit(int& ani);
+	void HandleMarioKicking();
+	void HandleChangeDirection();
+	void HandleChangeYTransform();
+	void HandleMarioHolding();
+
+	void pullDown() { ay = MARIO_GRAVITY; isJumping = false; isOnGround = true; }
+
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
 };

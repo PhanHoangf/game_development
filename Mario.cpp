@@ -33,6 +33,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//DebugOut(L"vy::%f\n", vy);
 	// Calculate dx, dy 
+	if (state == MARIO_STATE_DIE) DebugOut(L"vy::%f\n", vy);
 	CGameObject::Update(dt);
 	// Simple fall down
 	vy += ay * dt;
@@ -53,8 +54,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state != MARIO_STATE_DIE) {
 		CalcPotentialCollisions(coObjects, coEvents);
 	}
+
 	HandleTransform(level);
 	HandleChangeDirection();
+	HandleMarioKicking();
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
@@ -98,11 +101,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float mLeft, mTop, mRight, mBottom;
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
+			if (state == MARIO_STATE_DIE) return;
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			GetBoundingBox(mLeft, mTop, mRight, mBottom);
 			e->obj->GetBoundingBox(oLeft, oTop, oRight, oBottom);
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj)) {
-				if (ny != 0) {
+				if (e->ny != 0) {
 					isOnGround = true; vy = 0;
 				}
 				//else isOnGround = false;
@@ -170,7 +174,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						else x += dx;
 					}
 					if (koopas->GetState() == KOOPAS_STATE_IN_SHELL) {
-						koopas->SetState(KOOPAS_STATE_SPINNING);
+						if (isReadyToHold) {
+							SetHolding(true);
+							SetState(MARIO_STATE_HOLD);
+							koopas->SetIsBeingHeld(true);
+						}
+						else {
+							koopas->SetState(KOOPAS_STATE_SPINNING);
+							SetState(MARIO_STATE_KICK);
+						}
 					}
 				}
 				if (e->ny < 0) {
@@ -226,7 +238,7 @@ void CMario::Render()
 	if (untouchable) alpha = 128;
 	if (state == MARIO_STATE_TRANSFORM) {
 		if (level == MARIO_LEVEL_SMALL) animation_set->at(ani)->Render(x, y + (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT), alpha);
-		else if (level == MARIO_LEVEL_BIG) animation_set->at(ani)->Render(x, y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT), alpha);
+		else if (level == MARIO_LEVEL_BIG) animation_set->at(ani)->Render(x, y, alpha);
 	}
 	else if (state == MARIO_STATE_SITDOWN) {
 		animation_set->at(ani)->Render(x, y, alpha);
@@ -249,24 +261,29 @@ void CMario::RenderMarioAniSmall(int& ani) {
 		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
 			ani = MARIO_BRAKE_SMALL_LEFT;
 		}
-		else if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
+		if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
 			ani = MARIO_SMALL_WALK_RIGHT;
 		}
-		else if (!isOnGround) {
+		if (!isOnGround) {
 			ani = MARIO_JUMP_SMALL_RIGHT;
+		}
+		if (isKicking) {
+			ani = MARIO_ANI_SMALL_KICKING_RIGHT;
 		}
 	}
 	if (state == MARIO_STATE_WALKING_LEFT) {
 		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
 			ani = MARIO_BRAKE_SMALL_RIGHT;
 		}
-		else if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN &&  isOnGround) {
+		if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
 			ani = MARIO_SMALL_WALK_LEFT;
 		}
-		else if (!isOnGround) {
+		if (!isOnGround) {
 			ani = MARIO_JUMP_SMALL_LEFT;
 		}
-
+		if (isKicking) {
+			ani = MARIO_ANI_SMALL_KICKING_LEFT;
+		}
 	}
 	if (state == MARIO_STATE_JUMP) {
 		if (nx > 0) {
@@ -286,6 +303,13 @@ void CMario::RenderMarioAniSmall(int& ani) {
 	}
 	if (state == MARIO_STATE_DIE)
 		ani = MARIO_ANI_DIE;
+	if (state == MARIO_STATE_KICK) {
+		if (isKicking)
+		{
+			if (nx > 0) ani = MARIO_ANI_SMALL_KICKING_RIGHT;
+			if (nx < 0) ani = MARIO_ANI_SMALL_KICKING_LEFT;
+		}
+	}
 }
 
 void CMario::RenderMarioAniBig(int& ani) {
@@ -301,22 +325,28 @@ void CMario::RenderMarioAniBig(int& ani) {
 		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
 			ani = MARIO_ANI_BIG_BRAKING_LEFT;
 		}
-		else if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
+		if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
 			ani = MARIO_ANI_BIG_WALKING_RIGHT;
 		}
-		else if (!isOnGround) {
+		if (!isOnGround) {
 			ani = MARIO_ANI_BIG_JUMPINGUP_RIGHT;
+		}
+		if (isKicking) {
+			ani = MARIO_ANI_BIG_KICKING_RIGHT;
 		}
 	}
 	if (state == MARIO_STATE_WALKING_LEFT) {
 		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
 			ani = MARIO_ANI_BIG_BRAKING_RIGHT;
 		}
-		else if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
+		if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
 			ani = MARIO_ANI_BIG_WALKING_LEFT;
 		}
-		else if (!isOnGround) {
+		if (!isOnGround) {
 			ani = MARIO_ANI_BIG_JUMPINGUP_LEFT;
+		}
+		if (isKicking) {
+			ani = MARIO_ANI_BIG_KICKING_LEFT;
 		}
 
 	}
@@ -338,6 +368,13 @@ void CMario::RenderMarioAniBig(int& ani) {
 	}
 	if (state == MARIO_STATE_SITDOWN) {
 		RenderMarioSit(ani);
+	}
+	if (state == MARIO_STATE_KICK) {
+		if (isKicking)
+		{
+			if (nx > 0) ani = MARIO_ANI_BIG_KICKING_RIGHT;
+			if (nx < 0) ani = MARIO_ANI_BIG_KICKING_LEFT;
+		}
 	}
 }
 
@@ -362,6 +399,7 @@ void CMario::SetState(int state)
 		if (previousState == MARIO_STATE_SITDOWN)
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
 		//else slowDownVx();
+		SetIsReadyToHold(false);
 		break;
 	case MARIO_STATE_WALKING_RIGHT:
 		//DebugOut(L"ax::%f\n", ax);
@@ -374,6 +412,7 @@ void CMario::SetState(int state)
 		}
 		ax = MARIO_ACCELERATION;
 		nx = 1;
+		isSitting = false;
 		if (previousState == MARIO_STATE_SITDOWN)
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
 		break;
@@ -387,6 +426,7 @@ void CMario::SetState(int state)
 		}
 		ax = -MARIO_ACCELERATION;
 		nx = -1;
+		isSitting = false;
 		if (previousState == MARIO_STATE_SITDOWN)
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
 		break;
@@ -421,8 +461,13 @@ void CMario::SetState(int state)
 		ax = 0;
 		vy = -MARIO_DIE_DEFLECT_SPEED;
 		break;
+	case MARIO_STATE_KICK:
+		StartKicking();
+		break;
+	case MARIO_STATE_HOLD:
+		//SetIsReadyToHold(true);
+		break;
 	}
-
 }
 
 void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -438,12 +483,12 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 			bottom = top + MARIO_BBOX_SIT_HEIGHT;
 		}
 	}
-
 	else
 	{
 		right = x + MARIO_SMALL_BBOX_WIDTH;
 		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
 	}
+
 }
 
 /*
@@ -527,6 +572,7 @@ void CMario::handleMarioJump() {
 void CMario::HandleTransform(int level) {
 	if (isTransforming) {
 		SetState(MARIO_STATE_TRANSFORM);
+		HandleChangeYTransform();
 		if (GetTickCount() - start_transform > MARIO_TRANSFORM_TIME) {
 			StopTransform();
 			SetState(MARIO_STATE_JUMP_X);
@@ -537,12 +583,12 @@ void CMario::HandleTransform(int level) {
 void CMario::handleSitDown() {
 	if (isOnGround) {
 		isReadyToSit = true;
-		if (isReadyToSit) {
-			if (!isSitting) {
-				y += MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
-				isSitting = true;
-			}
+		//if (isReadyToSit) {
+		if (!isSitting) {
+			y += MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
+			isSitting = true;
 		}
+		//}
 		vx /= 1.15f;
 		ax = 0;
 	}
@@ -562,4 +608,33 @@ void CMario::RenderMarioSit(int& ani) {
 		if (nx > 0) ani = MARIO_ANI_BIG_SITTING_RIGHT;
 		else ani = MARIO_ANI_BIG_SITTING_LEFT;
 	}
+}
+
+void CMario::HandleMarioKicking() {
+	if (isKicking) {
+		if (GetTickCount64() - start_kicking > MARIO_KICKING_TIME) {
+			StopKicking();
+			//SetState(MARIO_STATE_IDLE);
+		}
+	}
+}
+
+void CMario::HandleChangeYTransform() {
+	if (state == MARIO_STATE_TRANSFORM) {
+		if (level == MARIO_LEVEL_SMALL && !isChangingY) {
+			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
+			isChangingY = true;
+		}
+		if (level == MARIO_LEVEL_BIG && !isChangingY) {
+			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
+			isChangingY = true;
+		}
+	}
+}
+
+void CMario::HandleMarioHolding() {
+	/*if (state == MARIO_STATE_HOLD) {
+		if (isReadyToHold)
+
+	}*/
 }
