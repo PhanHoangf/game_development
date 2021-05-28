@@ -19,7 +19,7 @@ void Coin::Render() {
 		return;
 	}
 	animation_set->at(0)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void Coin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
@@ -27,10 +27,16 @@ void Coin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (isDestroyed)
 		return;
 
+	y += dy;
 	CGameObject::Update(dt);
 
-	y += dy;
+	
+
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = currentScene->GetPlayer();
+
+	float mTop, mLeft, mRight, mBottom;
+	float oTop, oLeft, oRight, oBottom;
 	if (state == COIN_STATE_IDLE) {
 
 	}
@@ -53,6 +59,10 @@ void Coin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				currentScene->deleteLastObject();*/
 		}
 	}
+
+
+
+
 }
 
 void Coin::SetState(int state) {

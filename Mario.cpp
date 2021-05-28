@@ -13,6 +13,7 @@
 #include "QuestionBrick.h"
 #include "Block.h"
 #include "Koopas.h"
+#include "Coin.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -31,14 +32,12 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//DebugOut(L"vy::%f\n", vy);
-	// Calculate dx, dy 
-	if (state == MARIO_STATE_DIE) DebugOut(L"vy::%f\n", vy);
 	CGameObject::Update(dt);
 	// Simple fall down
 	vy += ay * dt;
 	vx += ax * dt;
 	//DebugOut(L"vy::%f\n", vy);
+
 	limitMarioSpeed(vx, nx);
 	handleMarioJump();
 
@@ -58,6 +57,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	HandleTransform(level);
 	HandleChangeDirection();
 	HandleMarioKicking();
+	HandleMarioHolding();
+
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
@@ -174,12 +175,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						else x += dx;
 					}
 					if (koopas->GetState() == KOOPAS_STATE_IN_SHELL) {
+						DebugOut(L"collision with KOOPAS\n");
 						if (isReadyToHold) {
-							SetHolding(true);
-							SetState(MARIO_STATE_HOLD);
+							isHolding = true;
 							koopas->SetIsBeingHeld(true);
 						}
 						else {
+							koopas->SetIsBeingHeld(false);
 							koopas->SetState(KOOPAS_STATE_SPINNING);
 							SetState(MARIO_STATE_KICK);
 						}
@@ -195,6 +197,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					else if (koopas->GetState() == KOOPAS_STATE_SPINNING) {
 						koopas->SetState(KOOPAS_STATE_IN_SHELL);
 					}
+				}
+			}
+			if (dynamic_cast<Coin*>(e->obj)) {
+				Coin* coin = dynamic_cast<Coin*>(e->obj);
+				if (e->ny != 0 || e->nx != 0) {
+					coin->SetAppear(false);
+					coin->SetIsDestroyed(true);
 				}
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
@@ -250,11 +259,21 @@ void CMario::Render()
 
 void CMario::RenderMarioAniSmall(int& ani) {
 	if (state == MARIO_STATE_IDLE) {
-		if (nx > 0) {
-			ani = MARIO_SMALL_RIGHT_IDLE;
+		if (isHolding) {
+			if (nx > 0) {
+				ani = MARIO_ANI_SMALL_HOLD_IDLE_RIGHT;
+			}
+			if (nx < 0) {
+				ani = MARIO_ANI_SMALL_HOLD_IDLE_LEFT;
+			}
 		}
-		if (nx < 0) {
-			ani = MARIO_SMALL_LEFT_IDLE;
+		else {
+			if (nx > 0) {
+				ani = MARIO_SMALL_RIGHT_IDLE;
+			}
+			if (nx < 0) {
+				ani = MARIO_SMALL_LEFT_IDLE;
+			}
 		}
 	}
 	if (state == MARIO_STATE_WALKING_RIGHT) {
@@ -270,6 +289,9 @@ void CMario::RenderMarioAniSmall(int& ani) {
 		if (isKicking) {
 			ani = MARIO_ANI_SMALL_KICKING_RIGHT;
 		}
+		if (isHolding) {
+			ani = MARIO_ANI_SMALL_HOLD_WALKING_RIGHT;
+		}
 	}
 	if (state == MARIO_STATE_WALKING_LEFT) {
 		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
@@ -283,6 +305,9 @@ void CMario::RenderMarioAniSmall(int& ani) {
 		}
 		if (isKicking) {
 			ani = MARIO_ANI_SMALL_KICKING_LEFT;
+		}
+		if (isHolding) {
+			ani = MARIO_ANI_SMALL_HOLD_WALKING_LEFT;
 		}
 	}
 	if (state == MARIO_STATE_JUMP) {
@@ -314,11 +339,22 @@ void CMario::RenderMarioAniSmall(int& ani) {
 
 void CMario::RenderMarioAniBig(int& ani) {
 	if (state == MARIO_STATE_IDLE) {
-		if (nx > 0) {
-			ani = MARIO_ANI_BIG_IDLE_RIGHT;
+		//DebugOut(L"hold::%d\n", hold);
+		if (isHolding) {
+			if (nx > 0) {
+				ani = MARIO_ANI_BIG_HOLD_IDLE_RIGHT;
+			}
+			if (nx < 0) {
+				ani = MARIO_ANI_BIG_HOLD_IDLE_LEFT;
+			}
 		}
-		if (nx < 0) {
-			ani = MARIO_ANI_BIG_IDLE_LEFT;
+		else {
+			if (nx > 0) {
+				ani = MARIO_ANI_BIG_IDLE_RIGHT;
+			}
+			if (nx < 0) {
+				ani = MARIO_ANI_BIG_IDLE_LEFT;
+			}
 		}
 	}
 	if (state == MARIO_STATE_WALKING_RIGHT) {
@@ -334,6 +370,9 @@ void CMario::RenderMarioAniBig(int& ani) {
 		if (isKicking) {
 			ani = MARIO_ANI_BIG_KICKING_RIGHT;
 		}
+		if (isHolding) {
+			ani = MARIO_ANI_BIG_HOLD_WALKING_RIGHT;
+		}
 	}
 	if (state == MARIO_STATE_WALKING_LEFT) {
 		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
@@ -348,7 +387,9 @@ void CMario::RenderMarioAniBig(int& ani) {
 		if (isKicking) {
 			ani = MARIO_ANI_BIG_KICKING_LEFT;
 		}
-
+		if (isHolding) {
+			ani = MARIO_ANI_BIG_HOLD_WALKING_LEFT;
+		}
 	}
 	if (state == MARIO_STATE_JUMP) {
 		if (nx > 0) {
@@ -376,16 +417,22 @@ void CMario::RenderMarioAniBig(int& ani) {
 			if (nx < 0) ani = MARIO_ANI_BIG_KICKING_LEFT;
 		}
 	}
+	if (state == MARIO_STATE_HOLD) {
+		if (isHolding) {
+			if (nx > 0) ani = MARIO_ANI_BIG_HOLD_WALKING_RIGHT;
+			if (nx < 0) ani = MARIO_ANI_BIG_HOLD_WALKING_LEFT;
+		}
+	}
 }
 
 void CMario::SetState(int state)
 {
+	//DebugOut(L"state::%d\n", state);
 	int previousState = GetState();
 	CGameObject::SetState(state);
 	switch (state)
 	{
 	case MARIO_STATE_IDLE:
-		//DebugOut(L"vy::%f\n", vy);
 		if (abs(vx) < MARIO_WALKING_SPEED_MIN) {
 			ax = 0;
 			vx = 0;
@@ -398,11 +445,9 @@ void CMario::SetState(int state)
 		isSitting = false;
 		if (previousState == MARIO_STATE_SITDOWN)
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
-		//else slowDownVx();
-		SetIsReadyToHold(false);
+		//SetIsReadyToHold(false);
 		break;
 	case MARIO_STATE_WALKING_RIGHT:
-		//DebugOut(L"ax::%f\n", ax);
 		if (ax < 0 && isOnGround && abs(vx) > MARIO_WALKING_SPEED_START) {
 			isChangeDirection = true;
 			runningStack = 0;
@@ -431,7 +476,6 @@ void CMario::SetState(int state)
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
 		break;
 	case MARIO_STATE_JUMP:
-		//DebugOut(L"vy::%f\n", vy);
 		if (isOnGround) {
 			if (vy > -MARIO_JUMP_SPEED_MIN)
 				vy = -MARIO_JUMP_SPEED_MIN;
@@ -464,8 +508,8 @@ void CMario::SetState(int state)
 	case MARIO_STATE_KICK:
 		StartKicking();
 		break;
-	case MARIO_STATE_HOLD:
-		//SetIsReadyToHold(true);
+	case MARIO_STATE_READY_TO_HOLD:
+		if (isOnGround) isReadyToHold = true;
 		break;
 	}
 }
@@ -623,18 +667,14 @@ void CMario::HandleChangeYTransform() {
 	if (state == MARIO_STATE_TRANSFORM) {
 		if (level == MARIO_LEVEL_SMALL && !isChangingY) {
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
-			isChangingY = true;
 		}
 		if (level == MARIO_LEVEL_BIG && !isChangingY) {
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
-			isChangingY = true;
 		}
+		isChangingY = true;
 	}
 }
 
 void CMario::HandleMarioHolding() {
-	/*if (state == MARIO_STATE_HOLD) {
-		if (isReadyToHold)
-
-	}*/
+	if (!isReadyToHold) isHolding = false;
 }

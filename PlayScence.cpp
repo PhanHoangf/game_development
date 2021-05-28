@@ -12,6 +12,7 @@
 #include "Block.h"
 #include "MushRoom.h"
 #include "PiranhaPlant.h"
+#include "BreakableBrick.h"
 
 using namespace std;
 
@@ -44,6 +45,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_COINT 6
 #define OBJECT_TYPE_BLOCK_LINE 4
 #define OBJECT_TYPE_PIRANHA_PLANT 7
+#define OBJECT_TYPE_BREAKABLEBRICK		112
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -216,6 +218,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_COINT: obj = new Coin(); break;
 	case OBJECT_QUESTION_BRICK:
 		obj = new QuestionBrick(option_tag_1, option_tag_2);
+		break;
+	case OBJECT_TYPE_BREAKABLEBRICK:
+		obj = new BreakableBrick();
 		break;
 	case OBJECT_TYPE_KOOPAS:
 		obj = new CKoopas();
@@ -410,6 +415,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_TRANSFORM);
 		mario->StartTransform(MARIO_LEVEL_BIG);
 		break;
+	case DIK_A:
+		mario->SetIsReadyToHold(true);
+		break;
 	}
 }
 
@@ -423,6 +431,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 		break;
 	case DIK_A:
 		mario->SetIsReadyToHold(false);
+		break;
 	}
 }
 
@@ -507,9 +516,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	else if (game->IsKeyDown(DIK_DOWN)) {
 		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround())
 			mario->SetState(MARIO_STATE_SITDOWN);
-	}
-	else if (game->IsKeyDown(DIK_A)) {
-		mario->SetIsReadyToHold(true);
 	}
 	else
 	{

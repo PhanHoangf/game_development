@@ -1,12 +1,177 @@
-﻿  Mario.cpp
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(186,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(188,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(189,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(195,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+﻿  Block.cpp
+  BreakableBrick.cpp
+  Brick.cpp
+  Coin.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(37,32): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(41,31): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.cpp(43,14): warning C4101: 'oLeft': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.cpp(42,8): warning C4101: 'mTop': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.cpp(43,29): warning C4101: 'oBottom': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.cpp(42,29): warning C4101: 'mBottom': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.cpp(43,21): warning C4101: 'oRight': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.cpp(42,21): warning C4101: 'mRight': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.cpp(43,8): warning C4101: 'oTop': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.cpp(42,14): warning C4101: 'mLeft': unreferenced local variable
+  Game.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  GameObject.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(37,32): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(41,31): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  Goomba.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  GreenBush.cpp
+  Koopas.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Mario.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(37,32): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(41,31): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  MushRoom.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  PiranhaPlant.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(59,14): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(57,9): warning C4101: 'oLeft': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(56,16): warning C4101: 'mTop': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(57,30): warning C4101: 'oBottom': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(56,30): warning C4101: 'mBottom': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(57,22): warning C4101: 'oRight': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(56,22): warning C4101: 'mRight': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(57,16): warning C4101: 'oTop': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlant.cpp(56,9): warning C4101: 'mLeft': unreferenced local variable
+  PiranhaPlantFire.cpp
+  PlayScence.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(37,32): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(41,31): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(107,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(160,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(182,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(183,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(189,13): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(191,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(193,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(248,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(249,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(371,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(378,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(391,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(441,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(442,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(443,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(444,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(439,28): warning C4101: 'my': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(439,24): warning C4101: 'mx': unreferenced local variable
+  Portal.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Portal.cpp(9,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Portal.cpp(10,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  QuestionBrick.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(37,32): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(41,31): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  StopPoint.cpp
+  main.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(205,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(207,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(208,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(214,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(62,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(63,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  Generating Code...
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe

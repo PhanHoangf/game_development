@@ -27,27 +27,28 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = currentScene->GetPlayer();
+
 	if (GetTickCount() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
 		shell_start = 0;
-		StartReviving();
+		//StartReviving();
 	}
 
 	if (GetTickCount64() - reviving_start >= KOOPAS_REVIVE_TIME && reviving_start != 0 && state != KOOPAS_STATE_SPINNING && shell_start == 0)
 	{
 		reviving_start = 0;
 		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_SHELL_HEIGHT) + 1.0f;
-		/*if (isBeingHeld)
-		{
-			isBeingHeld = false;
-			mario->SetIsHolding(false);
-		}*/
+		/*	if (isBeingHeld)
+			{
+				isBeingHeld = false;
+				mario->SetIsHolding(false);
+			}*/
 		SetState(KOOPAS_STATE_WALKING);
 	}
 
-	if (isBeingHeld) {
-
-	}
-
+	HandleBeingHeld(mario);
+	//vx = 0;
 	CGameObject::Update(dt, coObjects);
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -160,6 +161,26 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CBrick*>(e->obj)) {
 				CBrick* object = dynamic_cast<CBrick*>(e->obj);
 				object->GetBoundingBox(oLeft, oTop, oRight, oBottom);
+				if (e->ny < 0) {
+					vy = 0;
+					if (state == KOOPAS_STATE_SHELL_UP)
+						vx = 0;
+					if (tag == KOOPAS_RED && state == KOOPAS_STATE_WALKING)
+					{
+						if (this->nx > 0 && x >= e->obj->x + KOOPAS_TURN_DIFF)
+							if (CalTurnable(e->obj, coObjects))
+							{
+								this->nx = -1;
+								vx = this->nx * KOOPAS_WALKING_SPEED;
+							}
+						if (this->nx < 0 && x <= e->obj->x - KOOPAS_TURN_DIFF)
+							if (CalTurnable(e->obj, coObjects))
+							{
+								this->nx = 1;
+								vx = this->nx * KOOPAS_WALKING_SPEED;
+							}
+					}
+				}
 				if (e->ny != 0) vy = 0;
 				if (e->nx != 0)
 				{
@@ -277,6 +298,16 @@ void CKoopas::SetState(int state)
 		StartShell();
 		break;
 	}
+}
 
+void CKoopas::HandleBeingHeld(LPGAMEOBJECT player) {
+	CMario* mario = dynamic_cast<CMario*>(player);
+	if (isBeingHeld && state == KOOPAS_STATE_IN_SHELL) {
+		x = mario->x + MARIO_BIG_BBOX_WIDTH * mario->nx;
+		y = mario->y;
+		vy = 0;
+	}
+	else {
 
+	}
 }
