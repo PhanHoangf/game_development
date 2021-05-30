@@ -96,10 +96,16 @@
     <ClCompile Include="PiranhaPlant.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="PiranhaPlantFire.cpp">
+    <ClCompile Include="BreakableBrick.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Switch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BreakableBrick.cpp">
+    <ClCompile Include="RedGoomba.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="PiranhaPlantFire.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,10 +179,16 @@
     <ClInclude Include="PiranhaPlant.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="PiranhaPlantFire.h">
+    <ClInclude Include="BreakableBrick.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Switch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BreakableBrick.h">
+    <ClInclude Include="RedGoomba.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlantFire.h">
       <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>

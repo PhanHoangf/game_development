@@ -6,6 +6,7 @@
 #include "Coin.h"
 #include "MushRoom.h"
 #include "Mario.h"
+#include "Switch.h"
 
 QuestionBrick::QuestionBrick(int tag, int type) : CGameObject() {
 	state = QUESTION_BRICK_NORMAL;
@@ -54,6 +55,7 @@ void QuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			isFallingDown = false;
 			vy = 0;
 			if (tag != ITEM_COIN) {
+				DebugOut(L"item::%d\n", tag);
 				CreateItem(tag);
 			}
 		}
@@ -89,6 +91,13 @@ void QuestionBrick::CreateItem(int itemType) {
 		obj->SetState(MUSHROOM_STATE_UP);
 		currentScene->AddMovingObject(obj);
 	}
+	if (dynamic_cast<Switch*>(this->obj)) {
+		Switch* obj = dynamic_cast<Switch*>(this->obj);
+		obj->SetAppear(true);
+		obj->SetPosition(x, y);
+		obj->SetState(SWITCH_STATE_UP);
+		currentScene->AddMovingObject(obj);
+	}
 
 
 }
@@ -118,6 +127,12 @@ CGameObject* QuestionBrick::SetUpItem(int itemType) {
 			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 			obj->SetAnimationSet(ani_set);
 		}
+	}
+	if (itemType == ITEM_SWITCH) {
+		obj = new Switch();
+		ani_set_id = SWITCH_ANI_SET_ID;
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
 	}
 	return obj;
 }

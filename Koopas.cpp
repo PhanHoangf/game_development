@@ -6,6 +6,7 @@
 #include "Mario.h"
 #include "PlayScence.h"
 #include "QuestionBrick.h"
+#include "BreakableBrick.h"
 
 CKoopas::CKoopas()
 {
@@ -204,6 +205,11 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CGoomba*>(e->obj)) {
 				x += dx;
 			}
+			if (dynamic_cast<BreakableBrick*>(e->obj) && state == KOOPAS_STATE_SPINNING && e->nx != 0 && ceil(mBottom) != oTop)
+			{
+				BreakableBrick* tmp = dynamic_cast<BreakableBrick*>(e->obj);
+				tmp->Break();
+			}
 		}
 	}
 }
@@ -304,7 +310,7 @@ void CKoopas::HandleBeingHeld(LPGAMEOBJECT player) {
 	CMario* mario = dynamic_cast<CMario*>(player);
 	if (isBeingHeld && state == KOOPAS_STATE_IN_SHELL) {
 		x = mario->x + MARIO_BIG_BBOX_WIDTH * mario->nx;
-		y = mario->y;
+		mario->GetLevel() == MARIO_LEVEL_BIG ? y = mario->y + 9 : y = mario->y;
 		vy = 0;
 	}
 	else {

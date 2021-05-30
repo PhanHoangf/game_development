@@ -13,6 +13,7 @@
 #include "MushRoom.h"
 #include "PiranhaPlant.h"
 #include "BreakableBrick.h"
+#include "PiranhaPlantFire.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BLOCK_LINE 4
 #define OBJECT_TYPE_PIRANHA_PLANT 7
 #define OBJECT_TYPE_BREAKABLEBRICK		112
+#define OBJECT_TYPE_PIRANHA_FIRE_PLANT 70
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -233,6 +235,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PIRANHA_PLANT:
 		obj = new PiranhaPlant();
 		((PiranhaPlant*)obj)->SetLimitY(y);
+		break;
+	case OBJECT_TYPE_PIRANHA_FIRE_PLANT:
+		obj = new PiranhaPlantFire(tag);
+		((PiranhaPlantFire*)obj)->SetLimitY(y);
 		break;
 	case OBJECT_TYPE_BUSH:
 		obj = new GreenBush();

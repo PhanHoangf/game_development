@@ -138,7 +138,9 @@
     <ClCompile Include="PiranhaPlantFire.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
+    <ClCompile Include="RedGoomba.cpp" />
     <ClCompile Include="StopPoint.cpp" />
+    <ClCompile Include="Switch.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -165,7 +167,9 @@
     <ClInclude Include="PiranhaPlantFire.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestionBrick.h" />
+    <ClInclude Include="RedGoomba.h" />
     <ClInclude Include="StopPoint.h" />
+    <ClInclude Include="Switch.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

@@ -12,3 +12,7 @@ void BreakableBrick::Render()
 void BreakableBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	CGameObject::Update(dt);
 }
+
+void BreakableBrick::Break() {
+
+}

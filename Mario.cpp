@@ -14,6 +14,7 @@
 #include "Block.h"
 #include "Koopas.h"
 #include "Coin.h"
+#include "Switch.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -106,8 +107,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			GetBoundingBox(mLeft, mTop, mRight, mBottom);
 			e->obj->GetBoundingBox(oLeft, oTop, oRight, oBottom);
+
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj)) {
-				if (e->ny != 0) {
+				if (e->ny < 0) {
 					isOnGround = true; vy = 0;
 				}
 				//else isOnGround = false;
@@ -117,6 +119,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vy = 0;
 						ay = MARIO_GRAVITY;
 					}
+				}
+				if (e->nx != 0 && ceil(mBottom) != oTop) {
+					vx = 0;
 				}
 			}
 			if (dynamic_cast<Block*>(e->obj))
@@ -204,6 +209,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->ny != 0 || e->nx != 0) {
 					coin->SetAppear(false);
 					coin->SetIsDestroyed(true);
+				}
+			}
+			if (dynamic_cast<Switch*>(e->obj)) {
+				Switch* sw = dynamic_cast<Switch*>(e->obj);
+				if (e->ny < 0) {
+					if (sw->GetState() != SWITCH_STATE_PRESSED)
+						sw->SetState(SWITCH_STATE_PRESSED);
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
 				}
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
