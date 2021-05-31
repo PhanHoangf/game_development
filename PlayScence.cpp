@@ -14,6 +14,7 @@
 #include "PiranhaPlant.h"
 #include "BreakableBrick.h"
 #include "PiranhaPlantFire.h"
+#include "RedGoomba.h"
 
 using namespace std;
 
@@ -48,6 +49,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_PIRANHA_PLANT 7
 #define OBJECT_TYPE_BREAKABLEBRICK		112
 #define OBJECT_TYPE_PIRANHA_FIRE_PLANT 70
+#define OBJECT_TYPE_GOOMBA_RED 77
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -213,6 +215,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA:
 		obj = new CGoomba();
+		break;
+	case OBJECT_TYPE_GOOMBA_RED:
+		obj = new RedGoomba();
 		break;
 	case OBJECT_TYPE_BRICK:
 		obj = new CBrick();

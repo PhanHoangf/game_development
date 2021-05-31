@@ -226,7 +226,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					HandleBasicMarioDie();
 				}
 			}
-			if (dynamic_cast<PiranhaPlantFire*>(e->obj)) {
+			if (dynamic_cast<PiranhaPlantFire*>(e->obj) || dynamic_cast<PiranhaPlant*>(e->obj)) {
 				if (e->ny != 0 || e->nx != 0) {
 					HandleBasicMarioDie();
 				}

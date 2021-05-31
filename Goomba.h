@@ -59,14 +59,33 @@ class CGoomba : public CGameObject
 	int jumping_stacks = 0;
 
 	bool isDiedByKoopas = false;
-	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-public: 	
+public:
 	CGoomba();
 	virtual void SetState(int state);
 	void StartDying(bool l = false) { dying_start = GetTickCount64(); if (l) isWhackedDying = true; else isDying = true; }
 	void StartChasing() { chasing_start = GetTickCount64(); }
 	void StartWalking() { walking_start = GetTickCount64(); isWalking = true; }
+
+	//Get
+	bool GetIsWalking() { return isWalking; }
+	bool GetIsJumping() { return isJumping; }
+	bool GetIsHighJumping() { return isHighJumping; }
+	int GetJumpingStack() { return jumping_stacks; }
+	bool GetIsWhackedDying() { return isWhackedDying; }
+	bool GetIsDying() { return isDying; }
+	DWORD GetChasingStart() { return chasing_start; }
+	DWORD GetWalkingStart() { return walking_start; }
+	DWORD GetDyingStart() { return dying_start; }
+
+	//Set
+	void SetIsWalking(bool isWalking) { this->isWalking = isWalking; }
+	void SetIsJumping(bool isJumping) { this->isJumping = isJumping; }
+	void SetIsHighJumping(bool isHighJumping) { this->isHighJumping = isHighJumping; }
+	void SetJumpingStack(int jumping_stacks) { this->jumping_stacks = jumping_stacks; }
+	void SetIsWhackedDying(bool isWhackedDying) { this->isWhackedDying = isWhackedDying; }
+	void SetIsDying(bool isDying) { this->isDying = isDying; }
 };
