@@ -1,6 +1,7 @@
 #include "PiranhaPlantFire.h"
 #include "Mario.h"
 #include "PlayScence.h"
+#include "FireBullet.h"
 
 PiranhaPlantFire::PiranhaPlantFire(int tag) {
 	this->tag = tag;
@@ -34,6 +35,7 @@ void PiranhaPlantFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	CGameObject::Update(dt);
 	y += dy;
+
 	GetDirect();
 
 	if (y <= limitY && vy < 0)
@@ -49,7 +51,10 @@ void PiranhaPlantFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		SetState(PIRANHAPLANT_STATE_INACTIVE);
 		StartDelay();
 	}
-
+	/*int res = GetTickCount64() - aim_start >= PIRANHAPLANT_AIM_TIME && aim_start != 0 ? 1 : 0;
+	DebugOut(L"[FirePiran_aim_start]::%d\n", aim_start);
+	DebugOut(L"[GetTickCount64()]::%d\n", GetTickCount64());
+	DebugOut(L"[res]::%d\n", res);*/
 	if (GetTickCount64() - aim_start >= PIRANHAPLANT_AIM_TIME && aim_start != 0)
 	{
 		aim_start = 0;
@@ -70,10 +75,25 @@ void PiranhaPlantFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		float oLeft, oTop, oRight, oBottom;
 
 		int mWidth = mario->GetWidth();
-		if ((floor(mario->x) + (float)mWidth + PIRANHAPLANT_ACTIVE_RANGE <= x
+		/*if ((floor(mario->x) + (float)mWidth + PIRANHAPLANT_ACTIVE_RANGE <= x
 			|| ceil(mario->x) >= x + PIRANHAPLANT_BBOX_WIDTH + PIRANHAPLANT_ACTIVE_RANGE)
 			&& state == PIRANHAPLANT_STATE_INACTIVE && delay_start == 0)
+			SetState(PIRANHAPLANT_STATE_DARTING);*/
+		//! 60 is red piranha active zone
+		if (x - 60 <= floor(mario->x)
+			&& floor(mario->x) + (float)mWidth <= x
+			&& state == PIRANHAPLANT_STATE_INACTIVE && delay_start == 0
+			&& !isMarioInActiveZone
+			|| floor(mario->x) > x && floor(mario->x) < x + PIRANHAPLANT_BBOX_WIDTH + 60
+			&& state == PIRANHAPLANT_STATE_INACTIVE && delay_start == 0
+			&& !isMarioInActiveZone)
+		{
 			SetState(PIRANHAPLANT_STATE_DARTING);
+			isMarioInActiveZone = true;
+		}
+		if (floor(mario->x) < x - 60 || floor(mario->x) > x + PIRANHAPLANT_BBOX_WIDTH + 60) {
+			isMarioInActiveZone = false;
+		}
 	}
 }
 
@@ -96,7 +116,7 @@ void PiranhaPlantFire::SetState(int state) {
 		break;
 	case PIRANHAPLANT_STATE_SHOOTING:
 		vy = 0;
-		//Shoot();
+		Shoot();
 		break;
 	case PIRANHAPLANT_STATE_INACTIVE:
 		vy = 0;
@@ -120,7 +140,16 @@ void PiranhaPlantFire::GetDirect() {
 		Right = false;
 	else
 		Right = true;
-
-	int r = Right ? 1 : 0;
-	int u = Up ? 1 : 0;
 };
+
+void PiranhaPlantFire::Shoot() {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	this->bullet = new FireBullet(x, y, Up, Right);
+
+	//! Basic setup for bullet object
+	int ani_set_id = BULLET_ANI_SET_ID;
+	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+	bullet->SetAnimationSet(ani_set);
+	currentScene->AddObject(bullet);
+}

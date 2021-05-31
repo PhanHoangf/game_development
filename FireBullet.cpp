@@ -1,5 +1,6 @@
 #include "FireBullet.h"
 #include "PiranhaPlantFire.h"
+#include "Mario.h"
 
 FireBullet::FireBullet(float bx, float by, bool up, bool right) {
 	if (up) {
@@ -24,9 +25,20 @@ FireBullet::FireBullet(float bx, float by, bool up, bool right) {
 }
 
 void FireBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+
 	CGameObject::Update(dt);
+
+
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+
 	x += dx;
-	y += dt;
+	y += dy;
+
 }
 
 void FireBullet::Render()

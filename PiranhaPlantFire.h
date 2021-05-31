@@ -1,5 +1,6 @@
 #pragma once
 #include "PiranhaPlant.h"
+#include "FireBullet.h"
 
 #define PIRANHAPLANT_GREEN_TYPE					0
 #define PIRANHAPLANT_RED_TYPE					1
@@ -28,6 +29,8 @@
 
 #define PIRANHAPLANT_ACTIVE_RANGE		20
 
+#define BULLET_ANI_SET_ID		9
+
 class PiranhaPlantFire :
 	public PiranhaPlant
 {
@@ -39,26 +42,27 @@ class PiranhaPlantFire :
 	bool Up = false;
 	bool Right = false;
 	int BBHeight = 0;
-	
+	bool isMarioInActiveZone = false;
+
+	FireBullet* bullet = NULL;
+
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 public:
-	PiranhaPlantFire(int tag = PIRANHAPLANT_GREEN_TYPE);
+
+	PiranhaPlantFire(int tag);
 	void GetDirect();
 	void StartShooting() { shooting_start = GetTickCount64(); }
 	void StartAim() { aim_start = GetTickCount64(); }
 	void StartDelay() { delay_start = GetTickCount64(); }
 	void StartDying() { dying_start = GetTickCount64(); }
-
+	void Shoot();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void SetState(int state);
 
 	void SetLimitY(float ly)
 	{
-		if (tag == PIRANHAPLANT_GREEN_TYPE)
-			BBHeight = PIRANHAPLANT_GREEN_BBOX_HEIGHT;
-		else
-			BBHeight = PIRANHAPLANT_RED_BBOX_HEIGHT;
+		BBHeight = PIRANHAPLANT_RED_BBOX_HEIGHT;
 		limitY = ly - BBHeight;
 	}
 };

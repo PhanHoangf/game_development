@@ -224,6 +224,7 @@ public:
 	void HandleChangeDirection();
 	void HandleChangeYTransform();
 	void HandleMarioHolding();
+	void HandleBasicMarioDie();
 
 	void pullDown() { ay = MARIO_GRAVITY; isJumping = false; isOnGround = true; }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

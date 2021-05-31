@@ -15,6 +15,8 @@
 #include "Koopas.h"
 #include "Coin.h"
 #include "Switch.h"
+#include "FireBullet.h"
+#include "PiranhaPlantFire.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -172,9 +174,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_SPINNING) {
 						if (untouchable != 1) {
 							if (level == MARIO_LEVEL_SMALL) SetState(MARIO_STATE_DIE);
-							if (level == MARIO_LEVEL_BIG) {
-								SetLevel(MARIO_LEVEL_SMALL);
+							else if (level == MARIO_LEVEL_BIG) {
 								StartUntouchable();
+								SetLevel(MARIO_LEVEL_SMALL);
 							}
 						}
 						else x += dx;
@@ -217,6 +219,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (sw->GetState() != SWITCH_STATE_PRESSED)
 						sw->SetState(SWITCH_STATE_PRESSED);
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
+				}
+			}
+			if (dynamic_cast<FireBullet*>(e->obj)) {
+				if (e->ny != 0 || e->nx != 0) {
+					HandleBasicMarioDie();
+				}
+			}
+			if (dynamic_cast<PiranhaPlantFire*>(e->obj)) {
+				if (e->ny != 0 || e->nx != 0) {
+					HandleBasicMarioDie();
 				}
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
@@ -690,4 +702,16 @@ void CMario::HandleChangeYTransform() {
 
 void CMario::HandleMarioHolding() {
 	if (!isReadyToHold) isHolding = false;
+}
+
+void CMario::HandleBasicMarioDie() {
+	x += dx;
+	y += dy;
+	if (untouchable != 1) {
+		if (level == MARIO_LEVEL_BIG) {
+			SetLevel(MARIO_LEVEL_SMALL);
+			StartUntouchable();
+		}
+		else if (level == MARIO_LEVEL_SMALL) SetState(MARIO_STATE_DIE);
+	}
 }

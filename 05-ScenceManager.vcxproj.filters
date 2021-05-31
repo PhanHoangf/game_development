@@ -108,6 +108,9 @@
     <ClCompile Include="PiranhaPlantFire.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="FireBullet.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -189,6 +192,9 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="PiranhaPlantFire.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBullet.h">
       <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,6 +17,7 @@ class FireBullet :
     virtual void Render();
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 public:
+    FireBullet();
     FireBullet(float bx, float by, bool up, bool right);
     virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 };
