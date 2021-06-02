@@ -17,6 +17,7 @@
 #include "Switch.h"
 #include "FireBullet.h"
 #include "PiranhaPlantFire.h"
+#include "RedGoomba.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -140,7 +141,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 			}
-			if (dynamic_cast<CGoomba*>(e->obj)) // if e->obj is Goomba 
+			if (dynamic_cast<CGoomba*>(e->obj) && !dynamic_cast<RedGoomba*>(e->obj)) // if e->obj is Goomba 
 			{
 				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 				// jump on top >> kill Goomba and deflect a bit 
@@ -228,6 +229,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			if (dynamic_cast<PiranhaPlantFire*>(e->obj) || dynamic_cast<PiranhaPlant*>(e->obj)) {
 				if (e->ny != 0 || e->nx != 0) {
+					HandleBasicMarioDie();
+				}
+			}
+			if (dynamic_cast<RedGoomba*>(e->obj)) {
+				RedGoomba* rGoomba = dynamic_cast<RedGoomba*>(e->obj);
+				if (e->ny < 0) {
+					if (!rGoomba->isHaveWings) {
+						rGoomba->SetState(GOOMBA_STATE_DIE);
+					}
+					else {
+						rGoomba->SetIsHaveWings(false);
+						rGoomba->SetState(GOOMBA_STATE_WALKING);
+					}
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
+				}
+				if (e->nx != 0) {
+					vy = -MARIO_DIE_DEFLECT_SPEED;
 					HandleBasicMarioDie();
 				}
 			}

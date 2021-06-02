@@ -102,6 +102,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CGoomba*>(e->obj)) {
 				if (e->nx != 0) {
 					x += dx;
+					//y += dy;
 				}
 			}
 			if (dynamic_cast<CKoopas*>(e->obj)) {

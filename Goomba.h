@@ -56,8 +56,7 @@ class CGoomba : public CGameObject
 	bool isWalking = false;
 	bool isJumping = false;
 	bool isHighJumping = false;
-	int jumping_stacks = 0;
-
+	
 	bool isDiedByKoopas = false;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -65,6 +64,7 @@ class CGoomba : public CGameObject
 
 public:
 	CGoomba();
+	int jumping_stacks = 0;
 	virtual void SetState(int state);
 	void StartDying(bool l = false) { dying_start = GetTickCount64(); if (l) isWhackedDying = true; else isDying = true; }
 	void StartChasing() { chasing_start = GetTickCount64(); }
