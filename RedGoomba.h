@@ -7,7 +7,7 @@ class RedGoomba :
 	int runningStack = 0;
 	bool isJumping = false;
 	bool isHaveWings = true;
-
+	bool isOnGround = false;
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 public:

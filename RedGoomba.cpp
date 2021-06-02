@@ -1,17 +1,18 @@
 #include "RedGoomba.h"
 #include "Brick.h"
 #include "QuestionBrick.h"
+#include "Utils.h"
 
 RedGoomba::RedGoomba() {
 	SetIsHaveWings(true);
-	SetState(GOOMBA_STATE_RED_WINGSWALKING);
+	SetState(GOOMBA_STATE_WALKING);
 }
 
 void RedGoomba::Render() {
 	int ani = -1;
 	if (isHaveWings) {
-		if (state == GOOMBA_STATE_RED_WINGSWALKING) {
-			ani = GOOMBA_RED_ANI_WINGSWALKING;
+		if (state == GOOMBA_STATE_WALKING || state == GOOMBA_STATE_RED_JUMPING) {
+			ani = GOOMBA_RED_ANI_WALKING;
 		}
 		//! TEST
 		if (state == GOOMBA_STATE_DIE) {
@@ -22,7 +23,7 @@ void RedGoomba::Render() {
 	RenderBoundingBox();
 }
 void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	
+
 	CGameObject::Update(dt);
 
 	if (GetTickCount64() - GetDyingStart() >= GOOMBA_TIME_DIYING && GetIsDying())
@@ -34,9 +35,29 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		return;
 	}
 
+	int result = GetTickCount64() - GetWalkingStart() >= GOOMBA_RED_TIME_WALKING ? 1 : 0;
+	int isWalking = GetIsWalking() ? 1 : 0;
+
+	/*DebugOut(L"[RESULT]::%d\n", result);
+	DebugOut(L"[IS_WALKING]::%d\n", isWalking);*/
+
+
 	//! Update goomba y when die
 
-	vy = GOOMBA_GRAVITY * dt;
+	vy += ay * dt;
+
+
+	if (GetTickCount64() - GetWalkingStart() >= GOOMBA_RED_TIME_WALKING && GetIsWalking())
+	{
+		SetIsWalking(false);
+		y -= GOOMBA_RED_BBOX_WINGS_HEIGHT - GOOMBA_RED_BBOX_HEIGHT;
+		SetState(GOOMBA_STATE_RED_JUMPING);
+	}
+
+	if (vy < -GOOMBA_JUMP_SPEED && state == GOOMBA_STATE_RED_JUMPING) {
+		vy = -GOOMBA_JUMP_SPEED;
+		SetState(GOOMBA_STATE_WALKING);
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -65,6 +86,8 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
+		//if (ny != 0) vy = 0;
+
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			if (state == GOOMBA_STATE_DIE) return;
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -76,8 +99,9 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				CBrick* object = dynamic_cast<CBrick*>(e->obj);
 				if (e->obj != NULL)
 					object->GetBoundingBox(oLeft, oTop, oRight, oBottom);
-				if (ny != 0) {
+				if (e->ny < 0) {
 					vy = 0;
+					isOnGround = true;
 				}
 				if (e->nx != 0)
 				{
@@ -91,8 +115,11 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			if (dynamic_cast<QuestionBrick*>(e->obj)) {
 				if (e->nx != 0)
 				{
-					vx = -vx;
+					//vx = -vx;
 					this->nx = -this->nx;
+				}
+				if (e->ny > 0) {
+					vy = 0;
 				}
 			}
 			if (dynamic_cast<CGoomba*>(e->obj)) {
@@ -110,17 +137,26 @@ void RedGoomba::SetState(int state) {
 
 	switch (state)
 	{
+	case GOOMBA_STATE_WALKING:
+		vx = -GOOMBA_WALKING_SPEED;
+		ay = GOOMBA_GRAVITY;
+		isJumping = false;
+		StartWalking();
+		break;
 	case GOOMBA_STATE_RED_WINGSWALKING:
 		vx = -GOOMBA_WALKING_SPEED;
+		ay = GOOMBA_GRAVITY;
+		StartWalking();
 		break;
 	case GOOMBA_STATE_RED_JUMPING:
-		vy = -GOOMBA_JUMP_SPEED;
+		ay = -GOOMBA_JUMP_SPEED;
+		isJumping = true;
 		break;
 	case GOOMBA_STATE_RED_HIGHJUMPING:
-		vy = -GOOMBA_HIGHJUMP_SPEED;
+		ay = -GOOMBA_HIGHJUMP_SPEED;
 		break;
 	case GOOMBA_STATE_DIE:
-		y += GOOMBA_NORMAL_BBOX_WIDTH - GOOMBA_BBOX_HEIGHT_DIE - 2;
+		y += GOOMBA_NORMAL_BBOX_WIDTH - GOOMBA_BBOX_HEIGHT_DIE - 1;
 		vx = vy = 0;
 		StartDying();
 		break;
@@ -135,17 +171,14 @@ void RedGoomba::GetBoundingBox(float& left, float& top, float& right, float& bot
 {
 	left = x;
 	top = y;
-	right = x + GOOMBA_RED_BBOX_WIDTH;
-
+	//right = x + GOOMBA_RED_BBOX_WIDTH;
+	right = x + GOOMBA_NORMAL_BBOX_WIDTH;
 	if (state == GOOMBA_STATE_DIE)
 		bottom = y + GOOMBA_BBOX_HEIGHT_DIE;
-	else
+	else {
 		bottom = y + GOOMBA_NORMAL_BBOX_HEIGHT;
-
-	if (isHaveWings && state != GOOMBA_STATE_DIE) {
-		//bottom = y + GOOMBA_RED_BBOX_WINGS_HEIGHT;
-		bottom = y + GOOMBA_RED_BBOX_HEIGHT;
+		if (state == GOOMBA_STATE_RED_WINGSWALKING)
+			bottom = y + GOOMBA_RED_BBOX_HEIGHT;
 	}
-	else bottom = y + GOOMBA_RED_BBOX_HEIGHT;
 }
 

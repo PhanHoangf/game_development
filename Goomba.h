@@ -88,4 +88,5 @@ public:
 	void SetJumpingStack(int jumping_stacks) { this->jumping_stacks = jumping_stacks; }
 	void SetIsWhackedDying(bool isWhackedDying) { this->isWhackedDying = isWhackedDying; }
 	void SetIsDying(bool isDying) { this->isDying = isDying; }
+	void ResetStartWalking() { walking_start = 0; }
 };
