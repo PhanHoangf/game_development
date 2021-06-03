@@ -6,6 +6,7 @@
 RedGoomba::RedGoomba() {
 	SetIsHaveWings(true);
 	SetState(GOOMBA_STATE_RED_WINGSWALKING);
+	nx = -1;
 }
 
 void RedGoomba::Render() {
@@ -108,7 +109,7 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				if (e->obj != NULL)
 					object->GetBoundingBox(oLeft, oTop, oRight, oBottom);
 				if (e->ny < 0) {
-					DebugOut(L"GOOMBA BRICK\n");
+					//DebugOut(L"GOOMBA BRICK\n");
 					vy = 0;
 					isOnGround = true;
 					if (isHaveWings && state != GOOMBA_STATE_WALKING) {
@@ -142,16 +143,21 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			if (dynamic_cast<QuestionBrick*>(e->obj)) {
 				if (e->nx != 0)
 				{
+					DebugOut(L"COLLISION VX\n");
 					vx = -vx;
 					this->nx = -this->nx;
 				}
-				if (e->ny > 0) {
-					vy = 0;
+				if (e->ny != 0) {
+					vx = vx;
+					DebugOut(L"COLLISION VY\n");
 				}
 			}
 			if (dynamic_cast<CGoomba*>(e->obj)) {
 				if (e->nx != 0) {
 					x += dx;
+				}
+				if (e->ny != 0) {
+					y += dy;
 				}
 			}
 		}
@@ -164,12 +170,12 @@ void RedGoomba::SetState(int state) {
 	switch (state)
 	{
 	case GOOMBA_STATE_WALKING:
-		vx = -GOOMBA_WALKING_SPEED;
+		vx = this->nx * GOOMBA_WALKING_SPEED;
 		ay = GOOMBA_GRAVITY;
 		isJumping = false;
 		break;
 	case GOOMBA_STATE_RED_WINGSWALKING:
-		vx = -GOOMBA_WALKING_SPEED;
+		vx = this->nx * GOOMBA_WALKING_SPEED;
 		ay = GOOMBA_GRAVITY;
 		StartWalking();
 		break;
@@ -202,15 +208,16 @@ void RedGoomba::GetBoundingBox(float& left, float& top, float& right, float& bot
 	top = y;
 	//right = x + GOOMBA_RED_BBOX_WIDTH;
 	right = x + GOOMBA_NORMAL_BBOX_WIDTH;
+	bottom = y + GOOMBA_NORMAL_BBOX_HEIGHT;
 	if (state == GOOMBA_STATE_DIE)
 		bottom = y + GOOMBA_BBOX_HEIGHT_DIE;
-	else {
-		bottom = y + 16;
-		if (state == GOOMBA_STATE_RED_WINGSWALKING)
-			bottom = y + GOOMBA_RED_BBOX_HEIGHT;
-		if (state == GOOMBA_STATE_RED_JUMPING) {
-			bottom = y + GOOMBA_RED_BBOX_WINGS_HEIGHT;
-		}
+	if (state == GOOMBA_STATE_RED_WINGSWALKING) {
+		bottom = y + GOOMBA_RED_BBOX_HEIGHT;
+		right = x + GOOMBA_RED_BBOX_WIDTH;
+	}
+	if (state == GOOMBA_STATE_RED_JUMPING || state == GOOMBA_STATE_RED_HIGHJUMPING) {
+		bottom = y + GOOMBA_RED_BBOX_WINGS_HEIGHT;
+		right = x + GOOMBA_RED_BBOX_WIDTH;
 	}
 }
 

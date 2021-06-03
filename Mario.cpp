@@ -245,7 +245,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
 				}
 				if (e->nx != 0) {
-					vy = -MARIO_DIE_DEFLECT_SPEED;
+					HandleBasicMarioDie();
+				}
+				if (e->ny > 0) {
 					HandleBasicMarioDie();
 				}
 			}
