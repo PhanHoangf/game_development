@@ -133,6 +133,7 @@
     <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="GreenBush.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MushRoom.cpp" />
     <ClCompile Include="PiranhaPlant.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="FireBullet.h" />
     <ClInclude Include="GreenBush.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Leaf.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MushRoom.h" />
     <ClInclude Include="PiranhaPlant.h" />

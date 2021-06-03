@@ -111,6 +111,9 @@
     <ClCompile Include="FireBullet.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -195,6 +198,9 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="FireBullet.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
       <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>

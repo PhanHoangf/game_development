@@ -7,6 +7,7 @@
 #include "MushRoom.h"
 #include "Mario.h"
 #include "Switch.h"
+#include "Leaf.h"
 
 QuestionBrick::QuestionBrick(int tag, int type) : CGameObject() {
 	state = QUESTION_BRICK_NORMAL;
@@ -98,8 +99,13 @@ void QuestionBrick::CreateItem(int itemType) {
 		obj->SetState(SWITCH_STATE_UP);
 		currentScene->AddMovingObject(obj);
 	}
-
-
+	if (dynamic_cast<Leaf*>(this->obj)) {
+		Leaf* obj = dynamic_cast<Leaf*>(this->obj);
+		obj->SetAppear(true);
+		obj->SetPosition(x, y);
+ 		obj->SetState(LEAF_STATE_UP);
+		currentScene->AddMovingObject(obj);
+	}
 }
 
 CGameObject* QuestionBrick::SetUpItem(int itemType) {
@@ -119,15 +125,29 @@ CGameObject* QuestionBrick::SetUpItem(int itemType) {
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 	}
-	if (itemType == ITEM_CUSTOM) {
+	if (itemType == ITEM_CUSTOM || itemType == ITEM_LEAF) {
 		//! Mario level small = 0
-		if (mario->GetLevel() == 0) {
+		if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
 			obj = new MushRoom();
 			ani_set_id = ITEM_MUSHROOM_ANI_SET_ID;
 			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 			obj->SetAnimationSet(ani_set);
 		}
+		if (mario->GetLevel() == MARIO_LEVEL_BIG) {
+			obj = new Leaf();
+			ani_set_id = LEAF_ANI_SET_ID;
+			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+			obj->SetAnimationSet(ani_set);
+		}
 	}
+	/*if (itemType == ITEM_LEAF) {
+		if (mario->GetLevel() == MARIO_LEVEL_BIG) {
+			obj = new Leaf();
+			ani_set_id = ITEM_MUSHROOM_ANI_SET_ID;
+			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+			obj->SetAnimationSet(ani_set);
+		}
+	}*/
 	if (itemType == ITEM_SWITCH) {
 		obj = new Switch();
 		ani_set_id = SWITCH_ANI_SET_ID;
