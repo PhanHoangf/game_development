@@ -2,6 +2,7 @@
 #include "Brick.h"
 
 #define BREAKABLEBRICK_ANI_SET_ID 12
+#define PIECE_ANI_SET_ID	126
 
 class BreakableBrick :
     public CBrick

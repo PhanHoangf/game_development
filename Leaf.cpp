@@ -12,8 +12,8 @@ void Leaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Leaf::Render()
 {
-	if (!isAppear || isDestroyed)
-		return;
+	/*if (!isAppear || isDestroyed)
+		return;*/
 	int ani = LEAF_ANI_LEFT;
 	if (state == LEAF_STATE_FALLING)
 	{
@@ -27,23 +27,26 @@ void Leaf::Render()
 }
 
 void Leaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	if (isDestroyed) return;
+
 	CGameObject::Update(dt);
+
 	x += dx;
 	y += dy;
 
+
+
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
-	if (state == LEAF_STATE_FALLING) {
-		float mLeft, mTop, mRight, mBottom;
-		if (mario != NULL) {
-			mario->GetBoundingBox(mLeft, mTop, mRight, mBottom);
-			if (isColliding(mLeft, mTop, mRight, mBottom)) {
-				mario->StartTransform(MARIO_LEVEL_TAIL);
-				SetAppear(false);
-				isDestroyed = true;
-			}
+	float mLeft, mTop, mRight, mBottom;
+	/*if (mario != NULL) {
+		mario->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+		if (isColliding(mLeft, mTop, mRight, mBottom) && !isDestroyed) {
+			mario->StartTransform(MARIO_LEVEL_TAIL);
+			isAppear = true;
+			isDestroyed = true;
 		}
+	}*/
+	if (state == LEAF_STATE_FALLING) {
 		if (GetTickCount64() - start_timing >= LEAF_FALLING_TIME) {
 			vx = -vx;
 			StartTiming();

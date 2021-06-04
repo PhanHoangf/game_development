@@ -39,22 +39,23 @@
 
 #ifndef MARIO_STATE
 
-#define MARIO_STATE_WALKING_LEFT -2
-#define MARIO_STATE_IDLE	   -1
-#define MARIO_STATE_WALKING_RIGHT 0
-#define MARIO_STATE_MAX_SPEED	1
-#define MARIO_STATE_JUMP		2
-#define MARIO_STATE_BRAKE		3
-#define MARIO_STATE_SITDOWN		4
-#define MARIO_STATE_HOLD		5
-#define MARIO_STATE_FLY			6
-#define MARIO_STATE_KICK		7
-#define MARIO_STATE_JUMP_RIGHT	8
-#define MARIO_STATE_JUMP_LEFT	9
-#define MARIO_STATE_JUMP_X		10
-#define MARIO_STATE_TRANSFORM	11
-#define MARIO_STATE_DIE			12
-#define MARIO_STATE_READY_TO_HOLD	13
+#define MARIO_STATE_WALKING_LEFT		-2
+#define MARIO_STATE_IDLE				-1
+#define MARIO_STATE_WALKING_RIGHT		0
+#define MARIO_STATE_MAX_SPEED			1
+#define MARIO_STATE_JUMP				2
+#define MARIO_STATE_BRAKE				3
+#define MARIO_STATE_SITDOWN				4
+#define MARIO_STATE_HOLD				5
+#define MARIO_STATE_FLY					6
+#define MARIO_STATE_KICK				7
+#define MARIO_STATE_JUMP_RIGHT			8
+#define MARIO_STATE_JUMP_LEFT			9
+#define MARIO_STATE_JUMP_X				10
+#define MARIO_STATE_TRANSFORM			11
+#define MARIO_STATE_DIE					12
+#define MARIO_STATE_READY_TO_HOLD		13
+#define MARIO_STATE_TAIL_ATTACK			14
 
 #endif // !MARIO_STATE
 
@@ -154,6 +155,24 @@
 #define MARIO_ANI_TAIL_BRAKING_LEFT			44
 #define MARIO_ANI_TAIL_SITTING_LEFT			45
 
+#define MARIO_ANI_TAIL_HOLD_IDLE_LEFT			83
+#define MARIO_ANI_TAIL_HOLD_WALKING_LEFT		84
+#define MARIO_ANI_TAIL_HOLD_WALKING_FAST_LEFT	84
+#define MARIO_ANI_TAIL_HOLD_RUNNING_LEFT		84
+#define MARIO_ANI_TAIL_HOLD_JUMPINGUP_LEFT		85
+#define MARIO_ANI_TAIL_HOLD_JUMPINGDOWN_LEFT	85
+#define MARIO_ANI_TAIL_HOLD_BRAKING_LEFT		84
+#define MARIO_ANI_TAIL_KICKING_LEFT				86
+
+#define MARIO_ANI_TAIL_TURNING_LEFT				96
+#define MARIO_ANI_TAIL_FLAPPING_LEFT			98
+
+#define MARIO_SPRITE_WHACK_LEFT_1_ID	12813
+#define MARIO_SPRITE_WHACK_LEFT_2_ID	12814
+#define MARIO_SPRITE_WHACK_LEFT_3_ID	12815
+#define MARIO_SPRITE_WHACK_LEFT_4_ID	12816
+
+
 #endif // !MARIO_TAIL_ANI_LEFT
 
 
@@ -167,6 +186,23 @@
 #define MARIO_ANI_TAIL_JUMPINGDOWN_RIGHT	35
 #define MARIO_ANI_TAIL_BRAKING_RIGHT		36
 #define MARIO_ANI_TAIL_SITTING_RIGHT		37
+
+#define MARIO_ANI_TAIL_HOLD_IDLE_RIGHT			79
+#define MARIO_ANI_TAIL_HOLD_WALKING_RIGHT		80
+#define MARIO_ANI_TAIL_HOLD_WALKING_FAST_RIGHT	80
+#define MARIO_ANI_TAIL_HOLD_RUNNING_RIGHT		80
+#define MARIO_ANI_TAIL_HOLD_JUMPINGUP_RIGHT		81
+#define MARIO_ANI_TAIL_HOLD_JUMPINGDOWN_RIGHT	81
+#define MARIO_ANI_TAIL_HOLD_BRAKING_RIGHT		80
+#define MARIO_ANI_TAIL_KICKING_RIGHT			82
+
+#define MARIO_ANI_TAIL_TURNING_RIGHT			95
+#define MARIO_ANI_TAIL_FLAPPING_RIGHT			97
+
+#define MARIO_SPRITE_WHACK_RIGHT_1_ID	12803
+#define MARIO_SPRITE_WHACK_RIGHT_2_ID	12804
+#define MARIO_SPRITE_WHACK_RIGHT_3_ID	12805
+#define MARIO_SPRITE_WHACK_RIGHT_4_ID	12806
 
 #endif // !MARIO_TAIL_ANI_RIGHT
 
@@ -183,6 +219,10 @@
 
 #define MARIO_DIE_DEFLECT_SPEED		0.5f
 
+#define MARIO_TURNING_TOTAL_TIME	350
+#define MARIO_TURING_TIME			70
+#define MARIO_TURING_STACK  5
+
 
 class CMario : public CGameObject
 {
@@ -193,6 +233,8 @@ class CMario : public CGameObject
 	DWORD start_slowdown;
 	DWORD start_transform;
 	DWORD start_kicking;
+	DWORD start_turning;
+	DWORD start_turning_state;
 	int direction;
 
 	float start_x;			// initial position of Mario at scene
@@ -206,13 +248,17 @@ class CMario : public CGameObject
 	bool isJumpingWithXButton = false;
 	bool isTransforming = false;
 	bool isChangingY = false;
-	bool isKicking = false;
+	bool isChagingX = false;
 	bool isReadyToHold = false;
 	bool isHolding = false;
 	int runningStack;
-
 	float tempY;
+
 public:
+	bool isTuring = false;
+	int turningStack = 0;
+	bool isKicking = false;
+
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -234,6 +280,7 @@ public:
 	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount(); SetLevel(level); }
 	void StartKicking() { start_kicking = GetTickCount64(); isKicking = true; }
 	void StartRunning() { start_running = GetTickCount64(); }
+	void StartTurning() { start_turning_state = GetTickCount64(); isTuring = true; }
 
 	void StopTransform() { isTransforming = false; start_transform = 0; isChangingY = false; }
 	void StopKicking() { start_kicking = 0; isKicking = false; }
@@ -254,6 +301,8 @@ public:
 	void HandleChangeYTransform();
 	void HandleMarioHolding();
 	void HandleBasicMarioDie();
+	void HandleChangeXTail();
+	void HandleTurning();
 
 	void pullDown() { ay = MARIO_GRAVITY; isJumping = false; isOnGround = true; }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

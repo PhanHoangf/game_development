@@ -15,6 +15,7 @@
 #include "BreakableBrick.h"
 #include "PiranhaPlantFire.h"
 #include "RedGoomba.h"
+#include "Leaf.h"
 
 using namespace std;
 
@@ -429,6 +430,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_A:
 		mario->SetIsReadyToHold(true);
 		break;
+	case DIK_Q:
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
+		break;
 	}
 }
 
@@ -525,12 +529,18 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		mario->SetState(MARIO_STATE_JUMP_X);
 	}
 	else if (game->IsKeyDown(DIK_DOWN)) {
-		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround())
+		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround() || mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetIsOnGround())
 			mario->SetState(MARIO_STATE_SITDOWN);
 	}
+	/*else if (game->IsKeyDown(DIK_Q)) {
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL) {
+			mario->SetState(MARIO_STATE_TAIL_ATTACK);
+		}
+	}*/
 	else
 	{
-		if (mario->GetIsOnGround())
+		//&& !mario->isTuring
+		if (mario->GetIsOnGround() && !mario->isTuring)
 			mario->SetState(MARIO_STATE_IDLE);
 	}
 }

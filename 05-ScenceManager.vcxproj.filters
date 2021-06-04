@@ -25,6 +25,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{2a0a952d-ed5a-4508-880d-f72685297f50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MarioWeapon">
+      <UniqueIdentifier>{b95ec46e-9f44-442d-b3da-cee5970f3ee5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -114,6 +117,12 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Tail.cpp">
+      <Filter>MarioWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakPiece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -202,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="Leaf.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Tail.h">
+      <Filter>MarioWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakPiece.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
