@@ -2,6 +2,7 @@
 #include "Mario.h"
 #include "PlayScence.h"
 #include "Game.h"
+#include "Point.h"
 Coin::Coin(int tag) : CGameObject() {
 	CGameObject::SetTag(tag);
 	if (tag == COIN_TYPE_INBRICK)
@@ -30,7 +31,7 @@ void Coin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	y += dy;
 	CGameObject::Update(dt);
 
-	
+
 
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
@@ -55,6 +56,9 @@ void Coin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			isAppear = false;
 			SetState(COIN_STATE_IDLE);
 			isDestroyed = true;
+			Point* point = new Point(100);
+			point->SetPosition(this->x, this->y);
+			currentScene->AddMovingObject(point);
 			/*if (tag == COIN_TYPE_INBRICK)
 				currentScene->deleteLastObject();*/
 		}

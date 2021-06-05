@@ -8,8 +8,11 @@
 #include "QuestionBrick.h"
 #include "BreakableBrick.h"
 
-CKoopas::CKoopas()
+CKoopas::CKoopas(int tag)
 {
+	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
+		this->nx = -1;
+	}
 	SetState(KOOPAS_STATE_WALKING);
 }
 
@@ -30,6 +33,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
+
+	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
+		//SetState(KOOPAS_STATE_INACTIVE);
+	}
 
 	if (GetTickCount() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
 		shell_start = 0;
@@ -147,6 +154,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 						y = e->obj->y - KOOPAS_BBOX_HEIGHT;
 						vy = -KOOPAS_JUMP_SPEED;
+						vx = vx = this->nx * KOOPAS_WALKING_SPEED;
+						this->nx = -1;
 					}
 
 				}
@@ -180,6 +189,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								this->nx = 1;
 								vx = this->nx * KOOPAS_WALKING_SPEED;
 							}
+					}
+					if (tag == KOOPAS_GREEN_PARA || KOOPAS_GREEN) {
+						this->nx = -1;
+						vx = this->nx * KOOPAS_WALKING_SPEED;
 					}
 				}
 				if (e->ny != 0) vy = 0;
@@ -248,13 +261,13 @@ void CKoopas::Render()
 	}
 	else
 	{
-		if (nx < 0)
+		if (this->nx < 0)
 			ani = KOOPAS_ANI_WALKING_LEFT;
 		else
 			ani = KOOPAS_ANI_WALKING_RIGHT;
 	}
 	if (tag == KOOPAS_GREEN_PARA || tag == KOOPAS_RED_PARA)
-		if (nx < 0)
+		if (this->nx < 0)
 			ani = KOOPAS_ANI_PARA_LEFT;
 		else
 			ani = KOOPAS_ANI_PARA_RIGHT;
@@ -274,13 +287,17 @@ void CKoopas::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+	case KOOPAS_STATE_INACTIVE:
+		vx = 0;
+		vy = 0;
+		break;
 	case KOOPAS_STATE_DEATH:
 		//y += KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT + 1;
 		vx = 0;
 		vy = 0;
 		break;
 	case KOOPAS_STATE_WALKING:
-		vx = nx * KOOPAS_WALKING_SPEED;
+		vx = this->nx * KOOPAS_WALKING_SPEED;
 		break;
 	case KOOPAS_STATE_SPINNING:
 		CMario* mario;

@@ -38,6 +38,9 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
+	DebugOut(L"x::%f\n", x);
+
 	CGameObject::Update(dt);
 	// Simple fall down
 	vy += ay * dt;
@@ -177,7 +180,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			} // if Goomba
 			if (dynamic_cast<CKoopas*>(e->obj)) {
 				CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
-				if (e->nx != 0) {
+				if (e->nx != 0 || e->ny > 0) {
 					if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_SPINNING) {
 						if (untouchable != 1) {
 							if (level == MARIO_LEVEL_SMALL) SetState(MARIO_STATE_DIE);
@@ -190,7 +193,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								SetLevel(MARIO_LEVEL_BIG);
 							}
 						}
-						else x += dx;
+						else {
+							x += dx;
+
+						}
 					}
 					if (koopas->GetState() == KOOPAS_STATE_IN_SHELL) {
 						DebugOut(L"collision with KOOPAS\n");
@@ -207,8 +213,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				if (e->ny < 0) {
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
-					if (koopas->GetState() == KOOPAS_STATE_WALKING)
-						koopas->SetState(KOOPAS_STATE_IN_SHELL);
+					if (koopas->GetState() == KOOPAS_STATE_WALKING) {
+						if (koopas->tag == KOOPAS_GREEN_PARA) {
+							koopas->SetTag(KOOPAS_GREEN);
+						}
+						else koopas->SetState(KOOPAS_STATE_IN_SHELL);
+					}
+
 					else if (koopas->GetState() == KOOPAS_STATE_IN_SHELL) {
 						koopas->SetState(KOOPAS_STATE_SPINNING);
 					}
@@ -891,7 +902,7 @@ void CMario::HandleMarioHolding() {
 
 void CMario::HandleBasicMarioDie() {
 	x += dx;
-	y += dy;
+	//y += dy;
 	if (untouchable != 1) {
 		if (level == MARIO_LEVEL_TAIL) {
 			SetLevel(MARIO_LEVEL_BIG);

@@ -19,6 +19,7 @@
 #define KOOPAS_STATE_SPINNING	300
 #define KOOPAS_STATE_IN_SHELL	400
 #define KOOPAS_STATE_DEATH		500
+#define KOOPAS_STATE_INACTIVE	600
 
 #define KOOPAS_REVIVE_TIME		2000
 #define KOOPAS_SHELL_TIME		5000
@@ -59,9 +60,10 @@ public:
 	bool CanPullBack = false;
 	float start_x = 0, start_y = 0;
 	int start_tag = 0;
+	bool isHaveWings = false;
 	void StartReviving() { reviving_start = GetTickCount64(); }
 	void StartShell() { shell_start = GetTickCount64(); reviving_start = 0; }
-	CKoopas();
+	CKoopas(int tag);
 	void SetIsBeingHeld(bool m) { isBeingHeld = m; };
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

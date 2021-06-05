@@ -6,6 +6,7 @@
 #include "PlayScence.h"
 #include "Game.h"
 #include "Koopas.h"
+#include "Point.h"
 CGoomba::CGoomba()
 {
 	SetState(GOOMBA_STATE_WALKING);
@@ -26,11 +27,16 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	if (GetTickCount64() - dying_start >= GOOMBA_TIME_DIYING && isDying)
 	{
 		isDying = false;
 		isDestroyed = true;
+
+		Point* point = new Point(100);
+		point->SetPosition(this->x, this->y);
+		currentScene->AddMovingObject(point);
 		/*if (dynamic_cast<CIntroScene*> (CGame::GetInstance()->GetCurrentScene()))
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);*/
 		return;

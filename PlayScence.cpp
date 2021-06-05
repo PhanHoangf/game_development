@@ -231,7 +231,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new BreakableBrick();
 		break;
 	case OBJECT_TYPE_KOOPAS:
-		obj = new CKoopas();
+		obj = new CKoopas(tag);
 		obj->SetTag(tag);
 		((CKoopas*)obj)->start_tag = tag;
 		//obj->SetType(MOVING);

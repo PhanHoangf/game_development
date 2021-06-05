@@ -2,6 +2,8 @@
 #include "Brick.h"
 #include "QuestionBrick.h"
 #include "Utils.h"
+#include "Point.h"
+#include "PlayScence.h"
 
 RedGoomba::RedGoomba() {
 	SetIsHaveWings(true);
@@ -33,6 +35,7 @@ void RedGoomba::Render() {
 void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	CGameObject::Update(dt);
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	if (GetTickCount64() - GetDyingStart() >= GOOMBA_TIME_DIYING && GetIsDying())
 	{
@@ -40,6 +43,9 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		this->isDestroyed = true;
 		/*if (dynamic_cast<CIntroScene*> (CGame::GetInstance()->GetCurrentScene()))
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);*/
+		Point* point = new Point(100);
+		point->SetPosition(this->x, this->y);
+		currentScene->AddMovingObject(point);
 		return;
 	}
 

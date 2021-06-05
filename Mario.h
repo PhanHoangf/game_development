@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Tail.h"
 
 #define TYPE_MARIO 1
 
@@ -254,6 +255,8 @@ class CMario : public CGameObject
 	int runningStack;
 	float tempY;
 
+	Tail* tail;
+
 public:
 	bool isTuring = false;
 	int turningStack = 0;
@@ -275,6 +278,7 @@ public:
 	int GetLevel() { return level; }
 	bool GetIsHolding() { return isHolding; }
 	bool GetIsReadyToHold() { return isReadyToHold; }
+	int GetUntouchable() { return untouchable; }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount(); SetLevel(level); }
