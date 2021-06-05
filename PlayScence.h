@@ -9,6 +9,7 @@
 #include "Koopas.h"
 #include "Map.h"
 #include "GreenBush.h"
+#include "HUD.h"
 
 
 class CPlayScene : public CScene
@@ -20,6 +21,7 @@ protected:
 	vector<LPGAMEOBJECT> mObjects; //! Moving objects
 
 	CMap* currentMap;
+	HUD* hud;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);

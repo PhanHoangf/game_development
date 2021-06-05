@@ -222,6 +222,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				BreakableBrick* tmp = dynamic_cast<BreakableBrick*>(e->obj);
 				tmp->Break();
+				mario->AddScore(x, y, 150);
 			}
 		}
 	}

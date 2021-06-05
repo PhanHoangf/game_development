@@ -334,6 +334,8 @@ void CPlayScene::Load()
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
+	hud = new HUD();
+
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
 
@@ -367,13 +369,9 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
-	//CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
-	//SetCam(player->x, player->y, dt);
-	SetCam(cx, cy);
-	//CGame::GetInstance()->SetCamPos(cx, cy);
+	SetCam(player->x, player->y, dt);
+
+	hud->Update(dt, &coObjects);
 }
 
 void CPlayScene::Render()
@@ -393,6 +391,7 @@ void CPlayScene::Render()
 			objects[i]->Render();
 		}
 	}
+	hud->Render();
 }
 
 /*
@@ -454,7 +453,7 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	float sw, sh, mw, mh, mx, my;
 	CGame* game = CGame::GetInstance();
 	sw = game->GetScreenWidth();
-	sh = game->GetScreenHeight();
+	sh = game->GetScreenHeight() - 32;
 	mw = currentMap->GetMapWidth();
 	mh = currentMap->GetMapHeight();
 	//DebugOut(L"dt %u\n", dt);
@@ -479,6 +478,7 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	//	current_map->SetCamPos(cx, ceil(cy));
 	//	hud->SetPosition(cx, ceil(cy + sh - HUD_HEIGHT));
 	//}
+	//hud->SetPosition(cx, ceil(cy + sh - 32));
 	/*else
 	{*/
 	cx -= sw / 2;
@@ -494,21 +494,20 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	//else
 	cy = mh - sh;
 
-	//if (cy <= -HUD_HEIGHT)//Top Edge
-	//	cy = -HUD_HEIGHT;
-	//if (cy + sh >= mh)//Bottom Edge
-	//	cy = mh - sh;
+	if (cy <= -32)//Top Edge
+		cy = -32;
+	if (cy + sh >= mh)//Bottom Edge
+		cy = mh - sh;
 
 	//Update CamY when Flying
 /*	if (player->isFlying)
 		isTurnOnCamY = true;
 	if (cy > mh - sh && !player->isFlying)
 		isTurnOnCamY = false;*/
-
 	game->SetCamPos(ceil(cx), ceil(cy));
 	currentMap->SetCamPos(cx, cy);
-	//hud->SetPosition(ceil(cx), ceil(cy + sh - HUD_HEIGHT));
-//}
+	hud->SetPosition(ceil(cx), ceil(cy + sh));
+	//}
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE* states)

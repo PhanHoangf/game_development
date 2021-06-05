@@ -56,9 +56,8 @@ void Coin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			isAppear = false;
 			SetState(COIN_STATE_IDLE);
 			isDestroyed = true;
-			Point* point = new Point(100);
-			point->SetPosition(this->x, this->y);
-			currentScene->AddMovingObject(point);
+			mario->AddScore(this->x, this->y, 100);
+
 			/*if (tag == COIN_TYPE_INBRICK)
 				currentScene->deleteLastObject();*/
 		}

@@ -19,12 +19,14 @@
 #include "PiranhaPlantFire.h"
 #include "RedGoomba.h"
 #include "Leaf.h"
+#include "Point.h"
+#include "PlayScence.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
 	//level = MARIO_LEVEL_BIG;
-	//level = MARIO_LEVEL_SMALL;
-	level = MARIO_LEVEL_TAIL;
+	level = MARIO_LEVEL_SMALL;
+	//level = MARIO_LEVEL_TAIL;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
 	ay = MARIO_ACCELERATION_JUMP;
@@ -38,10 +40,8 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	DebugOut(L"x::%f\n", x);
-
 	CGameObject::Update(dt);
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	// Simple fall down
 	vy += ay * dt;
 	vx += ax * dt;
@@ -226,6 +226,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					else if (koopas->GetState() == KOOPAS_STATE_SPINNING) {
 						koopas->SetState(KOOPAS_STATE_IN_SHELL);
 					}
+					AddScore(this->x, this->y, 100);
 				}
 			}
 			if (dynamic_cast<Coin*>(e->obj)) {
@@ -233,6 +234,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->ny != 0 || e->nx != 0) {
 					coin->SetAppear(false);
 					coin->SetIsDestroyed(true);
+					AddScore(this->x, this->y, 100);
 				}
 			}
 			if (dynamic_cast<Leaf*>(e->obj)) {
@@ -242,6 +244,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					leaf->SetAppear(false);
 					leaf->SetIsDestroyed(true);
 					leaf->vy = 50.0f;
+					AddScore(this->x, this->y, 1000);
 				}
 			}
 			if (dynamic_cast<Switch*>(e->obj)) {
@@ -887,7 +890,7 @@ void CMario::HandleChangeYTransform() {
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
 		}
 		if (level == MARIO_LEVEL_BIG && !isChangingY) {
-			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
+			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT + 3;
 		}
 		if (level == MARIO_LEVEL_TAIL && !isChangingY) {
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
@@ -931,4 +934,12 @@ void CMario::HandleTurning() {
 		turningStack = 0;
 	}
 
+}
+
+void CMario::AddScore(float x, float y, int score) {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	Point* point = new Point(score);
+	point->SetPosition(x, y);
+	currentScene->AddMovingObject(point);
+	this->marioScore += score;
 }

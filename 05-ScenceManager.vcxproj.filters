@@ -28,6 +28,9 @@
     <Filter Include="MarioWeapon">
       <UniqueIdentifier>{b95ec46e-9f44-442d-b3da-cee5970f3ee5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HUD">
+      <UniqueIdentifier>{06c25b1a-bef4-4ea9-9e00-6dc086cbc350}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -126,6 +129,9 @@
     <ClCompile Include="Point.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -223,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>HUD</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

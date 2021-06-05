@@ -28,15 +28,13 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-
+	CMario* mario = currentScene->GetPlayer();
 	if (GetTickCount64() - dying_start >= GOOMBA_TIME_DIYING && isDying)
 	{
 		isDying = false;
 		isDestroyed = true;
 
-		Point* point = new Point(100);
-		point->SetPosition(this->x, this->y);
-		currentScene->AddMovingObject(point);
+		mario->AddScore(this->x, this->y, 100);
 		/*if (dynamic_cast<CIntroScene*> (CGame::GetInstance()->GetCurrentScene()))
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);*/
 		return;

@@ -4,6 +4,7 @@
 #include "PlayScence.h"
 #include "Block.h"
 #include "QuestionBrick.h"
+#include "Point.h"
 
 MushRoom::MushRoom() {
 	SetAppear(false);
@@ -27,16 +28,16 @@ void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		mario->GetBoundingBox(mLeft, mTop, mRight, mBottom);
 		if (isColliding(mLeft, mTop, mRight, mBottom))
 		{
+			
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
 				mario->StartTransform(MARIO_LEVEL_BIG);
 				isAppear = false;
 				isDestroyed = true;
+				mario->AddScore(x, y, 1000);
 			}
-
 			/*if (tag == MUSHROOM_TYPE_RED)
 			{
-
-				mario->AddScore(x, y, 1000);
+				
 			}*/
 			/*else
 			{
