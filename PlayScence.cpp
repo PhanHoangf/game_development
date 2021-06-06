@@ -446,6 +446,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 	case DIK_A:
 		mario->SetIsReadyToHold(false);
 		break;
+	case DIK_S:
+		mario->isFlapping = false;
+		break;
 	}
 }
 
@@ -536,6 +539,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 			mario->SetState(MARIO_STATE_TAIL_ATTACK);
 		}
 	}*/
+	else if (game->IsKeyDown(DIK_S)) {
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
+			mario->isFlapping = true;
+	}
 	else
 	{
 		//&& !mario->isTuring

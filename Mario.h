@@ -255,6 +255,7 @@ class CMario : public CGameObject
 	int runningStack;
 	float tempY;
 
+
 	Tail* tail;
 
 public:
@@ -263,6 +264,7 @@ public:
 	bool isKicking = false;
 	int marioScore = 0;
 	int coin = 0;
+	bool isFlapping = false;
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -308,8 +310,11 @@ public:
 	void HandleBasicMarioDie();
 	void HandleChangeXTail();
 	void HandleTurning();
+	void HandleFlapping();
 
-	void pullDown() { ay = MARIO_GRAVITY; isJumping = false; isOnGround = true; }
+	void pullDown() {
+		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;
+	}
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	void AddScore(float x, float y, int score);

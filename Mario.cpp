@@ -25,8 +25,8 @@
 CMario::CMario(float x, float y) : CGameObject()
 {
 	//level = MARIO_LEVEL_BIG;
-	level = MARIO_LEVEL_SMALL;
-	//level = MARIO_LEVEL_TAIL;
+	//level = MARIO_LEVEL_SMALL;
+	level = MARIO_LEVEL_TAIL;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
 	ay = MARIO_ACCELERATION_JUMP;
@@ -42,6 +42,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+
+
 	// Simple fall down
 	vy += ay * dt;
 	vx += ax * dt;
@@ -49,6 +52,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	limitMarioSpeed(vx, nx);
 	handleMarioJump();
+	HandleFlapping();
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -557,7 +561,9 @@ void CMario::RenderMarioAniTail(int& ani) {
 			ani = MARIO_ANI_TAIL_WALKING_RIGHT;
 		}
 		if (!isOnGround) {
-			ani = MARIO_ANI_TAIL_JUMPINGUP_RIGHT;
+			if (this->isFlapping)
+				ani = MARIO_ANI_TAIL_FLAPPING_RIGHT;
+			else ani = MARIO_ANI_TAIL_JUMPINGUP_RIGHT;
 		}
 		if (isKicking) {
 			ani = MARIO_ANI_TAIL_KICKING_RIGHT;
@@ -574,7 +580,9 @@ void CMario::RenderMarioAniTail(int& ani) {
 			ani = MARIO_ANI_TAIL_WALKING_LEFT;
 		}
 		if (!isOnGround) {
-			ani = MARIO_ANI_TAIL_JUMPINGUP_LEFT;
+			if (isFlapping)
+				ani = MARIO_ANI_TAIL_FLAPPING_LEFT;
+			else ani = MARIO_ANI_TAIL_JUMPINGUP_LEFT;
 		}
 		if (isKicking) {
 			ani = MARIO_ANI_TAIL_KICKING_LEFT;
@@ -585,10 +593,16 @@ void CMario::RenderMarioAniTail(int& ani) {
 	}
 	if (state == MARIO_STATE_JUMP) {
 		if (nx > 0) {
-			ani = MARIO_ANI_TAIL_JUMPINGUP_RIGHT;
+			int res = isFlapping ? 1 : 0;
+			DebugOut(L"Render flapping::%d\n", res);
+			if (isFlapping)
+				ani = MARIO_ANI_TAIL_FLAPPING_RIGHT;
+			else
+				ani = MARIO_ANI_TAIL_JUMPINGUP_RIGHT;
 		}
 		if (nx < 0) {
-			ani = MARIO_ANI_TAIL_JUMPINGUP_LEFT;
+			if (isFlapping) ani = MARIO_ANI_TAIL_FLAPPING_LEFT;
+			else ani = MARIO_ANI_TAIL_JUMPINGUP_LEFT;
 		}
 	}
 	if (state == MARIO_STATE_JUMP_X) {
@@ -623,7 +637,7 @@ void CMario::RenderMarioAniTail(int& ani) {
 
 void CMario::SetState(int state)
 {
-	//DebugOut(L"state::%d\n", state);
+	/*DebugOut(L"state::%d\n", state);*/
 	int previousState = GetState();
 	CGameObject::SetState(state);
 	switch (state)
@@ -943,4 +957,10 @@ void CMario::AddScore(float x, float y, int score) {
 	point->SetPosition(x, y);
 	currentScene->AddMovingObject(point);
 	this->marioScore += score;
+}
+
+void CMario::HandleFlapping() {
+	if (level == MARIO_LEVEL_TAIL && isFlapping) {
+		vy = MARIO_SLOW_FALLING_SPEED;
+	}
 }
