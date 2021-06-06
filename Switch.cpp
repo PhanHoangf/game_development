@@ -1,4 +1,7 @@
 #include "Switch.h"
+#include "PlayScence.h"
+#include "Coin.h"
+#include "BreakableBrick.h"
 
 void Switch::Render() {
 	if (!isAppear || isDestroyed)
@@ -38,23 +41,7 @@ void Switch::SetState(int state) {
 	case SWITCH_STATE_PRESSED:
 		//add handle later
 		y += SWITCH_BBOX_HEIGHT - SWITCH_BBOX_PRESSED_HEIGHT;
-		/*CPlayScene* swscene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-		vector<LPGAMEOBJECT> objs = swscene->GetObjects();
-		for (UINT i = 0; i < objs.size(); i++)
-		{
-			if (dynamic_cast<CBreakableBrick*>(objs[i]) && !objs[i]->isDestroyed)
-			{
-				objs[i]->SetIsDestroyed(true);
-				CCoin* item = new CCoin(COIN_TYPE_TRANSFORM);
-
-				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-				LPANIMATION_SET tmp_ani_set = animation_sets->Get(COIN_ANI_SET_ID);
-
-				item->SetAnimationSet(tmp_ani_set);
-				item->SetPosition(objs[i]->x, objs[i]->y);
-				swscene->PushBack(item);
-			}
-		}*/
+		ChangeBrickToCoin();
 		break;
 	}
 }
@@ -70,4 +57,21 @@ void Switch::GetBoundingBox(float& l, float& t, float& r, float& b)
 		b = y + SWITCH_BBOX_HEIGHT;
 }
 
-
+void Switch::ChangeBrickToCoin() {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	vector<LPGAMEOBJECT> objects = currentScene->GetObjects();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(COIN_ANI_SET_ID);
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<BreakableBrick*>(objects.at(i)) && !objects.at(i)->isDestroyed) {
+			BreakableBrick* bBrick = dynamic_cast<BreakableBrick*>(objects.at(i));
+			Coin* coin = new Coin();
+			coin->SetPosition(bBrick->x, bBrick->y);
+			coin->SetAppear(true);
+			coin->SetAnimationSet(ani_set);
+			currentScene->AddObject(coin);
+			bBrick->isDestroyed = true;
+		}
+	}
+}

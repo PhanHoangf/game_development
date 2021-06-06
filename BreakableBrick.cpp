@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "PlayScence.h"
 #include "BreakPiece.h"
+#include "Coin.h"
 
 void BreakableBrick::Render()
 {
@@ -45,4 +46,23 @@ void BreakableBrick::Break() {
 	currentScene->AddObject(bPieceBottomRight);
 
 	isDestroyed = true;
+}
+
+void BreakableBrick::ChangeToCoin() {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	vector<LPGAMEOBJECT> objects = currentScene->GetObjects();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(COIN_ANI_SET_ID);
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<BreakableBrick*>(objects.at(i)) && !objects.at(i)->isDestroyed) {
+			BreakableBrick* bBrick = dynamic_cast<BreakableBrick*>(objects.at(i));
+			Coin* coin = new Coin();
+			coin->SetPosition(bBrick->x, bBrick->y);
+			coin->SetAppear(true);
+			coin->SetAnimationSet(ani_set);
+			currentScene->AddObject(coin);
+			bBrick->isDestroyed = true;
+		}
+	}
 }

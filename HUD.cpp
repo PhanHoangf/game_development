@@ -98,6 +98,7 @@ void HUD::Render() {
 
 void HUD::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	AddScore();
+	AddCoin();
 	time += dt;
 	remainTime = DEFAULT_TIME - time / 1000;
 
@@ -128,4 +129,10 @@ void HUD::AddScore() {
 	mario = currentScene->GetPlayer();
 	if (mario->marioScore > 0)
 		this->score = mario->marioScore;
+}
+
+void HUD::AddCoin() {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	mario = currentScene->GetPlayer();
+	this->money = mario->coin;
 }

@@ -26,5 +26,6 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void SetState(int state);
 	void SetAppear(bool appear) { this->isAppear = appear; }
+	void ChangeBrickToCoin();
 };
 

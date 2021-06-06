@@ -235,6 +235,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					coin->SetAppear(false);
 					coin->SetIsDestroyed(true);
 					AddScore(this->x, this->y, 100);
+					AddCoin();
 				}
 			}
 			if (dynamic_cast<Leaf*>(e->obj)) {

@@ -11,5 +11,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	void Break();
+	void ChangeToCoin();
 };
 

@@ -83,4 +83,5 @@ public:
 	LPSPRITE mappingFont(char c);
 	vector<LPSPRITE> StringToSprite(string str);
 	void AddScore();
+	void AddCoin();
 };

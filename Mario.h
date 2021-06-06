@@ -262,6 +262,7 @@ public:
 	int turningStack = 0;
 	bool isKicking = false;
 	int marioScore = 0;
+	int coin = 0;
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -312,5 +313,5 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	void AddScore(float x, float y, int score);
-
+	void AddCoin() { this->coin++; }
 };
