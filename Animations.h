@@ -70,7 +70,15 @@ public:
 	CAnimationSets();
 	void Add(int id, LPANIMATION_SET ani);
 	LPANIMATION_SET Get(unsigned int id);
-
+	void Clear()
+	{
+		for (auto x : animation_sets)
+		{
+			LPANIMATION_SET anis = x.second;
+			delete anis;
+		}
+		animation_sets.clear();
+	}
 
 	static CAnimationSets* GetInstance();
 };

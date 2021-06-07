@@ -251,6 +251,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		mObjects.push_back(obj);
 	}
 	else objects.push_back(obj);
+
+	DebugOut(L"[SUCCESS] DONE LOADING OBJECT: %d\n", object_type);
 }
 
 void CPlayScene::Load()

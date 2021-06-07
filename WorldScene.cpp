@@ -131,7 +131,12 @@ void WorldScene::_ParseSection_TILEMAP_DATA(string line)
 
 void WorldScene::_ParseSection_OBJECTS(string line) {
 	vector<string> tokens = split(line);
-	int moveLeft, moveUp, moveRight, moveBottom;
+
+	int moveLeft = 0;
+	int moveBottom = 0;
+	int moveUp = 0;
+	int moveRight = 0;
+	int sceneId = 0;
 
 	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
 
@@ -152,6 +157,8 @@ void WorldScene::_ParseSection_OBJECTS(string line) {
 		moveRight = atof(tokens[6].c_str());
 	if (tokens.size() >= 8)
 		moveBottom = atof(tokens[7].c_str());
+	if (tokens.size() >= 8)
+		sceneId = atof(tokens[8].c_str());
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -175,12 +182,13 @@ void WorldScene::_ParseSection_OBJECTS(string line) {
 	case OBJECT_TYPE_STOP:
 		obj = new StopPoint();
 		stp = (StopPoint*)obj;
-		//stp->SetAcceptMovement(moveLeft, moveUp, moveRight, moveBottom);
+		stp->SetAcceptMovement(moveLeft, moveUp, moveRight, moveBottom);
 		break;
 	case OBJECT_TYPE_PORTAL:
 		obj = new StopPoint();
 		stp = (StopPoint*)obj;
-		//stp->SetAcceptMovement(moveLeft, moveUp, moveRight, moveBottom);
+		stp->SetSceneId(sceneId);
+		stp->SetAcceptMovement(moveLeft, moveUp, moveRight, moveBottom);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
@@ -268,26 +276,26 @@ void WorldSceneKeyHandler::OnKeyDown(int KeyCode)
 	{
 		switch (KeyCode)
 		{
-			case DIK_RIGHT:
-				//if (player->cgRight)
-					player->SetState(PLAYER_STATE_RIGHT);
-				break;
-			case DIK_LEFT:
-				//if (player->cgLeft)
-					player->SetState(PLAYER_STATE_LEFT);
-				break;
-			case DIK_UP:
-				//if (player->cgUp)
-					player->SetState(PLAYER_STATE_UP);
-				break;
-			case DIK_DOWN:
-				//if (player->cgDown)
-					player->SetState(PLAYER_STATE_DOWN);
-				break;
-			/*case DIK_S:
-				if (player->sceneId > 0)
-					player->ChooseScene();
-				break;*/
+		case DIK_RIGHT:
+			if (player->moveRight == 1)
+				player->SetState(PLAYER_STATE_RIGHT);
+			break;
+		case DIK_LEFT:
+			if (player->moveLeft == 1)
+				player->SetState(PLAYER_STATE_LEFT);
+			break;
+		case DIK_UP:
+			if (player->moveUp == 1)
+				player->SetState(PLAYER_STATE_UP);
+			break;
+		case DIK_DOWN:
+			if (player->moveBottom == 1)
+				player->SetState(PLAYER_STATE_DOWN);
+			break;
+		case DIK_S:
+			if (player->sceneId == 1)
+				player->ChooseScene(player->sceneId);
+			break;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 #include "WorldPlayer.h"
 #include "StopPoint.h"
+#include "Utils.h"
 
 WorldPlayer::WorldPlayer(float x, float y) :CGameObject() {
 	level = 0; //! MARIO_LEVEL_SMALL
@@ -8,6 +9,12 @@ WorldPlayer::WorldPlayer(float x, float y) :CGameObject() {
 	this->x = x;
 	this->y = y;
 	SetState(PLAYER_STATE_IDLE);
+
+	//! INIT first start panel
+	moveRight = 1;
+	moveLeft = 0;
+	moveUp = 0;
+	moveBottom = 0;
 }
 
 void WorldPlayer::Render() {
@@ -34,8 +41,8 @@ void WorldPlayer::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x +=  min_tx * dx + nx * 0.4f;
-		y +=  min_ty * dy + ny * 0.4f;
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
 		SetState(PLAYER_STATE_IDLE);
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -44,7 +51,10 @@ void WorldPlayer::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				y = e->obj->y;
 			}
 			if (dynamic_cast<StopPoint*>(e->obj)) {
-				
+				StopPoint* stp = dynamic_cast<StopPoint*>(e->obj);
+				stp->GetAcceptMovement(moveLeft, moveUp, moveRight, moveBottom);
+				stp->GetSceneId(sceneId);
+				DebugOut(L"[ML]::%d \t, [MU]::%d \t, [MR]::%d \t, [MB]::%d \t, [SCN_ID]::%d \n", moveLeft, moveUp, moveRight, moveBottom, sceneId);
 			}
 		}
 	}

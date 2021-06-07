@@ -15,6 +15,7 @@ class StopPoint :
 	int moveUp;
 	int moveRight;
 	int moveBottom;
+	int sceneId;
 public:
 
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b) {
@@ -37,5 +38,7 @@ public:
 		mRight = this->moveRight;
 		mBottom = this->moveBottom;
 	}
+	void SetSceneId(int scnId) { sceneId = scnId; }
+	void GetSceneId(int& scnId) { scnId = this->sceneId; }
 };
 
