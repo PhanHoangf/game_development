@@ -12,8 +12,9 @@ CKoopas::CKoopas(int tag)
 {
 	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
 		this->nx = -1;
+		this->SetState(KOOPAS_STATE_INACTIVE);
 	}
-	SetState(KOOPAS_STATE_WALKING);
+	else this->SetState(KOOPAS_STATE_WALKING);
 }
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -34,13 +35,14 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
 
-	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
-		//SetState(KOOPAS_STATE_INACTIVE);
+	if (state == KOOPAS_STATE_INACTIVE && mario->x <= 1200.0f) return;
+	if (state == KOOPAS_STATE_INACTIVE && mario->x >= 1200.0f) {
+		SetState(KOOPAS_STATE_WALKING);
 	}
 
 	if (GetTickCount() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
 		shell_start = 0;
-		//StartReviving();
+		StartReviving();
 	}
 
 	if (GetTickCount64() - reviving_start >= KOOPAS_REVIVE_TIME && reviving_start != 0 && state != KOOPAS_STATE_SPINNING && shell_start == 0)
@@ -157,7 +159,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vx = vx = this->nx * KOOPAS_WALKING_SPEED;
 						this->nx = -1;
 					}
-
 				}
 				else
 				{

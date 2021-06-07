@@ -31,6 +31,12 @@
     <Filter Include="HUD">
       <UniqueIdentifier>{06c25b1a-bef4-4ea9-9e00-6dc086cbc350}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{e3d2132b-0cae-4704-97a9-9194cbffe8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\WorldScene">
+      <UniqueIdentifier>{0eb0085b-d794-4c6d-b2c2-c04ac02eabda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -74,12 +80,6 @@
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="GreenBush.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="StopPoint.cpp">
-      <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
@@ -132,6 +132,18 @@
     <ClCompile Include="HUD.cpp">
       <Filter>HUD</Filter>
     </ClCompile>
+    <ClCompile Include="WorldScene.cpp">
+      <Filter>Scene\WorldScene</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldPlayer.cpp">
+      <Filter>Scene\WorldScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenBush.cpp">
+      <Filter>Scene\WorldScene</Filter>
+    </ClCompile>
+    <ClCompile Include="StopPoint.cpp">
+      <Filter>Scene\WorldScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -175,12 +187,6 @@
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
       <Filter>keyboard</Filter>
-    </ClInclude>
-    <ClInclude Include="GreenBush.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="StopPoint.h">
-      <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Camera</Filter>
@@ -232,6 +238,18 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldScene.h">
+      <Filter>Scene\WorldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldPlayer.h">
+      <Filter>Scene\WorldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenBush.h">
+      <Filter>Scene\WorldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="StopPoint.h">
+      <Filter>Scene\WorldScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

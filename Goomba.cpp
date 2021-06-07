@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "Koopas.h"
 #include "Point.h"
+
 CGoomba::CGoomba()
 {
 	SetState(GOOMBA_STATE_WALKING);

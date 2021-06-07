@@ -25,8 +25,8 @@
 CMario::CMario(float x, float y) : CGameObject()
 {
 	//level = MARIO_LEVEL_BIG;
-	//level = MARIO_LEVEL_SMALL;
-	level = MARIO_LEVEL_TAIL;
+	level = MARIO_LEVEL_SMALL;
+	//level = MARIO_LEVEL_TAIL;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
 	ay = MARIO_ACCELERATION_JUMP;

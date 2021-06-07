@@ -30,31 +30,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
-#define SCENE_TILE_MAP 7
 
-#define OBJECT_TYPE_MARIO	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
-#define OBJECT_TYPE_BUSH 10
-#define OBJECT_INVISIBLE 20
-#define OBJECT_QUESTION_BRICK 142
-#define OBJECT_TYPE_COINT 6
-#define OBJECT_TYPE_BLOCK_LINE 4
-#define OBJECT_TYPE_PIRANHA_PLANT 7
-#define OBJECT_TYPE_BREAKABLEBRICK		112
-#define OBJECT_TYPE_PIRANHA_FIRE_PLANT 70
-#define OBJECT_TYPE_GOOMBA_RED 77
-
-#define OBJECT_TYPE_PORTAL	50
-
-#define MAX_SCENE_LINE 1024
 
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -245,9 +221,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PIRANHA_FIRE_PLANT:
 		obj = new PiranhaPlantFire(tag);
 		((PiranhaPlantFire*)obj)->SetLimitY(y);
-		break;
-	case OBJECT_TYPE_BUSH:
-		obj = new GreenBush();
 		break;
 	case OBJECT_INVISIBLE:
 		obj = new StopPoint();

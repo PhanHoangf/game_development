@@ -1,5 +1,7 @@
 [SETTINGS]
-start	1
-#scene list
+start	2
+#scene sceneId	scenePath	sceneType
+#playscene = 1 worldscene = 0
 [SCENES]
-1	Resources/Scene/World1-1/scene1.txt
+1	Resources/Scene/World1-1/scene1.txt	1
+2	Resources/Scene/worldscene.txt		0
