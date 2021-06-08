@@ -1,5 +1,5 @@
+#pragma
 #include "Grid.h"
-
 Unit::Unit(Grid* grid, float x, float y) {
 	
 	this->_grid = grid;
@@ -85,16 +85,37 @@ void Grid::Move(Unit* unit, float x, float y) {
 	}
 
 	// If it's the head of a list, remove it.
-	if (_cells[oldRow][oldCol] == unit)
-	{
-		_cells[oldRow][oldCol] = unit->_next;
+	if (oldRow <= NUM_ROWS && oldCol <= NUM_COLS) {
+		if (_cells[oldRow][oldCol] == unit)
+		{
+			_cells[oldRow][oldCol] = unit->_next;
+		}
 	}
 
 	// Add it back to the grid at its new cell.
 	Add(unit);
 }
 
-vector<Unit*> Grid::getObjectsInViewPort(float topLeft, float bottomRight) {
+vector<Unit*> Grid::getObjectsInViewPort(float cam_x, float cam_y) {
+	int startCol = (int)(cam_x / CELL_WIDTH);
+	if (cam_x == 0) startCol = 0;
+	int endCol = (int)((cam_x + 272) / CELL_WIDTH);
+
+	int startRow = (int)(cam_y / CELL_HEIGHT);
+	int endRow = (int)((cam_y + 256) / CELL_HEIGHT);
+
+	for (int i = startRow; i <= endRow; i++) {
+		for (int j = startCol; j <= endCol; j++) {
+			Unit* unit = _cells[i][j];
+			while (unit != NULL)
+			{
+				if (!unit->GetObject()->isDestroyed) {
+					_objects.push_back(unit);
+					unit = unit->_next;
+				}
+			}
+		}
+	}
 	return _objects;
 }
 

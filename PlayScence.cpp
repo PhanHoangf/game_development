@@ -247,15 +247,21 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
 	obj->SetAnimationSet(ani_set);
-	if (dynamic_cast<MushRoom*>(obj) || dynamic_cast<PiranhaPlant*>(obj)) {
+
+	/*if (dynamic_cast<MushRoom*>(obj) || dynamic_cast<PiranhaPlant*>(obj)) {
 		mObjects.push_back(obj);
 	}
-	else objects.push_back(obj);
+	else objects.push_back(obj);*/
 
-	id++;
-	obj->id = this->id;
+	if (dynamic_cast<CMario*>(obj)) {
+		objects.push_back(obj);
+	}
+	else {
+		id++;
+		obj->id = this->id;
 
-	this->grid->_allObject.push_back(obj);
+		this->grid->_allObject.push_back(obj);
+	}
 }
 
 void CPlayScene::Load()
@@ -355,9 +361,9 @@ void CPlayScene::_ParseSection_GRID_DATA(string line) {
 	int col = atoi(tokens[1].c_str());
 	int objID = atoi(tokens[2].c_str());
 
-	for (size_t i = 0; i < objects.size(); i++) {
-		if (objects.at(i)->id == objID) {
-			Unit* unit = new Unit(this->grid, objects.at(i), row, col);
+	for (size_t i = 0; i < grid->_allObject.size(); i++) {
+		if (grid->_allObject.at(i)->id == objID) {
+			Unit* unit = new Unit(this->grid, grid->_allObject.at(i), row, col);
 		}
 	}
 }
@@ -366,28 +372,42 @@ void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
-
+	CGame* game = CGame::GetInstance();
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	float cam_x, cam_y;
+
+	cam_x = game->GetCamPosX();
+	cam_y = game->GetCamPosY();
+
+	vector<Unit*> objectGrid = grid->getObjectsInViewPort(cam_x, cam_y);
+	coObjects.push_back(player);
+	for (size_t i = 1; i < objectGrid.size(); i++)
+	{
+		//if (!objects[i]->GetIsDestroy())
+		objects.push_back(objectGrid[i]->GetObject());
+		coObjects.push_back(objectGrid[i]->GetObject());
+	}
+
+	/*for (size_t i = 1; i < objects.size(); i++)
 	{
 		if (!objects[i]->GetIsDestroy())
 			coObjects.push_back(objects[i]);
-	}
+	}*/
 
-	for (size_t i = 1; i < mObjects.size(); i++)
+	/*for (size_t i = 1; i < mObjects.size(); i++)
 	{
 		if (!objects[i]->GetIsDestroy())
 			coObjects.push_back(mObjects[i]);
-	}
+	}*/
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
 
-	for (size_t i = 0; i < mObjects.size(); i++) {
-		mObjects[i]->Update(dt, &coObjects);
-	}
+	//for (size_t i = 0; i < mObjects.size(); i++) {
+	//	mObjects[i]->Update(dt, &coObjects);
+	//}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -401,12 +421,12 @@ void CPlayScene::Render()
 {
 	currentMap->DrawMap();
 
-	for (int i = 0; i < mObjects.size(); i++)
+	/*for (int i = 0; i < mObjects.size(); i++)
 	{
 		if (!mObjects[i]->isDestroyed) {
 			mObjects[i]->Render();
 		}
-	}
+	}*/
 
 	for (int i = 0; i < objects.size(); i++)
 	{

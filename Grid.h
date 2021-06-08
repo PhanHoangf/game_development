@@ -43,7 +43,7 @@ public:
 
 	void Move(Unit* unit, float x, float y);
 
-	vector<Unit*> getObjectsInViewPort(float topLeft, float bottomRight);
+	vector<Unit*> getObjectsInViewPort(float cam_x, float cam_y);
 	void CountUnit();
 	vector<LPGAMEOBJECT> _allObject; //! all game Objects
 private:
