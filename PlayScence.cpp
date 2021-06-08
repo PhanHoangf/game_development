@@ -23,6 +23,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
+	this->grid = new Grid();
 }
 
 /*
@@ -187,7 +188,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CMario(x, y);
 		player = (CMario*)obj;
-
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA:
@@ -252,7 +252,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	else objects.push_back(obj);
 
-	DebugOut(L"[SUCCESS] DONE LOADING OBJECT: %d\n", object_type);
+	id++;
+	obj->id = this->id;
+
+	this->grid->_allObject.push_back(obj);
 }
 
 void CPlayScene::Load()
@@ -288,6 +291,9 @@ void CPlayScene::Load()
 		if (line == "[TILE_MAP]") {
 			section = SCENE_TILE_MAP; continue;
 		}
+		if (line == "[GRID]") {
+			section = SCENE_GRID; continue;
+		}
 		if (line[0] == '[' || line == "") { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -302,6 +308,7 @@ void CPlayScene::Load()
 		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		case SCENE_TILE_MAP: _ParseSection_TILEMAP_DATA(line); break;
+		case SCENE_GRID: _LoadGridFile(line); break;
 		}
 	}
 
@@ -312,6 +319,47 @@ void CPlayScene::Load()
 	hud = new HUD();
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+}
+
+void CPlayScene::_LoadGridFile(string filePath) {
+	DebugOut(L"[INFO] Start loading scene resources from : %s \n", filePath);
+
+	ifstream f;
+	f.open(filePath);
+
+	// current resource section flag
+	int section = SCENE_SECTION_UNKNOWN;
+	DebugOut(L"%d", section);
+	char str[MAX_SCENE_LINE];
+
+	while (f.getline(str, MAX_SCENE_LINE)) {
+		string line(str);
+
+		if (line[0] == '#') continue;
+
+		_ParseSection_GRID_DATA(line);
+	}
+
+	this->grid->CountUnit();
+	f.close();
+}
+
+void CPlayScene::_ParseSection_GRID_DATA(string line) {
+	vector<string> tokens = split(line);
+
+	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
+
+	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least row, col, objId, type
+
+	int row = atoi(tokens[0].c_str());
+	int col = atoi(tokens[1].c_str());
+	int objID = atoi(tokens[2].c_str());
+
+	for (size_t i = 0; i < objects.size(); i++) {
+		if (objects.at(i)->id == objID) {
+			Unit* unit = new Unit(this->grid, objects.at(i), row, col);
+		}
+	}
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -379,6 +427,7 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
+	objId = 0;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

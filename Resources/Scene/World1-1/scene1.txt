@@ -1464,3 +1464,5 @@ Resources\Tilemap\world1-1.txt
 112	2016	384	12	12
 112	2032	384	12	12
 112	2096	384	12	12
+[GRID]
+Resources/Scene/World1-1/world1-1_GridFile.txt

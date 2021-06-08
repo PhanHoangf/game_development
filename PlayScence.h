@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "GreenBush.h"
 #include "HUD.h"
+#include "Grid.h"
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_TEXTURES 2
@@ -18,6 +19,7 @@
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 #define SCENE_TILE_MAP 7
+#define SCENE_GRID	8
 
 #define OBJECT_TYPE_MARIO	0
 #define OBJECT_TYPE_BRICK	1
@@ -49,12 +51,18 @@ protected:
 	CMap* currentMap;
 	HUD* hud;
 
+	Grid* grid;
+	int objId = 0;
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_TILEMAP_DATA(string line);
+	void _ParseSection_GRID_DATA(string line);
+
+	void _LoadGridFile(string filePath);
 
 public:
 	CPlayScene(int id, LPCWSTR filePath);

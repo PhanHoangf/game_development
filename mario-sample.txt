@@ -1,5 +1,5 @@
 [SETTINGS]
-start	0
+start	1
 #scene sceneId	scenePath	sceneType
 #playscene = 1 worldscene = 0
 [SCENES]

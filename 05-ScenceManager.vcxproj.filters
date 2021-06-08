@@ -37,6 +37,12 @@
     <Filter Include="Scene\WorldScene">
       <UniqueIdentifier>{0eb0085b-d794-4c6d-b2c2-c04ac02eabda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Grid">
+      <UniqueIdentifier>{60bd26f0-b774-4d24-aa4e-ef3834f440ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\PlayScene">
+      <UniqueIdentifier>{42138764-712b-439a-a85b-1bd9cc5e5c96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -61,9 +67,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Animations.cpp">
@@ -144,6 +147,12 @@
     <ClCompile Include="StopPoint.cpp">
       <Filter>Scene\WorldScene</Filter>
     </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScence.cpp">
+      <Filter>Scene\PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -165,9 +174,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScence.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Animations.h">
@@ -250,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="StopPoint.h">
       <Filter>Scene\WorldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScence.h">
+      <Filter>Scene\PlayScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

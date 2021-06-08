@@ -133,6 +133,7 @@
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="GreenBush.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Leaf.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="FireBullet.h" />
     <ClInclude Include="GreenBush.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Leaf.h" />
