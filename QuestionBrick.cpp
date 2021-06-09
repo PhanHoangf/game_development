@@ -83,7 +83,7 @@ void QuestionBrick::CreateItem(int itemType) {
 		obj->SetAppear(true);
 		obj->SetPosition(x, y - COIN_BBOX_HEIGHT - 1);
 		obj->SetState(COIN_STATE_UP);
-		currentScene->AddObject(obj);
+		currentScene->AddSpecialObject(obj);
 	}
 	if (dynamic_cast<MushRoom*>(this->obj)) {
 		MushRoom* obj = dynamic_cast<MushRoom*>(this->obj);

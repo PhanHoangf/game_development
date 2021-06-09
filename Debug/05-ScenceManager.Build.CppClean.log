@@ -1,6 +1,5 @@
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\vc142.pdb
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\vc142.idb
-d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\redgoomba.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\questionbrick.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\portal.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\point.obj
@@ -11,6 +10,7 @@ d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\map.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\leaf.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\koopas.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\hud.obj
+d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\grid.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\greenbush.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\firebullet.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\coin.obj
@@ -20,6 +20,8 @@ d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\breakpiece.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\breakablebrick.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\block.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\animations.obj
+d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\worldscene.obj
+d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\worldplayer.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\textures.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\sprites.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\scence.obj
@@ -33,9 +35,7 @@ d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\utils.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\tail.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\switch.obj
 d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\stoppoint.obj
-d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\worldscene.obj
-d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\worldplayer.obj
-d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\grid.obj
+d:\pt_game\gamedev-intro-tutorials\05-scencemanager\debug\redgoomba.obj
 d:\pt_game\gamedev-intro-tutorials\debug\05-scencemanager.exe
 d:\pt_game\gamedev-intro-tutorials\debug\05-scencemanager.ilk
 d:\pt_game\gamedev-intro-tutorials\debug\05-scencemanager.pdb

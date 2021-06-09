@@ -45,9 +45,8 @@ public:
 
 	vector<Unit*> getObjectsInViewPort(float cam_x, float cam_y);
 	void CountUnit();
-	vector<LPGAMEOBJECT> _allObject; //! all game Objects
+	//vector<LPGAMEOBJECT> _allObject; //! all game Objects
 private:
 	Unit* _cells[NUM_ROWS][NUM_COLS];
 	vector<Unit*> _objects; //! Objects in viewport
-	
 };

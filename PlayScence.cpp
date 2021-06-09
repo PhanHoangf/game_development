@@ -159,7 +159,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
 
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
-
+	int objID = 0, objRow = 0, objCol = 0;
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
@@ -173,6 +173,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		option_tag_1 = atof(tokens[5].c_str());
 	if (tokens.size() >= 7)
 		option_tag_2 = atof(tokens[6].c_str());
+	if (tokens.size() >= 9)
+		objID = atof(tokens[8].c_str());
+	if (tokens.size() >= 10)
+		objRow = atof(tokens[9].c_str());
+	if (tokens.size() >= 11)
+		objCol = atof(tokens[10].c_str());
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -254,13 +260,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	else objects.push_back(obj);*/
 
 	if (dynamic_cast<CMario*>(obj)) {
-		objects.push_back(obj);
+		//objects.push_back(obj);
+		return;
 	}
 	else {
-		id++;
-		obj->id = this->id;
-
-		this->grid->_allObject.push_back(obj);
+		obj->id = objID;
+		Unit* unit = new Unit(this->grid, obj, objRow, objCol);
 	}
 }
 
@@ -328,44 +333,43 @@ void CPlayScene::Load()
 }
 
 void CPlayScene::_LoadGridFile(string filePath) {
-	DebugOut(L"[INFO] Start loading scene resources from : %s \n", filePath);
+	//DebugOut(L"[INFO] Start loading scene resources from : %s \n", filePath);
 
-	ifstream f;
-	f.open(filePath);
+	//ifstream f;
+	//f.open(filePath);
 
-	// current resource section flag
-	int section = SCENE_SECTION_UNKNOWN;
-	DebugOut(L"%d", section);
-	char str[MAX_SCENE_LINE];
+	//// current resource section flag
+	//int section = SCENE_SECTION_UNKNOWN;
+	//DebugOut(L"%d", section);
+	//char str[MAX_SCENE_LINE];
 
-	while (f.getline(str, MAX_SCENE_LINE)) {
-		string line(str);
+	//while (f.getline(str, MAX_SCENE_LINE)) {
+	//	string line(str);
 
-		if (line[0] == '#') continue;
+	//	if (line[0] == '#') continue;
 
-		_ParseSection_GRID_DATA(line);
-	}
-
-	this->grid->CountUnit();
-	f.close();
+	//	_ParseSection_GRID_DATA(line);
+	//}
+	//this->grid->CountUnit();
+	//f.close();
 }
 
 void CPlayScene::_ParseSection_GRID_DATA(string line) {
-	vector<string> tokens = split(line);
+	//vector<string> tokens = split(line);
 
-	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
+	//DebugOut(L"--> %s\n", ToWSTR(line).c_str());
 
-	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least row, col, objId, type
+	//if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least row, col, objId, type
 
-	int row = atoi(tokens[0].c_str());
-	int col = atoi(tokens[1].c_str());
-	int objID = atoi(tokens[2].c_str());
+	//int row = atoi(tokens[0].c_str());
+	//int col = atoi(tokens[1].c_str());
+	//int objID = atoi(tokens[2].c_str());
 
-	for (size_t i = 0; i < grid->_allObject.size(); i++) {
-		if (grid->_allObject.at(i)->id == objID) {
-			Unit* unit = new Unit(this->grid, grid->_allObject.at(i), row, col);
-		}
-	}
+	//for (size_t i = 0; i < grid->_allObject.size(); i++) {
+	//	if (grid->_allObject.at(i)->id == objID) {
+	//		Unit* unit = new Unit(this->grid, grid->_allObject.at(i), row, col);
+	//	}
+	//}
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -373,36 +377,62 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	CGame* game = CGame::GetInstance();
-	vector<LPGAMEOBJECT> coObjects;
+
 	float cam_x, cam_y;
 
 	cam_x = game->GetCamPosX();
 	cam_y = game->GetCamPosY();
 
-	vector<Unit*> objectGrid = grid->getObjectsInViewPort(cam_x, cam_y);
+	vector<LPGAMEOBJECT> coObjects;
+	coObjects.clear();
+	objectGrid.clear();
+	objects.clear();
+
+	objectGrid = grid->getObjectsInViewPort(cam_x, cam_y);
+
 	coObjects.push_back(player);
-	for (size_t i = 1; i < objectGrid.size(); i++)
+
+	for (size_t i = 0; i < objectGrid.size(); i++)
 	{
-		//if (!objects[i]->GetIsDestroy())
+		//if (!dynamic_cast<CGoomba*>(objectGrid[i]->GetObject()))
 		objects.push_back(objectGrid[i]->GetObject());
-		coObjects.push_back(objectGrid[i]->GetObject());
 	}
 
-	/*for (size_t i = 1; i < objects.size(); i++)
-	{
-		if (!objects[i]->GetIsDestroy())
-			coObjects.push_back(objects[i]);
-	}*/
+	for (size_t i = 0;i < objects.size(); i++) {
+		coObjects.push_back(objects[i]);
+	}
 
-	/*for (size_t i = 1; i < mObjects.size(); i++)
-	{
-		if (!objects[i]->GetIsDestroy())
-			coObjects.push_back(mObjects[i]);
-	}*/
+	for (size_t i = 0;i < specialObjects.size(); i++) {
+		if (!specialObjects[i]->GetIsDestroy())
+			coObjects.push_back(specialObjects[i]);
+	}
+
+	//for (size_t i = 0; i < objects.size(); i++)
+	//{
+	//	if (!objects[i]->GetIsDestroy())
+	//		coObjects.push_back(objects[i]);
+	//}
+
+	//for (size_t i = 0; i < mObjects.size(); i++)
+	//{
+	//	if (!objects[i]->GetIsDestroy())
+	//		coObjects.push_back(mObjects[i]);
+	//}
+
+	player->Update(dt, &coObjects);
+
+	//for (size_t i = 0; i < objectGrid.size(); i++)
+	//{
+	//	objectGrid[i]->GetObject()->Update(dt, &coObjects);
+	//}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
+	}
+
+	for (size_t i = 0;i < specialObjects.size(); i++) {
+		specialObjects[i]->Update(dt, &coObjects);
 	}
 
 	//for (size_t i = 0; i < mObjects.size(); i++) {
@@ -411,10 +441,19 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
-
 	SetCam(player->x, player->y, dt);
-
 	hud->Update(dt, &coObjects);
+	UpdateGrid();
+}
+
+void CPlayScene::UpdateGrid() {
+	for (unsigned int i = 0; i < objectGrid.size(); i++)
+	{
+		LPGAMEOBJECT obj = objectGrid[i]->GetObject();
+		float newPosX, newPosY;
+		obj->GetPosition(newPosX, newPosY);
+		objectGrid[i]->Move(newPosX, newPosY);
+	}
 }
 
 void CPlayScene::Render()
@@ -428,12 +467,22 @@ void CPlayScene::Render()
 		}
 	}*/
 
+	player->Render();
+
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (!objects[i]->isDestroyed) {
 			objects[i]->Render();
 		}
 	}
+
+	for (int i = 0; i < specialObjects.size(); i++)
+	{
+		if (!specialObjects[i]->isDestroyed) {
+			specialObjects[i]->Render();
+		}
+	}
+
 	hud->Render();
 }
 

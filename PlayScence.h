@@ -47,7 +47,8 @@ protected:
 
 	vector<LPGAMEOBJECT> objects;  // Static objects
 	vector<LPGAMEOBJECT> mObjects; //! Moving objects
-
+	vector<Unit*> objectGrid;
+	vector<LPGAMEOBJECT> specialObjects; //! Coin in brick 
 	CMap* currentMap;
 	HUD* hud;
 
@@ -63,7 +64,7 @@ protected:
 	void _ParseSection_GRID_DATA(string line);
 
 	void _LoadGridFile(string filePath);
-
+	void UpdateGrid();
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 	virtual void Load();
@@ -74,6 +75,7 @@ public:
 	CMario* GetPlayer() { return player; }
 	vector<LPGAMEOBJECT> GetObjects() { return objects; }
 	void AddObject(LPGAMEOBJECT obj) { this->objects.push_back(obj); }
+	void AddSpecialObject(LPGAMEOBJECT obj) { this->specialObjects.push_back(obj); }
 	void AddMovingObject(LPGAMEOBJECT obj) { this->mObjects.push_back(obj); }
 	void deleteLastObject() { this->objects.pop_back(); }
 	//friend class CPlayScenceKeyHandler;

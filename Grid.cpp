@@ -1,7 +1,7 @@
 #pragma
 #include "Grid.h"
 Unit::Unit(Grid* grid, float x, float y) {
-	
+
 	this->_grid = grid;
 	this->_x = x;
 	this->_y = y;
@@ -33,8 +33,7 @@ void Grid::Add(Unit* unit) {
 
 	int row = (int)(unit->_y / CELL_HEIGHT);
 	int col = (int)(unit->_x / CELL_WIDTH);
-	
-	// Add to the front of list for the cell it's in.
+
 	unit->_prev = NULL;
 	unit->_next = _cells[row][col];
 	_cells[row][col] = unit;
@@ -54,6 +53,10 @@ void Grid::Add(Unit* unit, int row, int col) {
 	unit->_prev = NULL;
 	unit->_next = _cells[row][col];
 	_cells[row][col] = unit;
+
+	if (unit->_next != NULL) {
+		unit->_next->_prev = unit;
+	}
 }
 
 void Grid::Move(Unit* unit, float x, float y) {
@@ -97,25 +100,53 @@ void Grid::Move(Unit* unit, float x, float y) {
 }
 
 vector<Unit*> Grid::getObjectsInViewPort(float cam_x, float cam_y) {
-	int startCol = (int)(cam_x / CELL_WIDTH);
-	if (cam_x == 0) startCol = 0;
-	int endCol = (int)((cam_x + 272) / CELL_WIDTH);
+	//int startCol = (int)(cam_x / CELL_WIDTH);
+	//int endCol = (int)((cam_x + 272) / CELL_WIDTH);
 
+	//int startRow = (int)(cam_y / CELL_HEIGHT);
+	//int endRow = (int)((cam_y + 256) / CELL_HEIGHT);
+	_objects.clear();
+
+	int startCol = (int)((cam_x - 16 * 2) / CELL_WIDTH);
+	int endCol = (int)ceil((cam_x + 272 + 16 * 2) / CELL_WIDTH);
+	int ENDCOL = (int)ceil((2816) / CELL_WIDTH);
+	if (endCol > ENDCOL)
+		endCol = ENDCOL;
+	if (startCol < 0)
+		startCol = 0;
+	//DebugOut(L"[GRID] %d %d\n", startCol, endCol);
 	int startRow = (int)(cam_y / CELL_HEIGHT);
-	int endRow = (int)((cam_y + 256) / CELL_HEIGHT);
+	int endRow = (int)ceil((cam_y + 256) / CELL_HEIGHT);
+	int ENDROW = (int)ceil((432) / CELL_HEIGHT);
+	if (endRow > ENDROW)
+		endRow = ENDROW;
 
 	for (int i = startRow; i <= endRow; i++) {
 		for (int j = startCol; j <= endCol; j++) {
 			Unit* unit = _cells[i][j];
 			while (unit != NULL)
 			{
-				if (!unit->GetObject()->isDestroyed) {
+				if (unit->GetObject()->isDestroyed == false) {
 					_objects.push_back(unit);
 					unit = unit->_next;
+				}
+				else
+				{
+					if (_cells[i][j] == unit)
+						_cells[i][j] = unit->_next;
+					if (unit->_next != NULL)
+						unit->_next->_prev = unit->_prev;
+					if (unit->_prev != NULL)
+						unit->_prev->_next = unit->_next;
+					Unit* tmp = unit;
+					unit = unit->_next;
+					delete tmp->GetObject();
+					delete tmp;
 				}
 			}
 		}
 	}
+	//DebugOut(L"[c]::%d\n", _objects.size());
 	return _objects;
 }
 
