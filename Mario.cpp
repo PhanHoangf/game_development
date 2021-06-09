@@ -955,7 +955,7 @@ void CMario::AddScore(float x, float y, int score) {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	Point* point = new Point(score);
 	point->SetPosition(x, y);
-	currentScene->AddMovingObject(point);
+	currentScene->AddSpecialObject(point);
 	this->marioScore += score;
 }
 

@@ -90,21 +90,21 @@ void QuestionBrick::CreateItem(int itemType) {
 		obj->SetAppear(true);
 		obj->SetPosition(x, y);
 		obj->SetState(MUSHROOM_STATE_UP);
-		currentScene->AddMovingObject(obj);
+		currentScene->AddSpecialObject(obj);
 	}
 	if (dynamic_cast<Switch*>(this->obj)) {
 		Switch* obj = dynamic_cast<Switch*>(this->obj);
 		obj->SetAppear(true);
 		obj->SetPosition(x, y);
 		obj->SetState(SWITCH_STATE_UP);
-		currentScene->AddMovingObject(obj);
+		currentScene->AddSpecialObject(obj);
 	}
 	if (dynamic_cast<Leaf*>(this->obj)) {
 		Leaf* obj = dynamic_cast<Leaf*>(this->obj);
 		obj->SetAppear(true);
 		obj->SetPosition(x, y);
  		obj->SetState(LEAF_STATE_UP);
-		currentScene->AddMovingObject(obj);
+		currentScene->AddSpecialObject(obj);
 	}
 }
 

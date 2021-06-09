@@ -49,6 +49,7 @@ protected:
 	vector<LPGAMEOBJECT> mObjects; //! Moving objects
 	vector<Unit*> objectGrid;
 	vector<LPGAMEOBJECT> specialObjects; //! Coin in brick 
+	vector<LPGAMEOBJECT> objInPipe;
 	CMap* currentMap;
 	HUD* hud;
 
@@ -65,6 +66,7 @@ protected:
 
 	void _LoadGridFile(string filePath);
 	void UpdateGrid();
+	void GetObjectFromGrid();
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 	virtual void Load();

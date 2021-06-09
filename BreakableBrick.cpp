@@ -40,10 +40,10 @@ void BreakableBrick::Break() {
 	bPieceBottomRight->SetPosition(x, y);
 	bPieceBottomRight->SetAnimationSet(ani_set);
 
-	currentScene->AddObject(bPieceTopLeft);
-	currentScene->AddObject(bPieceBottomLeft);
-	currentScene->AddObject(bPieceTopRight);
-	currentScene->AddObject(bPieceBottomRight);
+	currentScene->AddSpecialObject(bPieceTopLeft);
+	currentScene->AddSpecialObject(bPieceBottomLeft);
+	currentScene->AddSpecialObject(bPieceTopRight);
+	currentScene->AddSpecialObject(bPieceBottomRight);
 
 	isDestroyed = true;
 }
@@ -61,7 +61,7 @@ void BreakableBrick::ChangeToCoin() {
 			coin->SetPosition(bBrick->x, bBrick->y);
 			coin->SetAppear(true);
 			coin->SetAnimationSet(ani_set);
-			currentScene->AddObject(coin);
+			currentScene->AddSpecialObject(coin);
 			bBrick->isDestroyed = true;
 		}
 	}

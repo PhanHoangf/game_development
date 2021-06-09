@@ -385,18 +385,10 @@ void CPlayScene::Update(DWORD dt)
 
 	vector<LPGAMEOBJECT> coObjects;
 	coObjects.clear();
-	objectGrid.clear();
-	objects.clear();
 
-	objectGrid = grid->getObjectsInViewPort(cam_x, cam_y);
+	GetObjectFromGrid();
 
 	coObjects.push_back(player);
-
-	for (size_t i = 0; i < objectGrid.size(); i++)
-	{
-		//if (!dynamic_cast<CGoomba*>(objectGrid[i]->GetObject()))
-		objects.push_back(objectGrid[i]->GetObject());
-	}
 
 	for (size_t i = 0;i < objects.size(); i++) {
 		coObjects.push_back(objects[i]);
@@ -405,6 +397,10 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0;i < specialObjects.size(); i++) {
 		if (!specialObjects[i]->GetIsDestroy())
 			coObjects.push_back(specialObjects[i]);
+	}
+
+	for (size_t i = 0;i < objInPipe.size(); i++) {
+		coObjects.push_back(objInPipe[i]);
 	}
 
 	//for (size_t i = 0; i < objects.size(); i++)
@@ -431,6 +427,11 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
+	for (size_t i = 0; i < objInPipe.size(); i++)
+	{
+		objInPipe[i]->Update(dt, &coObjects);
+	}
+
 	for (size_t i = 0;i < specialObjects.size(); i++) {
 		specialObjects[i]->Update(dt, &coObjects);
 	}
@@ -444,6 +445,30 @@ void CPlayScene::Update(DWORD dt)
 	SetCam(player->x, player->y, dt);
 	hud->Update(dt, &coObjects);
 	UpdateGrid();
+}
+
+void CPlayScene::GetObjectFromGrid() {
+	CGame* game = CGame::GetInstance();
+
+	float cam_x, cam_y;
+
+	cam_x = game->GetCamPosX();
+	cam_y = game->GetCamPosY();
+
+	objectGrid.clear();
+	objects.clear();
+	objInPipe.clear();
+
+	objectGrid = grid->getObjectsInViewPort(cam_x, cam_y);
+
+	for (size_t i = 0; i < objectGrid.size(); i++)
+	{
+		LPGAMEOBJECT obj = objectGrid[i]->GetObject();
+		if (dynamic_cast<PiranhaPlant*>(obj) || dynamic_cast<PiranhaPlantFire*>(obj)) {
+			objInPipe.push_back(obj);
+		}
+		else objects.push_back(obj);
+	}
 }
 
 void CPlayScene::UpdateGrid() {
@@ -469,17 +494,24 @@ void CPlayScene::Render()
 
 	player->Render();
 
-	for (int i = 0; i < objects.size(); i++)
-	{
-		if (!objects[i]->isDestroyed) {
-			objects[i]->Render();
-		}
-	}
-
 	for (int i = 0; i < specialObjects.size(); i++)
 	{
 		if (!specialObjects[i]->isDestroyed) {
 			specialObjects[i]->Render();
+		}
+	}
+
+	for (int i = 0; i < objInPipe.size(); i++)
+	{
+		if (!objInPipe[i]->isDestroyed) {
+			objInPipe[i]->Render();
+		}
+	}
+
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if (!objects[i]->isDestroyed) {
+			objects[i]->Render();
 		}
 	}
 

@@ -38,6 +38,8 @@ void Grid::Add(Unit* unit) {
 	unit->_next = _cells[row][col];
 	_cells[row][col] = unit;
 
+
+
 	if (unit->_next != NULL) {
 		unit->_next->_prev = unit;
 	}
@@ -60,6 +62,8 @@ void Grid::Add(Unit* unit, int row, int col) {
 }
 
 void Grid::Move(Unit* unit, float x, float y) {
+	//DebugOut(L"IN 2 \n");
+
 	int oldRow = (int)(unit->_y / CELL_HEIGHT);
 	int oldCol = (int)(unit->_x / CELL_WIDTH);
 
@@ -67,7 +71,11 @@ void Grid::Move(Unit* unit, float x, float y) {
 	int newRow = (int)(x / Grid::CELL_HEIGHT);
 	int newCol = (int)(y / Grid::CELL_WIDTH);
 
-	if (newRow > NUM_ROWS || newCol > NUM_COLS) return;
+	if (newRow < 0 || newRow >= NUM_ROWS || newCol < 0 ||
+		newCol >= NUM_COLS)
+	{
+		return;
+	}
 
 	unit->_x = x;
 	unit->_y = y;
@@ -75,7 +83,6 @@ void Grid::Move(Unit* unit, float x, float y) {
 
 	// If it didn't change cells, we're done.
 	if (oldRow == newRow && oldCol == newCol) return;
-
 	// Unlink it from the list of its old cell.
 	if (unit->_prev != NULL)
 	{
@@ -88,11 +95,10 @@ void Grid::Move(Unit* unit, float x, float y) {
 	}
 
 	// If it's the head of a list, remove it.
-	if (oldRow <= NUM_ROWS && oldCol <= NUM_COLS) {
-		if (_cells[oldRow][oldCol] == unit)
-		{
-			_cells[oldRow][oldCol] = unit->_next;
-		}
+		//DebugOut(L"IN 7 \n");
+	if (_cells[oldRow][oldCol] == unit)
+	{
+		_cells[oldRow][oldCol] = unit->_next;
 	}
 
 	// Add it back to the grid at its new cell.
