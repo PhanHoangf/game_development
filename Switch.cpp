@@ -39,7 +39,6 @@ void Switch::SetState(int state) {
 		start_y = y;
 		break;
 	case SWITCH_STATE_PRESSED:
-		//add handle later
 		y += SWITCH_BBOX_HEIGHT - SWITCH_BBOX_PRESSED_HEIGHT;
 		ChangeBrickToCoin();
 		break;
@@ -70,7 +69,7 @@ void Switch::ChangeBrickToCoin() {
 			coin->SetPosition(bBrick->x, bBrick->y);
 			coin->SetAppear(true);
 			coin->SetAnimationSet(ani_set);
-			currentScene->AddObject(coin);
+			currentScene->AddSpecialObject(coin);
 			bBrick->isDestroyed = true;
 		}
 	}

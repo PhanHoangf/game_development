@@ -47,10 +47,10 @@ void Grid::Add(Unit* unit) {
 
 void Grid::Add(Unit* unit, int row, int col) {
 
-	if (row == this->NUM_ROWS)
-		row = this->NUM_ROWS - 1;
-	if (col == this->NUM_COLS)
-		col = this->NUM_COLS - 1;
+	if (row == this->totalRows)
+		row = this->totalRows - 1;
+	if (col == this->totalCols)
+		col = this->totalCols - 1;
 
 	unit->_prev = NULL;
 	unit->_next = _cells[row][col];
@@ -71,8 +71,8 @@ void Grid::Move(Unit* unit, float x, float y) {
 	int newRow = (int)(x / Grid::CELL_HEIGHT);
 	int newCol = (int)(y / Grid::CELL_WIDTH);
 
-	if (newRow < 0 || newRow >= NUM_ROWS || newCol < 0 ||
-		newCol >= NUM_COLS)
+	if (newRow < 0 || newRow >= totalRows || newCol < 0 ||
+		newCol >= totalCols)
 	{
 		return;
 	}
@@ -112,18 +112,17 @@ vector<Unit*> Grid::getObjectsInViewPort(float cam_x, float cam_y) {
 	//int startRow = (int)(cam_y / CELL_HEIGHT);
 	//int endRow = (int)((cam_y + 256) / CELL_HEIGHT);
 	_objects.clear();
-
-	int startCol = (int)((cam_x - 16 * 2) / CELL_WIDTH);
-	int endCol = (int)ceil((cam_x + 272 + 16 * 2) / CELL_WIDTH);
-	int ENDCOL = (int)ceil((2816) / CELL_WIDTH);
+	int startCol = int(cam_x / CELL_WIDTH);
+	int endCol = (int)ceil((cam_x + 272) / CELL_WIDTH);
+	int ENDCOL = (int)ceil((mapWidth) / CELL_WIDTH);
 	if (endCol > ENDCOL)
 		endCol = ENDCOL;
 	if (startCol < 0)
 		startCol = 0;
-	//DebugOut(L"[GRID] %d %d\n", startCol, endCol);
+	DebugOut(L"[GRID] %d %d\n", startCol, endCol);
 	int startRow = (int)(cam_y / CELL_HEIGHT);
 	int endRow = (int)ceil((cam_y + 256) / CELL_HEIGHT);
-	int ENDROW = (int)ceil((432) / CELL_HEIGHT);
+	int ENDROW = (int)ceil((mapHeight) / CELL_HEIGHT);
 	if (endRow > ENDROW)
 		endRow = ENDROW;
 
@@ -158,9 +157,9 @@ vector<Unit*> Grid::getObjectsInViewPort(float cam_x, float cam_y) {
 
 void Grid::CountUnit() {
 	int c = 0;
-	for (int i = 0; i < NUM_ROWS; i++)
+	for (int i = 0; i < totalRows; i++)
 	{
-		for (int j = 0; j < NUM_COLS; j++)
+		for (int j = 0; j < totalCols; j++)
 		{
 
 			Unit* unit = _cells[i][j];

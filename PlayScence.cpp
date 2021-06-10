@@ -23,7 +23,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
-	this->grid = new Grid();
+	//this->grid = new Grid();
 }
 
 /*
@@ -234,12 +234,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BLOCK_LINE:
 		obj = new Block();
 		break;
-	case OBJECT_TYPE_PORTAL:
+	/*case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
 		float b = atof(tokens[5].c_str());
 		int scene_id = atoi(tokens[6].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
+	}*/
+	case OBJECT_TYPE_CARD: {
+		obj = new CardItem();
+		break;
 	}
 	break;
 	default:
@@ -260,8 +264,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	else objects.push_back(obj);*/
 
 	if (dynamic_cast<CMario*>(obj)) {
-		//objects.push_back(obj);
 		return;
+	}
+	else if (dynamic_cast<CardItem*>(obj)) {
+		this->AddSpecialObject(obj);
 	}
 	else {
 		obj->id = objID;
@@ -333,43 +339,39 @@ void CPlayScene::Load()
 }
 
 void CPlayScene::_LoadGridFile(string filePath) {
-	//DebugOut(L"[INFO] Start loading scene resources from : %s \n", filePath);
+	DebugOut(L"[INFO] Start loading scene resources from : %s \n", filePath);
 
-	//ifstream f;
-	//f.open(filePath);
+	ifstream f;
+	f.open(filePath);
 
-	//// current resource section flag
-	//int section = SCENE_SECTION_UNKNOWN;
-	//DebugOut(L"%d", section);
-	//char str[MAX_SCENE_LINE];
+	// current resource section flag
+	int section = SCENE_SECTION_UNKNOWN;
+	DebugOut(L"%d", section);
+	char str[MAX_SCENE_LINE];
 
-	//while (f.getline(str, MAX_SCENE_LINE)) {
-	//	string line(str);
+	while (f.getline(str, MAX_SCENE_LINE)) {
+		string line(str);
 
-	//	if (line[0] == '#') continue;
+		if (line[0] == '#') continue;
 
-	//	_ParseSection_GRID_DATA(line);
-	//}
-	//this->grid->CountUnit();
-	//f.close();
+		_ParseSection_GRID_DATA(line);
+	}
+	f.close();
 }
 
 void CPlayScene::_ParseSection_GRID_DATA(string line) {
-	//vector<string> tokens = split(line);
+	vector<string> tokens = split(line);
 
-	//DebugOut(L"--> %s\n", ToWSTR(line).c_str());
+	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
 
-	//if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least row, col, objId, type
+	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least row, col, objId, type
 
-	//int row = atoi(tokens[0].c_str());
-	//int col = atoi(tokens[1].c_str());
-	//int objID = atoi(tokens[2].c_str());
+	int cols = atoi(tokens[0].c_str());
+	int rows = atoi(tokens[1].c_str());
+	int mapWidth = atoi(tokens[2].c_str());
+	int mapHeight = atoi(tokens[3].c_str());
 
-	//for (size_t i = 0; i < grid->_allObject.size(); i++) {
-	//	if (grid->_allObject.at(i)->id == objID) {
-	//		Unit* unit = new Unit(this->grid, grid->_allObject.at(i), row, col);
-	//	}
-	//}
+	this->grid = new Grid(rows, cols, mapWidth, mapHeight);
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -388,7 +390,8 @@ void CPlayScene::Update(DWORD dt)
 
 	GetObjectFromGrid();
 
-	coObjects.push_back(player);
+	
+	
 
 	for (size_t i = 0;i < objects.size(); i++) {
 		coObjects.push_back(objects[i]);
@@ -403,6 +406,7 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(objInPipe[i]);
 	}
 
+	
 	//for (size_t i = 0; i < objects.size(); i++)
 	//{
 	//	if (!objects[i]->GetIsDestroy())
@@ -417,6 +421,7 @@ void CPlayScene::Update(DWORD dt)
 
 	player->Update(dt, &coObjects);
 
+	//coObjects.push_back(player);
 	//for (size_t i = 0; i < objectGrid.size(); i++)
 	//{
 	//	objectGrid[i]->GetObject()->Update(dt, &coObjects);
@@ -439,7 +444,7 @@ void CPlayScene::Update(DWORD dt)
 	//for (size_t i = 0; i < mObjects.size(); i++) {
 	//	mObjects[i]->Update(dt, &coObjects);
 	//}
-
+	
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 	SetCam(player->x, player->y, dt);

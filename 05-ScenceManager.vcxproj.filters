@@ -43,15 +43,27 @@
     <Filter Include="Scene\PlayScene">
       <UniqueIdentifier>{42138764-712b-439a-a85b-1bd9cc5e5c96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Enemies">
+      <UniqueIdentifier>{d56a83bd-801f-4824-a53e-d8895abfd1f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Enemies\Piranha">
+      <UniqueIdentifier>{1a651b74-ed98-4093-a6bc-bb84a2f1503d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Enemies\Koopas">
+      <UniqueIdentifier>{cc67d0d0-598e-46f9-8560-ebad4f32de87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Enemies\Goomba">
+      <UniqueIdentifier>{804c3144-4b2f-4cb2-a518-b79320329f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Items">
+      <UniqueIdentifier>{580b2f51-d174-4198-bd08-ef3b77ce76a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Goomba.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -75,9 +87,6 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Koopas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -86,12 +95,6 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="MushRoom.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>GameObject</Filter>
@@ -102,25 +105,13 @@
     <ClCompile Include="Brick.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="PiranhaPlant.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="BreakableBrick.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Switch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RedGoomba.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="PiranhaPlantFire.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="FireBullet.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Leaf.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Tail.cpp">
@@ -153,15 +144,39 @@
     <ClCompile Include="PlayScence.cpp">
       <Filter>Scene\PlayScene</Filter>
     </ClCompile>
+    <ClCompile Include="PiranhaPlant.cpp">
+      <Filter>GameObject\Enemies\Piranha</Filter>
+    </ClCompile>
+    <ClCompile Include="PiranhaPlantFire.cpp">
+      <Filter>GameObject\Enemies\Piranha</Filter>
+    </ClCompile>
+    <ClCompile Include="RedGoomba.cpp">
+      <Filter>GameObject\Enemies\Goomba</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>GameObject\Enemies\Goomba</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopas.cpp">
+      <Filter>GameObject\Enemies\Koopas</Filter>
+    </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>GameObject\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="MushRoom.cpp">
+      <Filter>GameObject\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>GameObject\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="CardItem.cpp">
+      <Filter>GameObject\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Goomba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
@@ -182,9 +197,6 @@
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Koopas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -197,12 +209,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="MushRoom.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="QuestionBrick.h">
       <Filter>GameObject</Filter>
     </ClInclude>
@@ -212,25 +218,13 @@
     <ClInclude Include="Brick.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="PiranhaPlant.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="BreakableBrick.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Switch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RedGoomba.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="PiranhaPlantFire.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="FireBullet.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Leaf.h">
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Tail.h">
@@ -262,6 +256,33 @@
     </ClInclude>
     <ClInclude Include="PlayScence.h">
       <Filter>Scene\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlant.h">
+      <Filter>GameObject\Enemies\Piranha</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlantFire.h">
+      <Filter>GameObject\Enemies\Piranha</Filter>
+    </ClInclude>
+    <ClInclude Include="RedGoomba.h">
+      <Filter>GameObject\Enemies\Goomba</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopas.h">
+      <Filter>GameObject\Enemies\Koopas</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>GameObject\Enemies\Goomba</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
+      <Filter>GameObject\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="MushRoom.h">
+      <Filter>GameObject\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>GameObject\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="CardItem.h">
+      <Filter>GameObject\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

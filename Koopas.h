@@ -61,6 +61,7 @@ public:
 	float start_x = 0, start_y = 0;
 	int start_tag = 0;
 	bool isHaveWings = false;
+	bool isReviable = false;
 	void StartReviving() { reviving_start = GetTickCount64(); }
 	void StartShell() { shell_start = GetTickCount64(); reviving_start = 0; }
 	CKoopas(int tag);

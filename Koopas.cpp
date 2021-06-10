@@ -10,6 +10,9 @@
 
 CKoopas::CKoopas(int tag)
 {
+	this->start_x = x;
+	this->start_y = y;
+	this->start_tag = tag;
 	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
 		this->nx = -1;
 		this->SetState(KOOPAS_STATE_INACTIVE);
@@ -196,7 +199,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vx = this->nx * KOOPAS_WALKING_SPEED;
 					}
 				}
-				if (e->ny != 0) vy = 0;
+				//if (e->ny != 0) vy = 0;
 				if (e->nx != 0)
 				{
 					if (ceil(mBottom) != oTop)
@@ -311,6 +314,7 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_IN_SHELL:
 		vx = 0;
+		vy = 0;
 		StartShell();
 		break;
 	case KOOPAS_STATE_SHELL_UP:

@@ -43,7 +43,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-
+	//DebugOut(L"mario->x: %f", x);
 
 	// Simple fall down
 	vy += ay * dt;
@@ -185,6 +185,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CKoopas*>(e->obj)) {
 				CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
 				if (e->nx != 0 || e->ny > 0) {
+					vy = 0;
 					if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_SPINNING) {
 						if (untouchable != 1) {
 							if (level == MARIO_LEVEL_SMALL) SetState(MARIO_STATE_DIE);
@@ -198,6 +199,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							}
 						}
 						else {
+							vy = 0;
 							x += dx;
 
 						}
@@ -216,6 +218,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 				if (e->ny < 0) {
+					CGame* game = CGame::GetInstance();
+
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
 					if (koopas->GetState() == KOOPAS_STATE_WALKING) {
 						if (koopas->tag == KOOPAS_GREEN_PARA) {
@@ -223,7 +227,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 						else koopas->SetState(KOOPAS_STATE_IN_SHELL);
 					}
-
 					else if (koopas->GetState() == KOOPAS_STATE_IN_SHELL) {
 						koopas->SetState(KOOPAS_STATE_SPINNING);
 					}

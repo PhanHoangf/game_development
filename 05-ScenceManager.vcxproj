@@ -130,6 +130,7 @@
     <ClCompile Include="BreakPiece.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CardItem.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="GreenBush.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="BreakPiece.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CardItem.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="FireBullet.h" />
     <ClInclude Include="GreenBush.h" />

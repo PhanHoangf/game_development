@@ -1,5 +1,6 @@
-# totalCols: 21
-# totalRows: 4
+#totalCols	totalRows	mapWidth	mapHeight
+21	4	2816	432
+# 
 #1: platform brick	#57: card	#50: portal	#...
 #row	col	objId	objType
 2	19	1	57
