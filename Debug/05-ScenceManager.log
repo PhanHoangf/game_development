@@ -1,2 +1,6 @@
-﻿  Grid.cpp
+﻿  Map.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Map.cpp(25,18): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Map.cpp(26,17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Map.cpp(34,79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Map.cpp(34,54): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe

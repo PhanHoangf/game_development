@@ -27,7 +27,11 @@ void CMap::DrawMap() {
 	for (int currentRow = 0; currentRow < TotalRowsOfMap; currentRow++) {
 		for (int currentColumn = firstColumn; currentColumn < TotalColumnsOfMap; currentColumn++) {
 			int spriteMapIndex = TileMap[currentRow][currentColumn] - 1;
-			Tiles.at(spriteMapIndex)->Draw(currentColumn * TILE_WIDTH, currentRow * TILE_HEIGHT);
+			if (spriteMapIndex == 4292) {
+				continue;
+				//Tiles.at(spriteMapIndex)->Draw(currentColumn * TILE_WIDTH, currentRow * TILE_HEIGHT);
+			}
+			else Tiles.at(spriteMapIndex)->Draw(currentColumn * TILE_WIDTH, currentRow * TILE_HEIGHT);
 		}
 	}
 }
@@ -37,7 +41,6 @@ void CMap::SetTileMapData(int** TileMapData) {
 }
 
 void CMap::ExtractTileFromTileSet() {
-	int index = 0;
 	for (int TileNum = 0; TileNum < TotalTiles; TileNum++) {
 		int left = TileNum % TotalColumnsOfTileSet * TILE_WIDTH;
 		int top = TileNum / TotalColumnsOfTileSet * TILE_HEIGHT;

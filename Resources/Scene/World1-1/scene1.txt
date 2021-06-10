@@ -6,6 +6,7 @@
 20	Resources\Textures\misc.png	176	224	248
 21	Resources\Textures\misc2.png	166	185	255
 30	Resources\Tilemap\world1-1_bank.png	255	255	255
+#200	Resources\Tilemap\world1-3_bank.png	255	255	255
 40	Resources\Textures\enemies1.1.png	0	255	255
 50	Resources\Textures\enemies-2.png	0	128	128
 60	Resources\Textures\HUD.png	0	255	255
@@ -15,6 +16,7 @@
 110	Resources\Textures\mario-right.png	255	255	255
 [TILE_MAP]
 Resources\Tilemap\world1-1.txt
+#Resources\Tilemap\world1-3.txt
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 # Type	Level	State	Direction	Serial
