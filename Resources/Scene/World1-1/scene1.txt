@@ -1094,7 +1094,7 @@ Resources/Scene/World1-1/world1-1_GridInfo.txt
 # type	x	y	ani_set_id	tag	tag1	tag2	tag4	id	row	col
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4 = Block
 # [CARD]
-57	2688	336	57
+57	2688	336	57	0	0	0	0	1	2	19
 # [MARIO]
 0	80	384	1
 # [BRICK]

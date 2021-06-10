@@ -17,6 +17,7 @@
 #define CARD_SPEED 0.1f
 
 #define CARD_TIME  1000
+#define CARD_RANDOM_TIME 100
 
 class CardItem : public CGameObject
 {
@@ -27,6 +28,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void SetState(int state) {};
+	void SetAppear(bool ap) { this->isAppear = ap; }
 private:
 	DWORD start = 0;
 	bool isAppear = true;

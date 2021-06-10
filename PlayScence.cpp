@@ -234,18 +234,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BLOCK_LINE:
 		obj = new Block();
 		break;
-	/*case OBJECT_TYPE_PORTAL:
-	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int scene_id = atoi(tokens[6].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
-	}*/
+		/*case OBJECT_TYPE_PORTAL:
+		{
+			float r = atof(tokens[4].c_str());
+			float b = atof(tokens[5].c_str());
+			int scene_id = atoi(tokens[6].c_str());
+			obj = new CPortal(x, y, r, b, scene_id);
+		}*/
 	case OBJECT_TYPE_CARD: {
 		obj = new CardItem();
 		break;
 	}
-	break;
+						 break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -266,9 +266,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	if (dynamic_cast<CMario*>(obj)) {
 		return;
 	}
-	else if (dynamic_cast<CardItem*>(obj)) {
-		this->AddSpecialObject(obj);
-	}
+	//else if (dynamic_cast<CardItem*>(obj)) {
+	//	this->AddSpecialObject(obj);
+	//}
 	else {
 		obj->id = objID;
 		Unit* unit = new Unit(this->grid, obj, objRow, objCol);
@@ -390,8 +390,8 @@ void CPlayScene::Update(DWORD dt)
 
 	GetObjectFromGrid();
 
-	
-	
+
+
 
 	for (size_t i = 0;i < objects.size(); i++) {
 		coObjects.push_back(objects[i]);
@@ -406,7 +406,7 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(objInPipe[i]);
 	}
 
-	
+
 	//for (size_t i = 0; i < objects.size(); i++)
 	//{
 	//	if (!objects[i]->GetIsDestroy())
@@ -444,7 +444,7 @@ void CPlayScene::Update(DWORD dt)
 	//for (size_t i = 0; i < mObjects.size(); i++) {
 	//	mObjects[i]->Update(dt, &coObjects);
 	//}
-	
+
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 	SetCam(player->x, player->y, dt);

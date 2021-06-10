@@ -292,6 +292,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					HandleBasicMarioDie();
 				}
 			}
+			if (dynamic_cast<CardItem*>(e->obj)) {
+				CardItem* card = dynamic_cast<CardItem*>(e->obj);
+				if (e->ny != 0 || e->nx != 0) {
+					card->SetAppear(false);
+					card->isDestroyed = true;
+					AddCard(card->state - 1);
+				}
+			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);

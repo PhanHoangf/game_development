@@ -265,6 +265,8 @@ public:
 	int marioScore = 0;
 	int coin = 0;
 	bool isFlapping = false;
+	vector<int> cards;
+	
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -319,4 +321,5 @@ public:
 
 	void AddScore(float x, float y, int score);
 	void AddCoin() { this->coin++; }
+	void AddCard(int cardId) { cards.push_back(cardId); }
 };

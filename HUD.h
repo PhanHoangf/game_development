@@ -54,6 +54,8 @@
 #define SPRITE_FONT_Y_ID				50047
 #define SPRITE_FONT_Z_ID				50048
 
+#define CARD_ANI_ID	57
+
 class HUD :public CGameObject {
 	CMario* mario;
 
@@ -64,6 +66,10 @@ class HUD :public CGameObject {
 	vector<LPSPRITE> lifeSprites;
 	vector<LPSPRITE> moneySprites;
 	vector<LPSPRITE> scoreSprites;
+	LPSPRITE cardSprites;
+	vector<int> cards;
+	CAnimationSet* TakenCards = NULL;
+
 
 	int marioLife = 4;
 	int score = 0;
@@ -73,6 +79,8 @@ class HUD :public CGameObject {
 
 	int type_hud;
 
+	bool isTakingCard = false;
+	DWORD startTakingCard = 0;
 public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	HUD(int type_hud = 0);
@@ -84,4 +92,6 @@ public:
 	vector<LPSPRITE> StringToSprite(string str);
 	void AddScore();
 	void AddCoin();
+	void RenderCard();
+	void AddCard();
 };

@@ -16,6 +16,8 @@
 #define HUD_TIME_MAX	3
 #define HUD_SCORE_MAX	7
 
+#define HUD_HEIGHT 32
+
 void HUD::initFonts() {
 	CSprites* sprites = CSprites::GetInstance();
 	fonts.insert(make_pair('0', sprites->Get(SPRITE_FONT_0_ID)));
@@ -81,6 +83,8 @@ vector<LPSPRITE> HUD::StringToSprite(string str)
 HUD::HUD(int typeHUD) {
 	initFonts();
 	playerSprite = CSprites::GetInstance()->Get(SPRITE_ICONMARIO_ID);
+	cardSprites = CSprites::GetInstance()->Get(50059);
+	TakenCards = CAnimationSets::GetInstance()->Get(CARD_ANI_SET_ID);
 }
 
 void HUD::Render() {
@@ -92,13 +96,16 @@ void HUD::Render() {
 		moneySprites[i]->Draw(x + FONT_BBOX_WIDTH * i + HUD_DIFF_MONEY, y + HUD_DIFF_FIRST_ROW);
 	for (unsigned int i = 0; i < lifeSprites.size(); i++)
 		lifeSprites[i]->Draw(x + FONT_BBOX_WIDTH * i + HUD_DIFF_LIFE, y + HUD_DIFF_SECOND_ROW);
-	for (unsigned int i = 0; i < scoreSprites.size(); i++)
+	for (unsigned int i = 0; i < scoreSprites.size(); i++) {
 		scoreSprites[i]->Draw(x + FONT_BBOX_WIDTH * i + HUD_DIFF_SCORE, y + HUD_DIFF_SECOND_ROW);
+	}
+	RenderCard();
 }
 
 void HUD::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	AddScore();
 	AddCoin();
+	AddCard();
 	time += dt;
 	remainTime = DEFAULT_TIME - time / 1000;
 
@@ -135,4 +142,37 @@ void HUD::AddCoin() {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	mario = currentScene->GetPlayer();
 	this->money = mario->coin;
+}
+
+void HUD::AddCard() {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	mario = currentScene->GetPlayer();
+	cards.clear();
+	if (mario->cards.size() > 0) {
+		for (int i = 0; i < mario->cards.size(); i++) {
+			int index = mario->cards[i];
+			cards.push_back(index);
+			if (startTakingCard == 0) {
+				isTakingCard = true;
+				startTakingCard = GetTickCount64();
+			}
+			if (GetTickCount64() - startTakingCard > 1000) {
+				isTakingCard = false;
+			}
+		}
+	}
+}
+
+void HUD::RenderCard() {
+	int index = -1;
+	if (cards.size() > 0) {
+		int limit = cards.size();
+		for (int i = 0; i < limit; i++) {
+			if (!isTakingCard) {
+				index = cards[i] + 3;
+			}
+			else index = cards[i];
+			TakenCards->at(index)->Render(x + HUD_DIFF_CARD + i * 24, y + HUD_DIFF_SECOND_ROW - HUD_DIFF_FIRST_ROW);
+		}
+	}
 }
