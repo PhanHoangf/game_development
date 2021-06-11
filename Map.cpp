@@ -27,11 +27,7 @@ void CMap::DrawMap() {
 	for (int currentRow = 0; currentRow < TotalRowsOfMap; currentRow++) {
 		for (int currentColumn = firstColumn; currentColumn < TotalColumnsOfMap; currentColumn++) {
 			int spriteMapIndex = TileMap[currentRow][currentColumn] - 1;
-			if (spriteMapIndex == 4292) {
-				continue;
-				//Tiles.at(spriteMapIndex)->Draw(currentColumn * TILE_WIDTH, currentRow * TILE_HEIGHT);
-			}
-			else Tiles.at(spriteMapIndex)->Draw(currentColumn * TILE_WIDTH, currentRow * TILE_HEIGHT);
+			Tiles.at(spriteMapIndex)->Draw(currentColumn * TILE_WIDTH, currentRow * TILE_HEIGHT);
 		}
 	}
 }

@@ -1,0 +1,2 @@
+#totalCols	totalRows	mapWidth	mapHeight
+19	4	2544	432
