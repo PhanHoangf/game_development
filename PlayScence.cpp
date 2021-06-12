@@ -245,7 +245,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CardItem();
 		break;
 	}
-						 break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;

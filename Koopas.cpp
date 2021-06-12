@@ -15,7 +15,8 @@ CKoopas::CKoopas(int tag)
 	this->start_tag = tag;
 	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
 		this->nx = -1;
-		this->SetState(KOOPAS_STATE_INACTIVE);
+		//this->SetState(KOOPAS_STATE_INACTIVE);
+		this->SetState(KOOPAS_STATE_WALKING);
 	}
 	else this->SetState(KOOPAS_STATE_WALKING);
 }
@@ -38,10 +39,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
 
-	if (state == KOOPAS_STATE_INACTIVE && mario->x <= 1200.0f) return;
+	/*if (state == KOOPAS_STATE_INACTIVE && mario->x <= 1200.0f) return;
 	if (state == KOOPAS_STATE_INACTIVE && mario->x >= 1200.0f) {
 		SetState(KOOPAS_STATE_WALKING);
-	}
+	}*/
 
 	if (GetTickCount() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
 		shell_start = 0;
