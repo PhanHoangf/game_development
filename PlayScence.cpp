@@ -241,8 +241,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			int scene_id = atoi(tokens[6].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
 		}*/
-	case OBJECT_TYPE_CARD: {
+	/*case OBJECT_TYPE_CARD: {
 		obj = new CardItem();
+		break;
+	}*/
+	case OBJECT_TYPE_MUSICAL_BRICK: {
+		obj = new MusicBrick(x, y);
 		break;
 	}
 	default:

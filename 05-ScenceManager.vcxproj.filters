@@ -171,6 +171,9 @@
     <ClCompile Include="CardItem.cpp">
       <Filter>GameObject\Items</Filter>
     </ClCompile>
+    <ClCompile Include="MusicBrick.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="CardItem.h">
       <Filter>GameObject\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicBrick.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

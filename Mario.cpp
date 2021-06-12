@@ -300,6 +300,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					AddCard(card->state - 1);
 				}
 			}
+			if (dynamic_cast<MusicBrick*>(e->obj)) {
+				MusicBrick* msBrick = dynamic_cast<MusicBrick*>(e->obj);
+				vx = 0;
+				vy = 0;
+				if (e->ny < 0) {
+					msBrick->SetState(MUSIC_BRICK_STATE_DOWN);
+					msBrick->SetIsPushedDown(true);
+				}
+				if (e->ny > 0) {
+					msBrick->SetState(MUSIC_BRICK_STATE_UP);
+					msBrick->SetIsPushedUp(true);
+				}
+			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);

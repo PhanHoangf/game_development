@@ -1,4 +1,4 @@
-﻿  PlayScence.cpp
+﻿  Mario.cpp
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(288,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(290,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(291,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
@@ -19,24 +19,5 @@ D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlantFire.h(56,46): w
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlantFire.h(57,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlantFire.h(58,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Leaf.h(39,52): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(89,20): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(142,20): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(164,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(165,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(171,13): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(173,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(175,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(177,15): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(179,16): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(181,16): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(501,20): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(508,20): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(515,20): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(530,20): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(587,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(588,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(589,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(590,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(585,28): warning C4101: 'my': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(585,24): warning C4101: 'mx': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.cpp(966,33): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe
