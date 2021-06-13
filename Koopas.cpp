@@ -7,6 +7,7 @@
 #include "PlayScence.h"
 #include "QuestionBrick.h"
 #include "BreakableBrick.h"
+#include "Coin.h"
 
 CKoopas::CKoopas(int tag)
 {
@@ -177,7 +178,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CBrick* object = dynamic_cast<CBrick*>(e->obj);
 				object->GetBoundingBox(oLeft, oTop, oRight, oBottom);
 				if (e->ny < 0) {
-					vy = 0;
+					this->vy = 0;
 					if (state == KOOPAS_STATE_SHELL_UP)
 						vx = 0;
 					if (tag == KOOPAS_RED && state == KOOPAS_STATE_WALKING)
@@ -228,6 +229,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				BreakableBrick* tmp = dynamic_cast<BreakableBrick*>(e->obj);
 				tmp->Break();
 				mario->AddScore(x, y, 150);
+			}
+			if (dynamic_cast<Coin*>(e->obj)) {
+				x += dx;
 			}
 		}
 	}

@@ -95,7 +95,6 @@ void Grid::Move(Unit* unit, float x, float y) {
 	}
 
 	// If it's the head of a list, remove it.
-		//DebugOut(L"IN 7 \n");
 	if (_cells[oldRow][oldCol] == unit)
 	{
 		_cells[oldRow][oldCol] = unit->_next;

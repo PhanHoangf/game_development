@@ -6,7 +6,7 @@
 #define MUSIC_BRICK_BBOX_WIDTH 16
 
 #define MUSIC_BRICK_SPEED 0.05f
-#define MUSIC_BRICK_SPEED_UP 0.025f
+#define MUSIC_BRICK_SPEED_UP 0.0001f
 #define MUSIC_PUSH_MAX_HEIGHT	10
 
 #define MUSIC_BRICK_STATE_IDLE 0
@@ -36,4 +36,6 @@ public:
 	
 	void StartPushedUp() { isPushedUp = true; isGoDown = false; }
 	void StopPushedUp() { isPushedUp = false; isGoDown = true; }
+
+	bool GetIsGoUp() { return this->isGoUp; }
 };

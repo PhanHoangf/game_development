@@ -58,6 +58,9 @@
     <Filter Include="GameObject\Items">
       <UniqueIdentifier>{580b2f51-d174-4198-bd08-ef3b77ce76a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Enemies\BoomerangKoopas">
+      <UniqueIdentifier>{8ac1de6c-9aa8-4b6c-91de-247434a69b0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -174,6 +177,9 @@
     <ClCompile Include="MusicBrick.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="BoomerangKoopas.cpp">
+      <Filter>GameObject\Enemies\BoomerangKoopas</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -289,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="MusicBrick.h">
       <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BoomerangKoopas.h">
+      <Filter>GameObject\Enemies\BoomerangKoopas</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

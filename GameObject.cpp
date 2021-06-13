@@ -148,6 +148,20 @@ void CGameObject::CalcPotentialCollisions(
 	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
 }
 
+bool CGameObject::IsInViewPort() {
+	CGame* game = CGame::GetInstance();
+	float camX, camY;
+
+	camX = game->GetCamPosX();
+	camY = game->GetCamPosY();
+
+	bool xIsInViewPort = x < camX + game->GetScreenWidth() && x >= camX;
+	//bool yIsInViewPort = y < camY&& y >= ;
+	bool yIsInViewPort = y >= camY && y < camY + game->GetScreenHeight();
+
+	return xIsInViewPort && yIsInViewPort;
+}
+
 void CGameObject::FilterCollision(
 	vector<LPCOLLISIONEVENT>& coEvents,
 	vector<LPCOLLISIONEVENT>& coEventsResult,

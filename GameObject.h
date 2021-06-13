@@ -112,6 +112,7 @@ public:
 		GetBoundingBox(left, top, right, bottom);
 		return right - left;
 	}
+	bool IsInViewPort();
 	~CGameObject();
 };
 

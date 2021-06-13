@@ -241,10 +241,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			int scene_id = atoi(tokens[6].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
 		}*/
-	/*case OBJECT_TYPE_CARD: {
-		obj = new CardItem();
-		break;
-	}*/
+		/*case OBJECT_TYPE_CARD: {
+			obj = new CardItem();
+			break;
+		}*/
 	case OBJECT_TYPE_MUSICAL_BRICK: {
 		obj = new MusicBrick(x, y);
 		break;
@@ -432,12 +432,22 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		if (objects[i]->IsInViewPort()) {
+			objects[i]->Update(dt, &coObjects);
+		}
+		else {
+			objects[i]->Update(0, &coObjects);
+		}
 	}
 
 	for (size_t i = 0; i < objInPipe.size(); i++)
 	{
-		objInPipe[i]->Update(dt, &coObjects);
+		if (objInPipe[i]->IsInViewPort()) {
+			objInPipe[i]->Update(dt, &coObjects);
+		}
+		else {
+			objInPipe[i]->Update(0, &coObjects);
+		}
 	}
 
 	for (size_t i = 0;i < specialObjects.size(); i++) {

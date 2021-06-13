@@ -43,10 +43,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	//DebugOut(L"mario->x: %f\n", x);
+	DebugOut(L"mario->x: %f\n", x);
 
 	// Simple fall down
-	vy += ay * dt;
+	if (!isJumpOnMusicBrick)
+		vy += ay * dt;
 	vx += ax * dt;
 	//DebugOut(L"vy::%f\n", vy);
 
@@ -95,10 +96,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-		// block every object first!
+		//how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
+	/*	if (rdx != 0 && rdx != dx)
+			x += nx * abs(rdx);*/
+			// block every object first!
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 		//if (nx != 0) vx = 0;
@@ -303,14 +304,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<MusicBrick*>(e->obj)) {
 				MusicBrick* msBrick = dynamic_cast<MusicBrick*>(e->obj);
 				vx = 0;
-				vy = 0;
+				if (e->nx != 0) {
+					vx = 0;
+				}
 				if (e->ny < 0) {
-					msBrick->SetState(MUSIC_BRICK_STATE_DOWN);
-					msBrick->SetIsPushedDown(true);
+					if (msBrick->GetState() == MUSIC_BRICK_STATE_IDLE && !msBrick->GetIsGoUp()) {
+						msBrick->SetState(MUSIC_BRICK_STATE_DOWN);
+						msBrick->SetIsPushedDown(true);
+					}
 				}
 				if (e->ny > 0) {
 					msBrick->SetState(MUSIC_BRICK_STATE_UP);
 					msBrick->SetIsPushedUp(true);
+					vy = 0;
+					ay = MARIO_GRAVITY;
+					DebugOut(L"IN 2\n");
 				}
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))

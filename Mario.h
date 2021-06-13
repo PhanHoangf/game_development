@@ -254,6 +254,7 @@ class CMario : public CGameObject
 	bool isHolding = false;
 	int runningStack;
 	float tempY;
+	bool isJumpOnMusicBrick = false;
 
 
 	Tail* tail;
@@ -266,7 +267,7 @@ public:
 	int coin = 0;
 	bool isFlapping = false;
 	vector<int> cards;
-	
+
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
@@ -278,6 +279,7 @@ public:
 	void SetDirection(int direct) { direction = direct; }
 	void SetHolding(bool hold) { isHolding = hold; }
 	void SetIsReadyToHold(bool hold) { isReadyToHold = hold; }
+	void SetIsJumpOnMusicBrick(bool isJump) { isJumpOnMusicBrick = isJump; }
 
 	bool GetIsOnGround() { return isOnGround; }
 	int GetLevel() { return level; }
