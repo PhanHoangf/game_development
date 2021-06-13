@@ -166,7 +166,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	int ani_set_id = atoi(tokens[3].c_str());
 
-	int  tag = 0, option_tag_1 = 0, option_tag_2 = 0;
+	int  tag = 0, option_tag_1 = 0, option_tag_2 = 0, option_tag_3 = 0;
 	if (tokens.size() >= 5)
 		tag = atof(tokens[4].c_str());
 	if (tokens.size() >= 6)
@@ -203,7 +203,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new RedGoomba();
 		break;
 	case OBJECT_TYPE_BRICK:
-		obj = new CBrick();
+		obj = new CBrick(x, y, option_tag_1, option_tag_2);
 		break;
 	case OBJECT_TYPE_COINT: obj = new Coin(); break;
 	case OBJECT_QUESTION_BRICK:

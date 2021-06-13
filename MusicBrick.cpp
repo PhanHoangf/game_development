@@ -66,10 +66,14 @@ void MusicBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	GetBoundingBox(oLeft, oTop, oRight, oBottom);
 
 	if (isColliding(mLeft, mTop, mRight, mBottom)) {
-		DebugOut(L"Mario->vy::%f\n", mario->vy);
+		//DebugOut(L"Mario->vy::%f\n", mario->vy);
 		if (state == MUSIC_BRICK_STATE_UP) {
 			mario->SetIsJumpOnMusicBrick(true);
-			mario->vy = -0.6;
+			mario->vy = -0.5f;
+		}
+		if (mario->state == MARIO_STATE_JUMP) {
+			DebugOut(L"MARIO_JUMP\n");
+			mario->vy = -0.6f;
 		}
 	}
 	else {

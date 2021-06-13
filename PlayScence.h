@@ -51,9 +51,11 @@ protected:
 
 	vector<LPGAMEOBJECT> objects;  // Static objects
 	vector<LPGAMEOBJECT> mObjects; //! Moving objects
-	vector<Unit*> objectGrid;
 	vector<LPGAMEOBJECT> specialObjects; //! Coin in brick 
 	vector<LPGAMEOBJECT> objInPipe;
+
+	vector<Unit*> objectGrid;
+
 	CMap* currentMap;
 	HUD* hud;
 
@@ -84,6 +86,8 @@ public:
 	void AddSpecialObject(LPGAMEOBJECT obj) { this->specialObjects.push_back(obj); }
 	void AddMovingObject(LPGAMEOBJECT obj) { this->mObjects.push_back(obj); }
 	void deleteLastObject() { this->objects.pop_back(); }
+
+	Grid* GetGrid() { if (this->grid != NULL) return this->grid; }
 	//friend class CPlayScenceKeyHandler;
 };
 

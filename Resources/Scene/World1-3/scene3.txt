@@ -1128,7 +1128,7 @@ Resources\Tilemap\world1-3.txt
 Resources/Scene/World1-3/world1-3_GridInfo.txt
 [OBJECTS]
 #Resources\Scene\World1-1\world1-1_Grid.txt
-# type	x	y	ani_set_id	tag	tag1	tag2	tag4	id	row	col
+# type	x	y	ani_set_id	tag	tag1	tag2	tag3	id	row	col
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4 = Block
 # [MARIO]
 #0	80	384	1
@@ -1333,7 +1333,7 @@ Resources/Scene/World1-3/world1-3_GridInfo.txt
 1	832	369	46	46	0	0	0	192	2	6
 1	832	385	46	46	0	0	0	193	2	6
 1	832	401	46	46	0	0	0	194	3	6
-1	960	369	46	46	0	0	0	195	2	7
+1	960	369	46	46	2	3	0	195	2	7
 1	960	385	46	46	0	0	0	196	2	7
 1	960	401	46	46	0	0	0	197	3	7
 1	1088	353	46	46	0	0	0	198	2	8

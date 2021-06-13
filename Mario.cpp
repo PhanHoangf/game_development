@@ -43,7 +43,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	DebugOut(L"mario->x: %f\n", x);
+	//DebugOut(L"mario->x: %f\n", x);
 
 	// Simple fall down
 	if (!isJumpOnMusicBrick)
@@ -122,6 +122,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			e->obj->GetBoundingBox(oLeft, oTop, oRight, oBottom);
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj)) {
+				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				if (e->ny < 0) {
 					isOnGround = true; vy = 0;
 				}
@@ -135,6 +136,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				if (e->nx != 0 && ceil(mBottom) != oTop) {
 					vx = 0;
+				}
+				if (e->nx < 0 && brick != NULL && ceil(mBottom) != oTop) {
+					vx = 0;
+					brick->SetState(BRICK_STATE_HIT);
 				}
 			}
 			if (dynamic_cast<Block*>(e->obj))

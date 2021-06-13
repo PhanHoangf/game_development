@@ -174,8 +174,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				//DebugOut(L"[KOOPAS] kx: %f ky: %f bx: %f by: %f\n",x,y, e->obj->x, e->obj->y);
 			}
-			if (dynamic_cast<CBrick*>(e->obj)) {
-				CBrick* object = dynamic_cast<CBrick*>(e->obj);
+			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<MusicBrick*>(e->obj)) {
+				LPGAMEOBJECT object = NULL;
+				if (dynamic_cast<CBrick*>(e->obj)) object = dynamic_cast<CBrick*>(e->obj);
+				if (dynamic_cast<MusicBrick*>(e->obj)) object = dynamic_cast<MusicBrick*>(e->obj);
 				object->GetBoundingBox(oLeft, oTop, oRight, oBottom);
 				if (e->ny < 0) {
 					this->vy = 0;

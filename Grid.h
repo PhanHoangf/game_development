@@ -8,7 +8,7 @@ class Unit {
 	friend class Grid;
 
 public:
-	Unit(Grid* grid, float x, float y);
+	Unit(Grid* grid, LPGAMEOBJECT obj, float x, float y, int typeAdd);
 	Unit(Grid* grid, LPGAMEOBJECT obj, int row, int col);
 	void Move(float x, float y);
 	LPGAMEOBJECT GetObject() { return _obj; }
@@ -32,7 +32,7 @@ public:
 			}
 		}
 	}
-	Grid(int rows, int cols, int mapWidth, int mapHeight){
+	Grid(int rows, int cols, int mapWidth, int mapHeight) {
 		totalRows = rows;
 		totalCols = cols;
 		this->mapWidth = mapWidth;
