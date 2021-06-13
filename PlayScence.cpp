@@ -173,6 +173,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		option_tag_1 = atof(tokens[5].c_str());
 	if (tokens.size() >= 7)
 		option_tag_2 = atof(tokens[6].c_str());
+	if (tokens.size() >= 8)
+		option_tag_3 = atof(tokens[7].c_str());
 	if (tokens.size() >= 9)
 		objID = atof(tokens[8].c_str());
 	if (tokens.size() >= 10)
@@ -203,14 +205,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new RedGoomba();
 		break;
 	case OBJECT_TYPE_BRICK:
-		obj = new CBrick(x, y, option_tag_1, option_tag_2);
+		obj = new CBrick(x, y, option_tag_1, option_tag_2, option_tag_3);
 		break;
 	case OBJECT_TYPE_COINT: obj = new Coin(); break;
 	case OBJECT_QUESTION_BRICK:
 		obj = new QuestionBrick(option_tag_1, option_tag_2);
 		break;
 	case OBJECT_TYPE_BREAKABLEBRICK:
-		obj = new BreakableBrick();
+		obj = new BreakableBrick(x, y, option_tag_1, option_tag_2, option_tag_3);
 		break;
 	case OBJECT_TYPE_KOOPAS:
 		obj = new CKoopas(tag);
@@ -245,6 +247,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CardItem();
 			break;
 		}*/
+	case OBJECT_TYPE_BOOMERANG_KOOPAS:
+		obj = new BoomerangKoopas(x, y);
+		break;
 	case OBJECT_TYPE_MUSICAL_BRICK: {
 		obj = new MusicBrick(x, y);
 		break;

@@ -21,11 +21,12 @@
 #include "Leaf.h"
 #include "Point.h"
 #include "PlayScence.h"
+#include "BreakableBrick.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	//level = MARIO_LEVEL_BIG;
-	level = MARIO_LEVEL_SMALL;
+	level = MARIO_LEVEL_BIG;
+	//level = MARIO_LEVEL_SMALL;
 	//level = MARIO_LEVEL_TAIL;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
@@ -141,6 +142,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					vx = 0;
 					brick->SetState(BRICK_STATE_HIT);
 				}
+				if (e->ny > 0 && brick != NULL) {
+					vy = 0;
+					brick->SetState(BRICK_STATE_HIT);
+				}
 			}
 			if (dynamic_cast<Block*>(e->obj))
 			{
@@ -187,6 +192,39 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						x += dx;
 					}
 				}
+			} // if Goomba
+			if (dynamic_cast<BoomerangKoopas*>(e->obj)) // if e->obj is Goomba 
+			{
+				BoomerangKoopas* bKoopas = dynamic_cast<BoomerangKoopas*>(e->obj);
+				// jump on top >> kill Goomba and deflect a bit 
+				if (e->ny < 0)
+				{
+					if (bKoopas->GetState() != BOOMERANG_KOOPAS_STATE_DIE)
+					{
+						bKoopas->SetState(BOOMERANG_KOOPAS_STATE_DIE);
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+						AddScore(x, y, 100);
+					}
+				}
+				//if (e->nx != 0) {
+				//	if (untouchable != 1) {
+				//		if (level == MARIO_LEVEL_SMALL) {
+				//			SetState(MARIO_STATE_DIE);
+				//		}
+				//		//! 1: Set back to level small -> 2: start untouchable
+				//		if (level == MARIO_LEVEL_BIG) {
+				//			SetLevel(MARIO_LEVEL_SMALL);
+				//			StartUntouchable();
+				//		}
+				//		if (level == MARIO_LEVEL_TAIL) {
+				//			SetLevel(MARIO_LEVEL_BIG);
+				//			StartUntouchable();
+				//		}
+				//	}
+				//	else {
+				//		x += dx;
+				//	}
+				//}
 			} // if Goomba
 			if (dynamic_cast<CKoopas*>(e->obj)) {
 				CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
@@ -326,6 +364,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					DebugOut(L"IN 2\n");
 				}
 			}
+			/*if (dynamic_cast<BreakableBrick*>(e->obj)) {
+				BreakableBrick* bBrick = dynamic_cast<BreakableBrick*>(e->obj);
+				if (e->ny > 0) {
+					bBrick->SetState()
+				}
+			}*/
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);

@@ -13,6 +13,7 @@
 #include "Grid.h"
 #include "CardItem.h"
 #include "MusicBrick.h"
+#include "BoomerangKoopas.h"
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_TEXTURES 2
@@ -38,6 +39,7 @@
 #define OBJECT_TYPE_GOOMBA_RED 77
 #define OBJECT_TYPE_CARD	57
 #define OBJECT_TYPE_MUSICAL_BRICK	150
+#define OBJECT_TYPE_BOOMERANG_KOOPAS	160
 
 //#define OBJECT_TYPE_PORTAL	50
 

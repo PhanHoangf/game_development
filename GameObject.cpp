@@ -155,7 +155,7 @@ bool CGameObject::IsInViewPort() {
 	camX = game->GetCamPosX();
 	camY = game->GetCamPosY();
 
-	bool xIsInViewPort = x < camX + game->GetScreenWidth() && x >= camX;
+	bool xIsInViewPort = x < camX + game->GetScreenWidth() && x >= camX - GetWidth();
 	//bool yIsInViewPort = y < camY&& y >= ;
 	bool yIsInViewPort = y >= camY && y < camY + game->GetScreenHeight();
 

@@ -11,6 +11,7 @@ CBrick::CBrick(float x, float y, int type, int item, int totalItems) :CGameObjec
 	if (totalItems == 0 && item != 0) {
 		this->totalItems = 1;
 	}
+	this->totalItems = totalItems;
 }
 
 void CBrick::Render()
@@ -36,7 +37,6 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	}
 	if (state == BRICK_STATE_HIT && isPushed) {
 		if (this->type == PUSH_TO_RIGHT) {
-			DebugOut(L"x - start_x::%f\n", x - start_x);
 			if (x - start_x >= PUSH_MAX) {
 				StopPushed();
 				SetState(BRICK_STATE_LEFT);
@@ -44,6 +44,7 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		}
 		if (this->type == PUSH_UP) {
 			if (start_y - y >= PUSH_MAX) {
+				CreateItem(this->item);
 				StopPushed();
 				SetState(BRICK_STATE_DOWN);
 			}
@@ -53,7 +54,7 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		if (x <= start_x) {
 			x = start_x;
 			SetState(BRICK_STATE_IDLE);
-			CreateItem(this->item);
+ 			CreateItem(this->item);
 		}
 	}
 	if (state == BRICK_STATE_DOWN) {
@@ -70,8 +71,8 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 }
 
 void CBrick::CreateItem(int typeItem) {
-	if (totalItems == 0) return;
-	totalItems--;
+	if (this->totalItems == 0) return;
+	this->totalItems--;
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CGameObject* object = SetUpItem(typeItem);
 
@@ -81,6 +82,14 @@ void CBrick::CreateItem(int typeItem) {
 		lObject->SetPosition(x, y);
 		lObject->SetState(LEAF_STATE_UP);
 		Unit* unit = new Unit(currentScene->GetGrid(), lObject, lObject->x, lObject->y, 0);
+	}
+
+	if (dynamic_cast<Coin*>(object)) {
+		Coin* cObject = dynamic_cast<Coin*>(object);
+		cObject->SetAppear(true);
+		cObject->SetPosition(x, y);
+		cObject->SetState(COIN_STATE_UP);
+		Unit* unit = new Unit(currentScene->GetGrid(), cObject, cObject->x, cObject->y, 0);
 	}
 
 }
