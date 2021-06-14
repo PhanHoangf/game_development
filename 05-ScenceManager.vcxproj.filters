@@ -180,6 +180,9 @@
     <ClCompile Include="BoomerangKoopas.cpp">
       <Filter>GameObject\Enemies\BoomerangKoopas</Filter>
     </ClCompile>
+    <ClCompile Include="Boomerang.cpp">
+      <Filter>GameObject\Enemies\BoomerangKoopas</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -297,6 +300,9 @@
       <Filter>GameObject</Filter>
     </ClInclude>
     <ClInclude Include="BoomerangKoopas.h">
+      <Filter>GameObject\Enemies\BoomerangKoopas</Filter>
+    </ClInclude>
+    <ClInclude Include="boomerang.h">
       <Filter>GameObject\Enemies\BoomerangKoopas</Filter>
     </ClInclude>
   </ItemGroup>

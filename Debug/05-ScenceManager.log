@@ -1,5 +1,5 @@
 ﻿  BoomerangKoopas.cpp
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\BoomerangKoopas.h(47,48): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\BoomerangKoopas.h(53,48): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(290,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(292,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(293,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
@@ -11,4 +11,5 @@ D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C42
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(65,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(66,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(71,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.h(92): warning C4715: 'CPlayScene::GetGrid': not all control paths return a value
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe

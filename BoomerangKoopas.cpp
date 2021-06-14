@@ -39,13 +39,27 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		CalcPotentialCollisions(coObjects, coEvents);
 	}
 
+	if (GetTickCount64() - start_idle >= IDLE_TIME) {
+		StopIdle();
+	}
 
-	if (x < start_x) {
+	if (x >= start_x && !isIdle) {
 		SetState(BOOMERANG_KOOPAS_STATE_WALKING);
 	}
 
+	if (x < start_x) {
+		x = start_x;
+		StartIdle();
+		vx = 0;
+	}
 
-	if (x + GetWidth() >= LIMIT_X) {
+	if (x + GetWidth() > LIMIT_X) {
+		x = LIMIT_X - GetWidth();
+		StartIdle();
+		vx = 0;
+	}
+
+	if (x == LIMIT_X - GetWidth() && !isIdle) {
 		SetState(BOOMERANG_KOOPAS_STATE_WALKING);
 	}
 
@@ -99,7 +113,7 @@ void BoomerangKoopas::SetState(int state) {
 		if (x <= start_x) {
 			this->vx = BOOMERANG_KOOPAS_SPEED;
 		}
-		if (x + GetWidth() >= LIMIT_X) {
+		if (x == LIMIT_X - GetWidth()) {
 			this->vx = -BOOMERANG_KOOPAS_SPEED;
 		}
 
