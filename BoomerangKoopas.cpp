@@ -22,43 +22,31 @@ void BoomerangKoopas::Render() {
 }
 
 void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+	DebugOut(L"vx::%f\n", this->vx);
 
 
 	CGameObject::Update(dt, coObjects);
+
+
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	vy += BOOMERANG_KOOPAS_GRAVITY * dt;
-	DebugOut(L"vx::%f\n", vx);
 	coEvents.clear();
 
 	if (state != BOOMERANG_KOOPAS_STATE_DIE) {
 		CalcPotentialCollisions(coObjects, coEvents);
 	}
 
-	if (GetTickCount64() - start_idle > IDLE_TIME) {
-		DebugOut(L"IN\n");
-		StopIdle();
+
+	if (x < start_x) {
 		SetState(BOOMERANG_KOOPAS_STATE_WALKING);
 	}
-	else {
-		SetState(BOOMERANG_KOOPAS_STATE_IDLE);
-	}
 
-	if (x <= start_x) {
-		x = start_x;
-		this->vx = BOOMERANG_KOOPAS_SPEED;
-		if (!isIdle) {
-			StartIdle();
-		}
-	}
+
 	if (x + GetWidth() >= LIMIT_X) {
-		x = LIMIT_X - BOOMERANG_KOOPAS_BBOX_WIDTH;
-		this->vx = -BOOMERANG_KOOPAS_SPEED;
-		if (!isIdle) {
-			StartIdle();
-		}
+		SetState(BOOMERANG_KOOPAS_STATE_WALKING);
 	}
 
 	if (coEvents.size() == 0)
@@ -103,15 +91,19 @@ void BoomerangKoopas::SetState(int state) {
 		vx = 0;
 		break;
 	case BOOMERANG_KOOPAS_STATE_WALKING:
-
 		if (x > mario->x)
 			this->nx = -1;
 		else
 			this->nx = 1;
 
-		vx = BOOMERANG_KOOPAS_SPEED;
-		break;
+		if (x <= start_x) {
+			this->vx = BOOMERANG_KOOPAS_SPEED;
+		}
+		if (x + GetWidth() >= LIMIT_X) {
+			this->vx = -BOOMERANG_KOOPAS_SPEED;
+		}
 
+		break;
 	case BOOMERANG_KOOPAS_STATE_DIE:
 		vy = -BOOMERANG_KOOPAS_DIE_REFLECT_SPEED;
 		vx = 0;
@@ -119,4 +111,16 @@ void BoomerangKoopas::SetState(int state) {
 	default:
 		break;
 	}
+}
+
+void BoomerangKoopas::ThrowBoomerang() {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+
+	this->boomerang = new Boomerang(this->x, this->y);
+	LPANIMATION_SET ani_set = animation_sets->Get(BOOMERANG_ANI_SET_ID);
+	this->boomerang->SetAnimationSet(ani_set);
+	this->boomerang->SetPosition(this->x, this->y);
+	this->boomerang->SetIsAppear(true);
+	new Unit(currentScene->GetGrid(), this->boomerang, this->boomerang->x, this->boomerang->y, 0);
 }

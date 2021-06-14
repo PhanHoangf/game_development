@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "boomerang.h"
 
 #define BOOMERANG_KOOPAS_BBOX_WIDTH 16
 #define BOOMERANG_KOOPAS_BBOX_HEIGHT 24
@@ -18,7 +19,9 @@
 
 #define LIMIT_X 397.0f
 
-#define IDLE_TIME 200
+#define IDLE_TIME 500
+
+#define BOOMERANG_ANI_SET_ID	90
 
 class BoomerangKoopas : public CGameObject {
 	bool isReadyToThrow = false;
@@ -29,6 +32,9 @@ class BoomerangKoopas : public CGameObject {
 
 	DWORD start_idle = 0;
 	bool isIdle = false;
+
+	Boomerang* boomerang = NULL;
+
 public:
 	BoomerangKoopas(float x, float y);
 
@@ -46,4 +52,6 @@ public:
 
 	void StartIdle() { start_idle = GetTickCount64(); isIdle = true; }
 	void StopIdle() { start_idle = 0; isIdle = false; }
+
+	void ThrowBoomerang();
 };
