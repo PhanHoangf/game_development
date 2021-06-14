@@ -517,12 +517,7 @@ void CPlayScene::Render()
 
 	player->Render();
 
-	for (int i = 0; i < specialObjects.size(); i++)
-	{
-		if (!specialObjects[i]->isDestroyed) {
-			specialObjects[i]->Render();
-		}
-	}
+	
 
 	for (int i = 0; i < objInPipe.size(); i++)
 	{
@@ -535,6 +530,13 @@ void CPlayScene::Render()
 	{
 		if (!objects[i]->isDestroyed) {
 			objects[i]->Render();
+		}
+	}
+
+	for (int i = 0; i < specialObjects.size(); i++)
+	{
+		if (!specialObjects[i]->isDestroyed) {
+			specialObjects[i]->Render();
 		}
 	}
 

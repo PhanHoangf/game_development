@@ -13,9 +13,12 @@
 #define BOOMERANG_KOOPAS_STATE_WALKING 1
 #define BOOMERANG_KOOPAS_STATE_DIE 2
 #define BOOMERANG_KOOPAS_STATE_IDLE 0
+#define BOOMERANG_KOOPAS_STATE_THROW	3
 
-#define BOOMERANG_KOOPAS_ANI_RIGHT	1
-#define BOOMERANG_KOOPAS_ANI_LEFT	0
+#define BOOMERANG_KOOPAS_ANI_RIGHT	0
+#define BOOMERANG_KOOPAS_ANI_LEFT	1
+#define BOOMERANG_KOOPAS_ANI_THROW_RIGHT	2
+#define BOOMERANG_KOOPAS_ANI_THROW_LEFT	3
 
 #define LIMIT_X 397.0f
 
@@ -23,9 +26,12 @@
 
 #define BOOMERANG_ANI_SET_ID	90
 
+#define MAX_BOOMERANG 2
+
 class BoomerangKoopas : public CGameObject {
 	bool isReadyToThrow = false;
 	bool isThrowingBoomerang = false;
+	bool isHoldingBoomerang = false;
 
 	bool isBoomerangComback = false;
 	float limit_x = 0.0f;
@@ -34,10 +40,14 @@ class BoomerangKoopas : public CGameObject {
 	bool isIdle = false;
 
 	Boomerang* boomerang = NULL;
+	float throwingPoint = 0.0f;
 
+	int currentBoomerang = 0;
+	vector<float> points;
+	vector<LPGAMEOBJECT> boomerangs;
 public:
 	BoomerangKoopas(float x, float y);
-
+	void SetThrowingPoint() { this->throwingPoint = this->start_x + BOOMERANG_KOOPAS_BBOX_WIDTH; }
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();
 
@@ -54,4 +64,7 @@ public:
 	void StopIdle() { start_idle = 0; isIdle = false; }
 
 	void ThrowBoomerang();
+	bool IsGoPassThrowPoint(float x);
+
+	void HoldBoomerang();
 };

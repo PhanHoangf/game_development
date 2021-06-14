@@ -1,12 +1,23 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Utils.h"
+#include "Brick.h"
+#include "Block.h"
 
 #define BOOMERANG_BBOX_WIDTH	16
 #define BOOMERANG_BBOX_HEIGHT	16
 
+#define BOOMERANG_STATE_IDLE	0
+#define BOOMERANG_STATE_THROW	1
+#define	BOOMERANG_STATE_COMEBACK	2
+
+#define BOOMERANG_ANI_IDLE_LEFT	1
+#define BOOMERANG_ANI_THROW_LEFT 0
+
 class Boomerang :public CGameObject {
 	bool isAppear = false;
+	float limitY = 0.0f;
 public:
 	Boomerang(float x, float y);
 
@@ -23,4 +34,6 @@ public:
 
 	void SetIsAppear(bool ap) { this->isAppear = ap; }
 	bool GetIsAppear() { return this->isAppear; }
+
+	void SetLimitBoomerangY(float y) { this->limitY = y - 24; }
 };
