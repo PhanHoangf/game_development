@@ -1,14 +1,17 @@
 #pragma once
 #include "GameObject.h"
+#include "Define.h"
 
 class CPlayer : public CGameObject {
 public:
 	int level = 0;
 
-	CPlayer(int level) { this->level = level; }
+public:
 
+	CPlayer(int level) { this->level = level; }
+	CPlayer() {}
 	virtual void RenderMarioSmall() = 0;
-	virtual void RenderMarioBig() = 0;
+	/*virtual void RenderMarioBig() = 0;
 	virtual void RenderMarioFire() = 0;
 	virtual void RenderMarioTanuki() = 0;
 
@@ -20,5 +23,8 @@ public:
 	virtual void SetStateMarioSmall(int state) = 0;
 	virtual void SetStateMarioBig(int state) = 0;
 	virtual void SetStateMarioFire(int state) = 0;
-	virtual void SetStateMarioTanuki(int state) = 0;
+	virtual void SetStateMarioTanuki(int state) = 0;*/
+
+	void SetLevel(int level) { this->level = level; }
+	virtual void SetState(int state);
 };

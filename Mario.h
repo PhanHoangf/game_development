@@ -282,7 +282,7 @@ public:
 	void SetIsJumpOnMusicBrick(bool isJump) { isJumpOnMusicBrick = isJump; }
 
 	bool GetIsOnGround() { return isOnGround; }
-	int GetLevel() { return level; }
+	int GetLevel() { return 0; }
 	bool GetIsHolding() { return isHolding; }
 	bool GetIsReadyToHold() { return isReadyToHold; }
 	int GetUntouchable() { return untouchable; }

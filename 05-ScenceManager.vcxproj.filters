@@ -61,6 +61,12 @@
     <Filter Include="GameObject\Enemies\BoomerangKoopas">
       <UniqueIdentifier>{8ac1de6c-9aa8-4b6c-91de-247434a69b0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{4135e6ff-003f-4781-ba25-a8a6e330c2ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\MarioSmall">
+      <UniqueIdentifier>{81e3864b-8c6b-47a6-a70b-d8c3236dbf5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -183,6 +189,12 @@
     <ClCompile Include="Boomerang.cpp">
       <Filter>GameObject\Enemies\BoomerangKoopas</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioSmall.cpp">
+      <Filter>Player\MarioSmall</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -304,6 +316,15 @@
     </ClInclude>
     <ClInclude Include="boomerang.h">
       <Filter>GameObject\Enemies\BoomerangKoopas</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioSmall.h">
+      <Filter>Player\MarioSmall</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

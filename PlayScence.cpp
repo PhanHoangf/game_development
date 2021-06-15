@@ -185,6 +185,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject* obj = NULL;
+	//CPlayer* aPlayer = NULL;
 
 	switch (object_type)
 	{
@@ -196,6 +197,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CMario(x, y);
 		player = (CMario*)obj;
+		obj = new CMarioSmall(x, y);
+		player_test = (CMarioSmall*)obj;
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA:
@@ -427,8 +430,8 @@ void CPlayScene::Update(DWORD dt)
 	//		coObjects.push_back(mObjects[i]);
 	//}
 
-	player->Update(dt, &coObjects);
-
+	//player->Update(dt, &coObjects);
+	player_test->Update(dt, &coObjects);
 	//coObjects.push_back(player);
 	//for (size_t i = 0; i < objectGrid.size(); i++)
 	//{
@@ -464,8 +467,13 @@ void CPlayScene::Update(DWORD dt)
 	//}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return;
-	SetCam(player->x, player->y, dt);
+
+	/*if (player == NULL) return;
+	SetCam(player->x, player->y, dt);*/
+
+	if (player_test == NULL) return;
+	SetCam(player_test->x, player_test->y, dt);
+
 	hud->Update(dt, &coObjects);
 	UpdateGrid();
 }
@@ -515,7 +523,9 @@ void CPlayScene::Render()
 		}
 	}*/
 
-	player->Render();
+	//player->Render();
+
+	player_test->Render();
 
 	for (int i = 0; i < specialObjects.size(); i++)
 	{
@@ -560,31 +570,31 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario->GetState() == MARIO_STATE_DIE) return;
-	switch (KeyCode)
-	{
-	case DIK_SPACE:
-		mario->SetState(MARIO_STATE_JUMP);
-		break;
-	case DIK_R:
-		mario->Reset();
-		break;
-	case DIK_T:
-		mario->SetState(MARIO_STATE_TRANSFORM);
-		mario->StartTransform(MARIO_LEVEL_BIG);
-		break;
-	case DIK_A:
-		mario->SetIsReadyToHold(true);
-		break;
-	case DIK_Q:
-		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
-		break;
-	}
+	//CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	//if (mario->GetState() == MARIO_STATE_DIE) return;
+	//switch (KeyCode)
+	//{
+	//case DIK_SPACE:
+	//	mario->SetState(MARIO_STATE_JUMP);
+	//	break;
+	//case DIK_R:
+	//	mario->Reset();
+	//	break;
+	//case DIK_T:
+	//	mario->SetState(MARIO_STATE_TRANSFORM);
+	//	mario->StartTransform(MARIO_LEVEL_BIG);
+	//	break;
+	//case DIK_A:
+	//	mario->SetIsReadyToHold(true);
+	//	break;
+	///*case DIK_Q:
+	//	if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
+	//	break;*/
+	//}
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	/*CMario* mario = ((CPlayScene*)scence)->GetPlayer();
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	switch (KeyCode)
 	{
@@ -597,7 +607,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 	case DIK_S:
 		mario->isFlapping = false;
 		break;
-	}
+	}*/
 }
 
 void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
@@ -665,11 +675,13 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	CPlayer* player = ((CPlayScene*)scence)->GetPlayer1();
 	if (mario == NULL) return;
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT)) {
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		//mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		player->SetState(MARIO_STATE_WALKING_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
@@ -678,24 +690,25 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	else if (game->IsKeyDown(DIK_X)) {
 		mario->SetState(MARIO_STATE_JUMP_X);
 	}
-	else if (game->IsKeyDown(DIK_DOWN)) {
+	/*else if (game->IsKeyDown(DIK_DOWN)) {
 		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround() || mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetIsOnGround())
 			mario->SetState(MARIO_STATE_SITDOWN);
-	}
+	}*/
 	/*else if (game->IsKeyDown(DIK_Q)) {
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL) {
 			mario->SetState(MARIO_STATE_TAIL_ATTACK);
 		}
 	}*/
-	else if (game->IsKeyDown(DIK_S)) {
+	/*else if (game->IsKeyDown(DIK_S)) {
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
 			mario->isFlapping = true;
-	}
+	}*/
 	else
 	{
 		//&& !mario->isTuring
-		if (mario->GetIsOnGround() && !mario->isTuring)
-			mario->SetState(MARIO_STATE_IDLE);
+		//if (mario->GetIsOnGround() && !mario->isTuring)
+		mario->SetState(MARIO_STATE_IDLE);
+		player->SetState(MARIO_STATE_IDLE);
 	}
 }
 

@@ -14,6 +14,8 @@
 #include "CardItem.h"
 #include "MusicBrick.h"
 #include "BoomerangKoopas.h"
+#include "Player.h"
+#include "MarioSmall.h"
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_TEXTURES 2
@@ -50,6 +52,7 @@ class CPlayScene : public CScene
 {
 protected:
 	CMario* player;					// A play scene has to have player, right? 
+	CPlayer* player_test;
 
 	vector<LPGAMEOBJECT> objects;  // Static objects
 	vector<LPGAMEOBJECT> mObjects; //! Moving objects
@@ -90,6 +93,7 @@ public:
 	void deleteLastObject() { this->objects.pop_back(); }
 
 	Grid* GetGrid() { if (this->grid != NULL) return this->grid; }
+	CPlayer* GetPlayer1() { return player_test; }
 	//friend class CPlayScenceKeyHandler;
 };
 
