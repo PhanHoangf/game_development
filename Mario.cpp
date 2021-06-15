@@ -140,11 +140,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				if (e->nx < 0 && brick != NULL && ceil(mBottom) != oTop) {
 					vx = 0;
-					brick->SetState(BRICK_STATE_HIT);
+					if (brick->GetType() == PUSH_TO_RIGHT)
+						brick->SetState(BRICK_STATE_HIT);
 				}
 				if (e->ny > 0 && brick != NULL) {
 					vy = 0;
-					brick->SetState(BRICK_STATE_HIT);
+					if (brick->GetType() == PUSH_UP)
+						brick->SetState(BRICK_STATE_HIT);
 				}
 			}
 			if (dynamic_cast<Block*>(e->obj))
@@ -326,6 +328,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					else {
 						rGoomba->SetIsHaveWings(false);
 						rGoomba->SetState(GOOMBA_STATE_WALKING);
+						AddScore(x, y, 100);
 					}
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
 				}
@@ -361,7 +364,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					msBrick->SetIsPushedUp(true);
 					vy = 0;
 					ay = MARIO_GRAVITY;
-					DebugOut(L"IN 2\n");
 				}
 			}
 			/*if (dynamic_cast<BreakableBrick*>(e->obj)) {

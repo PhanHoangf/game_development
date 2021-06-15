@@ -55,12 +55,12 @@ void QuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			y = start_y;
 			isFallingDown = false;
 			vy = 0;
-			if (tag != ITEM_COIN) {
+			if (tag != ITEM_COIN_QUESTION_BRICK_COIN) {
 				DebugOut(L"item::%d\n", tag);
 				CreateItem(tag);
 			}
 		}
-		if (tag == ITEM_COIN) {
+		if (tag == ITEM_COIN_QUESTION_BRICK_COIN) {
 			CreateItem(tag);
 		}
 	}
@@ -119,7 +119,7 @@ CGameObject* QuestionBrick::SetUpItem(int itemType) {
 	else {
 		return NULL;
 	}
-	if (itemType == ITEM_COIN) {
+	if (itemType == ITEM_COIN_QUESTION_BRICK_COIN) {
 		obj = new Coin(COIN_TYPE_INBRICK);
 		ani_set_id = COIN_ANI_SET_ID;
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);

@@ -45,7 +45,7 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);*/
 		Point* point = new Point(100);
 		point->SetPosition(this->x, this->y);
-		currentScene->AddMovingObject(point);
+		currentScene->AddSpecialObject(point);
 		return;
 	}
 

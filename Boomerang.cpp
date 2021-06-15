@@ -25,6 +25,10 @@ void Boomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	/*DebugOut(L"[Y]::%f\n", y);
 	DebugOut(L"[limitY]::%f\n", limitY);*/
 
+	if (!this->IsInViewPort()) {
+		this->isDestroyed = true;
+	}
+
 	if (y <= limitY) {
 		vy = BOOMERANG_GRAVITY;
 		ax = -this->nx * BOOMERANG_ACCELERATION;

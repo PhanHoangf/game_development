@@ -82,13 +82,15 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			}
 		}
 
-		if (this->boomerang != NULL) {
+		/*if (this->boomerang != NULL) {
 			if (!this->boomerang->IsInViewPort())
 				this->boomerang->isDestroyed = true;
-		}
+		}*/
 
 		if (isHoldingBoomerang) this->boomerang->SetPosition(this->x + 8, this->y - 4);
 	}
+
+	DestroyBoomerang(coObjects);
 
 	if (coEvents.size() == 0)
 	{
@@ -121,6 +123,7 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				Boomerang* bRang = dynamic_cast<Boomerang*>(e->obj);
 				if (e->nx != 0) {
 					bRang->isDestroyed = true;
+					currentBoomerang--;
 				}
 			}
 		}
@@ -128,11 +131,27 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	}
 }
 
+void BoomerangKoopas::DestroyBoomerang(vector<LPGAMEOBJECT>* coObjects) {
+	for (size_t i = 0; i < coObjects->size(); i++) {
+		if (dynamic_cast<Boomerang*>(coObjects->at(i))) {
+			Boomerang* boomerang = dynamic_cast<Boomerang*>(coObjects->at(i));
+			if (!boomerang->IsInViewPort()) {
+				boomerang->isDestroyed = true;
+			}
+		}
+	}
+
+	if (this->boomerang != NULL) {
+		if (!this->boomerang->IsInViewPort()) {
+			this->boomerang->isDestroyed = true;
+		}
+	}
+}
+
 void BoomerangKoopas::SetState(int state) {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
 	CGameObject::SetState(state);
-	DebugOut(L"[bKoopas->state]::%d", state);
 	switch (state)
 	{
 	case BOOMERANG_KOOPAS_STATE_IDLE:
@@ -183,24 +202,27 @@ bool BoomerangKoopas::IsGoPassThrowPoint(float x) {
 }
 
 void BoomerangKoopas::HoldBoomerang() {
+
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-	if (boomerangs.size() < 2) {
-		Boomerang* boomerang = new Boomerang(this->x, this->y);
-		LPANIMATION_SET ani_set = animation_sets->Get(BOOMERANG_ANI_SET_ID);
-		boomerang->SetAnimationSet(ani_set);
-		if (nx < 0) {
-			boomerang->SetPosition(this->x + 8, this->y - 4);
-			boomerang->nx = -1;
-		}
-		if (nx > 0) {
-			boomerang->SetPosition(this->x - 8, this->y - 4);
-			boomerang->nx = 1;
-		}
-		this->boomerang->SetIsAppear(true);
-		this->boomerang->SetState(BOOMERANG_STATE_IDLE);
-		new Unit(currentScene->GetGrid(), boomerang, boomerang->x, boomerang->y, 0);
-		boomerangs.push_back(boomerang);
+
+	this->boomerang = new Boomerang(this->x, this->y);
+	LPANIMATION_SET ani_set = animation_sets->Get(BOOMERANG_ANI_SET_ID);
+	this->boomerang->SetAnimationSet(ani_set);
+	if (nx < 0) {
+		this->boomerang->SetPosition(this->x + 8, this->y - 4);
+		this->boomerang->nx = -1;
 	}
+	if (nx > 0) {
+		this->boomerang->SetPosition(this->x - 8, this->y - 4);
+		this->boomerang->nx = 1;
+	}
+	this->boomerang->SetIsAppear(true);
+	this->boomerang->SetState(BOOMERANG_STATE_IDLE);
+	currentScene->AddSpecialObject(this->boomerang);
+	//new Unit(currentScene->GetGrid(), boomerang, boomerang->x, boomerang->y, 0);
+	//boomerangs.push_back(boomerang);
+	//this->boomerang = boomerang;
+	//currentBoomerang++;
 	//currentScene->AddSpecialObject(this->boomerang);
 }

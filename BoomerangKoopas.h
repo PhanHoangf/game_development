@@ -68,4 +68,5 @@ public:
 	bool IsGoPassThrowPoint(float x);
 
 	void HoldBoomerang();
+	void DestroyBoomerang(vector<LPGAMEOBJECT>* coObjects);
 };

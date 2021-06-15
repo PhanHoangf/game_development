@@ -243,10 +243,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			int scene_id = atoi(tokens[6].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
 		}*/
-		/*case OBJECT_TYPE_CARD: {
-			obj = new CardItem();
-			break;
-		}*/
+	case OBJECT_TYPE_CARD: {
+		obj = new CardItem();
+		break;
+	}
 	case OBJECT_TYPE_BOOMERANG_KOOPAS:
 		obj = new BoomerangKoopas(x, y);
 		break;
@@ -456,7 +456,9 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	for (size_t i = 0;i < specialObjects.size(); i++) {
-		specialObjects[i]->Update(dt, &coObjects);
+		if (specialObjects[i]->IsInViewPort()) {
+			specialObjects[i]->Update(dt, &coObjects);
+		}
 	}
 
 	//for (size_t i = 0; i < mObjects.size(); i++) {
@@ -517,7 +519,7 @@ void CPlayScene::Render()
 
 	player->Render();
 
-	
+
 
 	for (int i = 0; i < objInPipe.size(); i++)
 	{

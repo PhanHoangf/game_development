@@ -32,7 +32,7 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
-	
+
 	void SetState(int state);
 	void Pushed(int startPoint);
 
@@ -41,4 +41,6 @@ public:
 
 	void CreateItem(int typeItem);
 	LPGAMEOBJECT SetUpItem(int typeItem);
+
+	int GetType() { return this->type; }
 };
