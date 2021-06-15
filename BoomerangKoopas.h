@@ -43,6 +43,7 @@ class BoomerangKoopas : public CGameObject {
 	float throwingPoint = 0.0f;
 
 	int currentBoomerang = 0;
+	
 	vector<float> points;
 	vector<LPGAMEOBJECT> boomerangs;
 public:

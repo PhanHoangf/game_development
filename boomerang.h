@@ -15,6 +15,11 @@
 #define BOOMERANG_ANI_IDLE_LEFT	1
 #define BOOMERANG_ANI_THROW_LEFT 0
 
+#define MAX_BOOMERANG_SPEED 0.15f
+#define BOOMERANG_ACCELERATION	0.0005f
+
+#define BOOMERANG_GRAVITY 0.03f
+
 class Boomerang :public CGameObject {
 	bool isAppear = false;
 	float limitY = 0.0f;

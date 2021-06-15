@@ -1,10 +1,25 @@
 ﻿  Boomerang.cpp
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(69,16): warning C4101: 'mTop': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(68,9): warning C4101: 'oLeft': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(69,30): warning C4101: 'mBottom': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(68,30): warning C4101: 'oBottom': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(69,22): warning C4101: 'mRight': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(68,22): warning C4101: 'oRight': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(68,16): warning C4101: 'oTop': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(69,9): warning C4101: 'mLeft': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(68,16): warning C4101: 'mTop': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(67,9): warning C4101: 'oLeft': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(68,30): warning C4101: 'mBottom': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(67,30): warning C4101: 'oBottom': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(68,22): warning C4101: 'mRight': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(67,22): warning C4101: 'oRight': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(67,16): warning C4101: 'oTop': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Boomerang.cpp(68,9): warning C4101: 'mLeft': unreferenced local variable
+  BoomerangKoopas.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\BoomerangKoopas.h(64,48): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(290,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(292,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(293,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(294,60): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(300,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(69,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(65,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(66,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(71,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+  Generating Code...
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.h(92): warning C4715: 'CPlayScene::GetGrid': not all control paths return a value
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe

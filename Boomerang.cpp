@@ -24,14 +24,13 @@ void Boomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	/*DebugOut(L"[Y]::%f\n", y);
 	DebugOut(L"[limitY]::%f\n", limitY);*/
-	DebugOut(L"[bmr->VX]::%f\n", this->vx);
+
 	if (y <= limitY) {
-		vy = 0.03f;
-		this->vx /= 1.15f;
-		if (ceil(vx) <= -0.09f) {
-			this->vx = 0.15f;
-		}
+		vy = BOOMERANG_GRAVITY;
+		ax = -this->nx * BOOMERANG_ACCELERATION;
 	}
+
+	vx += ax * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -72,7 +71,7 @@ void Boomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			if (dynamic_cast<CBrick*>(e->obj)) {
 				if (e->ny != 0) {
 					vy = 0;
-					vx = 0.15f;
+					//vx = 0.15f;
 				}
 			}
 			if (dynamic_cast<Block*>(e->obj)) {
@@ -95,8 +94,8 @@ void Boomerang::SetState(int state) {
 		vx = vy = 0;
 		break;
 	case BOOMERANG_STATE_THROW:
-		vx = -0.15f;
-		vy = -0.03f;
+		ax = this->nx * BOOMERANG_ACCELERATION;
+		vy = -0.04f;
 		break;
 	default:
 		break;
