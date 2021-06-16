@@ -1,6 +1,6 @@
 #pragma once
 #include "Player.h"
-#include "Brick.h"
+//#include "Brick.h"
 
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 16
@@ -17,5 +17,6 @@ public:
     virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
    
     void SetState(int state);
+    void MarioSmallLimit();
 };
 

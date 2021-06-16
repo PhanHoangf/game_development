@@ -11,13 +11,17 @@ D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(65,56): warning C42
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(66,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(71,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\BoomerangKoopas.h(53,48): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(27,1): warning C4005: 'MARIO_LEVEL_SMALL': macro redefinition
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(6,1): warning C4005: 'MARIO_SPEED_MAX': macro redefinition
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(11): message : see previous definition of 'MARIO_SPEED_MAX'
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(16,1): warning C4005: 'MARIO_JUMP_DEFLECT_SPEED': macro redefinition
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(18): message : see previous definition of 'MARIO_JUMP_DEFLECT_SPEED'
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(44,1): warning C4005: 'MARIO_LEVEL_SMALL': macro redefinition
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(34): message : see previous definition of 'MARIO_LEVEL_SMALL'
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(28,1): warning C4005: 'MARIO_LEVEL_BIG': macro redefinition
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(45,1): warning C4005: 'MARIO_LEVEL_BIG': macro redefinition
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(35): message : see previous definition of 'MARIO_LEVEL_BIG'
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(29,1): warning C4005: 'MARIO_LEVEL_TAIL': macro redefinition
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(46,1): warning C4005: 'MARIO_LEVEL_TAIL': macro redefinition
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(36): message : see previous definition of 'MARIO_LEVEL_TAIL'
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(30,1): warning C4005: 'MARIO_LEVEL_FIRE': macro redefinition
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Define.h(47,1): warning C4005: 'MARIO_LEVEL_FIRE': macro redefinition
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(37): message : see previous definition of 'MARIO_LEVEL_FIRE'
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\QuestionBrick.h(15,1): warning C4005: 'ITEM_COIN': macro redefinition
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Brick.h(12): message : see previous definition of 'ITEM_COIN'
@@ -47,10 +51,21 @@ D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(530,20): warn
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(537,20): warning C4018: '<': signed/unsigned mismatch
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(544,20): warning C4018: '<': signed/unsigned mismatch
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(559,20): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(616,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(617,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(618,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(619,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(614,28): warning C4101: 'my': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(614,24): warning C4101: 'mx': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(597,2): warning C4060: switch statement contains no 'case' or 'default' labels
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(620,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(621,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(622,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(623,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(618,28): warning C4101: 'my': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(618,24): warning C4101: 'mx': unreferenced local variable
+  Player.cpp
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Player.cpp(101,16): warning C4101: 'mTop': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Player.cpp(100,9): warning C4101: 'oLeft': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Player.cpp(101,30): warning C4101: 'mBottom': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Player.cpp(100,30): warning C4101: 'oBottom': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Player.cpp(101,22): warning C4101: 'mRight': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Player.cpp(100,22): warning C4101: 'oRight': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Player.cpp(100,16): warning C4101: 'oTop': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Player.cpp(101,9): warning C4101: 'mLeft': unreferenced local variable
+  Generating Code...
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe
