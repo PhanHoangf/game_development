@@ -78,13 +78,18 @@ vector<LPSPRITE> HUD::StringToSprite(string str)
 			sprites.push_back(sprite);
 	}
 	return sprites;
+
 }
 
 HUD::HUD(int typeHUD) {
 	initFonts();
+	//CSprites* sprite = CSprites::GetInstance();
 	playerSprite = CSprites::GetInstance()->Get(SPRITE_ICONMARIO_ID);
-	cardSprites = CSprites::GetInstance()->Get(50059);
+	//cardSprites = CSprites::GetInstance()->Get(50059);
 	TakenCards = CAnimationSets::GetInstance()->Get(CARD_ANI_SET_ID);
+	PAni = CAnimations::GetInstance()->Get(ANI_P_ID);
+	for (unsigned int i = 0; i < MARIO_SPEED_STACK - 1; i++)
+		powerMelterSprite.push_back((CSprites::GetInstance()->Get(SPRITE_FILLARROW_ID)));
 }
 
 void HUD::Render() {
@@ -99,6 +104,14 @@ void HUD::Render() {
 	for (unsigned int i = 0; i < scoreSprites.size(); i++) {
 		scoreSprites[i]->Draw(x + FONT_BBOX_WIDTH * i + HUD_DIFF_SCORE, y + HUD_DIFF_SECOND_ROW);
 	}
+	for (int i = 1; i <= speedStack; i++) {
+		if (i == MARIO_SPEED_STACK) {
+			if (PAni != nullptr)
+				PAni->Render(x + HUD_DIFF_P, y + HUD_DIFF_FIRST_ROW);
+		}
+		else
+			powerMelterSprite[i - 1]->Draw(x + FONT_BBOX_WIDTH * (i - 1) + HUD_DIFF_SCORE, y + HUD_DIFF_FIRST_ROW);
+	}
 	RenderCard();
 }
 
@@ -106,6 +119,7 @@ void HUD::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	AddScore();
 	AddCoin();
 	AddCard();
+	AddSpeedStack();
 	time += dt;
 	remainTime = DEFAULT_TIME - time / 1000;
 
@@ -142,6 +156,12 @@ void HUD::AddCoin() {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	mario = currentScene->GetPlayer();
 	this->money = mario->coin;
+}
+
+void HUD::AddSpeedStack() {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	mario = currentScene->GetPlayer();
+	this->speedStack = mario->speedStack;
 }
 
 void HUD::AddCard() {

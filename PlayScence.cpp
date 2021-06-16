@@ -579,7 +579,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->StartTransform(MARIO_LEVEL_BIG);
 		break;
 	case DIK_A:
-		mario->SetIsReadyToHold(true);
+		mario->SetIsReadyToRun(true);
 		break;
 	case DIK_Q:
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
@@ -596,7 +596,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 		mario->ay = MARIO_GRAVITY;
 		break;
 	case DIK_A:
-		mario->SetIsReadyToHold(false);
+		mario->SetIsReadyToRun(false);
 		break;
 	case DIK_S:
 		mario->isFlapping = false;
@@ -695,6 +695,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
 			mario->isFlapping = true;
 	}
+	/*else if (game->IsKeyDown(DIK_A)) {
+		mario->SetIsReadyToRun(true);
+	}*/
 	else
 	{
 		//&& !mario->isTuring

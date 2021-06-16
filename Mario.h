@@ -6,15 +6,15 @@
 
 #define MARIO_WALKING_SPEED_START	0.001f 
 #define MARIO_JUMP_SPEED_VX			0.0005f
-//#define MARIO_WALKING_SPEED_MAX		0.15f
-//#define MARIO_RUNNING_SPEED_MAX		0.15f
 #define MARIO_SPEED_MAX				0.15f
 #define MARIO_ACCELERATION			0.0003f
 #define MARIO_WALKING_SPEED_MIN		0.05f
+#define MARIO_RUNNING_SPEED_MAX		0.2f
+#define MARIO_SPEED_STACK	7
+#define MARIO_SPEED_STACK_TIME	200
 
 #define MARIO_WALKING_SPEED		0.15f
 #define MARIO_ACCELERATION		0.0003f
-//#define MARIO_JUMP_SPEED_Y		0.18f
 #define MARIO_JUMP_DEFLECT_SPEED 0.2f
 #define MARIO_GRAVITY			0.002f
 #define MARIO_DIE_DEFLECT_SPEED	 0.5f
@@ -101,6 +101,7 @@
 #define MARIO_SMALL_LEFT_IDLE					7
 #define MARIO_SMALL_WALK_LEFT					8
 #define MARIO_SMALL_WALK_FAST_LEFT				9
+#define MARIO_MAX_SPEED_SMALL_LEFT				10
 #define MARIO_JUMP_SMALL_LEFT					11
 #define MARIO_JUMP_DOWN_SMALL_LEFT				12
 #define MARIO_BRAKE_SMALL_LEFT					13
@@ -236,12 +237,14 @@ class CMario : public CGameObject
 	DWORD start_kicking;
 	DWORD start_turning;
 	DWORD start_turning_state;
+	DWORD start_speed_stack;
+	DWORD running_stop;
 	int direction;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 	bool isOnGround = false;
-	bool isRunning = false;
+
 	bool isJumping = false;
 	bool isSitting = false;
 	bool isReadyToSit = true;
@@ -256,6 +259,9 @@ class CMario : public CGameObject
 	float tempY;
 	bool isJumpOnMusicBrick = false;
 
+	bool isRunning = false;
+	bool isReadyToRun = false;
+
 
 	Tail* tail;
 
@@ -266,6 +272,7 @@ public:
 	int marioScore = 0;
 	int coin = 0;
 	bool isFlapping = false;
+	int speedStack = 1;
 	vector<int> cards;
 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -280,21 +287,25 @@ public:
 	void SetHolding(bool hold) { isHolding = hold; }
 	void SetIsReadyToHold(bool hold) { isReadyToHold = hold; }
 	void SetIsJumpOnMusicBrick(bool isJump) { isJumpOnMusicBrick = isJump; }
+	void SetIsReadyToRun(bool run) { isReadyToRun = run; }
 
 	bool GetIsOnGround() { return isOnGround; }
 	int GetLevel() { return level; }
 	bool GetIsHolding() { return isHolding; }
 	bool GetIsReadyToHold() { return isReadyToHold; }
 	int GetUntouchable() { return untouchable; }
+	bool GetIsReadyToRun() { return isReadyToRun; }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount(); SetLevel(level); }
 	void StartKicking() { start_kicking = GetTickCount64(); isKicking = true; }
 	void StartRunning() { start_running = GetTickCount64(); }
 	void StartTurning() { start_turning_state = GetTickCount64(); isTuring = true; }
+	void StartSpeedStack() { start_speed_stack = GetTickCount64(); }
 
 	void StopTransform() { isTransforming = false; start_transform = 0; isChangingY = false; }
 	void StopKicking() { start_kicking = 0; isKicking = false; }
+	void StopSpeedStack() { start_speed_stack = 0; }
 
 	void limitMarioSpeed(float& vx, int nx);
 	void slowDownVx() { vx = int(abs(vx) / 2); }
@@ -315,6 +326,7 @@ public:
 	void HandleChangeXTail();
 	void HandleTurning();
 	void HandleFlapping();
+	void HandleSpeedStack();
 
 	void pullDown() {
 		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;

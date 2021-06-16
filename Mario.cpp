@@ -25,8 +25,8 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_BIG;
-	//level = MARIO_LEVEL_SMALL;
+	//level = MARIO_LEVEL_BIG;
+	level = MARIO_LEVEL_SMALL;
 	//level = MARIO_LEVEL_TAIL;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
@@ -74,6 +74,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	HandleMarioKicking();
 	HandleMarioHolding();
 	HandleTurning();
+	HandleSpeedStack();
+
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
@@ -385,11 +387,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 }
 
 void CMario::limitMarioSpeed(float& vx, int nx) {
-	if (abs(vx) > MARIO_SPEED_MAX) {
-		if (nx > 0) {
-			vx = MARIO_SPEED_MAX;
-		}
-		else vx = -MARIO_SPEED_MAX;
+	if (abs(vx) > MARIO_SPEED_MAX && !isReadyToRun) {
+		vx = nx * MARIO_SPEED_MAX;
+	}
+	if (abs(vx) > MARIO_RUNNING_SPEED_MAX && isReadyToRun) {
+		vx = nx * MARIO_RUNNING_SPEED_MAX;
 	}
 }
 
@@ -416,13 +418,7 @@ void CMario::Render()
 	if (untouchable) alpha = 128;
 	if (state == MARIO_STATE_TRANSFORM) {
 		animation_set->at(ani)->Render(x, y, alpha);
-		/*if (level == MARIO_LEVEL_SMALL) animation_set->at(ani)->Render(x, y, alpha);
-		else if (level == MARIO_LEVEL_BIG) animation_set->at(ani)->Render(x, y, alpha);
-		else if (level == MARIO_LEVEL_TAIL) animation_set->at(ani)->Render(x, y, alpha);*/
 	}
-	/*if (state == MARIO_STATE_SITDOWN) {
-		animation_set->at(ani)->Render(x, y, alpha);
-	}*/
 	if (level == MARIO_LEVEL_TAIL) {
 		RenderMarioAniTail(ani);
 		if (state == MARIO_STATE_TAIL_ATTACK)
@@ -483,6 +479,14 @@ void CMario::RenderMarioAniSmall(int& ani) {
 		if (isHolding) {
 			ani = MARIO_ANI_SMALL_HOLD_WALKING_RIGHT;
 		}
+		if (isRunning) {
+			if (vx > MARIO_SPEED_MAX && vx < MARIO_RUNNING_SPEED_MAX) {
+				ani = MARIO_SMALL_WALK_FAST_RIGHT;
+			}
+			if (vx >= MARIO_RUNNING_SPEED_MAX) {
+				ani = MARIO_MAX_SPEED_SMALL_RIGHT;
+			}
+		}
 	}
 	if (state == MARIO_STATE_WALKING_LEFT) {
 		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
@@ -499,6 +503,14 @@ void CMario::RenderMarioAniSmall(int& ani) {
 		}
 		if (isHolding) {
 			ani = MARIO_ANI_SMALL_HOLD_WALKING_LEFT;
+		}
+		if (isRunning) {
+			if (abs(vx) > MARIO_SPEED_MAX && vx < MARIO_RUNNING_SPEED_MAX) {
+				ani = MARIO_SMALL_WALK_FAST_LEFT;
+			}
+			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX) {
+				ani = MARIO_MAX_SPEED_SMALL_LEFT;
+			}
 		}
 	}
 	if (state == MARIO_STATE_JUMP) {
@@ -748,6 +760,12 @@ void CMario::SetState(int state)
 		else {
 			runningStack++;
 		}
+		if (vx > MARIO_SPEED_MAX && isReadyToRun) {
+			isRunning = true;
+		}
+		else {
+			isRunning = false;
+		}
 		ax = MARIO_ACCELERATION;
 		nx = 1;
 		isSitting = false;
@@ -761,6 +779,12 @@ void CMario::SetState(int state)
 		}
 		else {
 			runningStack++;
+		}
+		if (abs(vx) > MARIO_SPEED_MAX && isReadyToRun) {
+			isRunning = true;
+		}
+		else {
+			isRunning = false;
 		}
 		ax = -MARIO_ACCELERATION;
 		nx = -1;
@@ -1045,5 +1069,24 @@ void CMario::AddScore(float x, float y, int score) {
 void CMario::HandleFlapping() {
 	if (level == MARIO_LEVEL_TAIL && isFlapping) {
 		vy = MARIO_SLOW_FALLING_SPEED;
+	}
+}
+void CMario::HandleSpeedStack() {
+	if (GetTickCount64() - start_running > MARIO_SPEED_STACK_TIME && isRunning && vx != 0 && isReadyToRun) {
+		start_running = GetTickCount64();
+		speedStack++;
+		if (speedStack > MARIO_SPEED_STACK) {
+			speedStack = MARIO_SPEED_STACK;
+		}
+	}
+	if (GetTickCount64() - running_stop > MARIO_SPEED_STACK_TIME && !isRunning)
+	{
+		running_stop = GetTickCount64();
+		speedStack--;
+		if (speedStack < 0)
+		{
+			speedStack = 0;
+			isRunning = false;
+		}
 	}
 }

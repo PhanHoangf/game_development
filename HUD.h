@@ -66,16 +66,18 @@ class HUD :public CGameObject {
 	vector<LPSPRITE> lifeSprites;
 	vector<LPSPRITE> moneySprites;
 	vector<LPSPRITE> scoreSprites;
+	vector<LPSPRITE> powerMelterSprite;
 	LPSPRITE cardSprites;
 	vector<int> cards;
 	CAnimationSet* TakenCards = NULL;
-
+	LPANIMATION PAni = NULL;
 
 	int marioLife = 4;
 	int score = 0;
 	int money = 0;
 	int time = 0;
 	int remainTime = DEFAULT_TIME;
+	int speedStack = 0;
 
 	int type_hud;
 
@@ -94,4 +96,5 @@ public:
 	void AddCoin();
 	void RenderCard();
 	void AddCard();
+	void AddSpeedStack();
 };
