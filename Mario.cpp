@@ -25,8 +25,8 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	//level = MARIO_LEVEL_BIG;
-	level = MARIO_LEVEL_SMALL;
+	level = MARIO_LEVEL_BIG;
+	//level = MARIO_LEVEL_SMALL;
 	//level = MARIO_LEVEL_TAIL;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
@@ -53,7 +53,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"vy::%f\n", vy);
 
 	limitMarioSpeed(vx, nx);
-	handleMarioJump();
+	if (!isFlying)
+		handleMarioJump();
 	HandleFlapping();
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -62,7 +63,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (vy < 0)
 		isOnGround = false;
 
-
+	if (isOnGround) {
+		isFlying = false;
+	}
 
 	coEvents.clear();
 
@@ -584,12 +587,20 @@ void CMario::RenderMarioAniBig(int& ani) {
 		}
 		if (!isOnGround) {
 			ani = MARIO_ANI_BIG_JUMPINGUP_RIGHT;
+			if (isFlying) {
+				ani = MARIO_ANI_BIG_FLY_RIGHT;
+			}
 		}
 		if (isKicking) {
 			ani = MARIO_ANI_BIG_KICKING_RIGHT;
 		}
 		if (isHolding) {
 			ani = MARIO_ANI_BIG_HOLD_WALKING_RIGHT;
+		}
+		if (isRunning && isOnGround) {
+			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX) {
+				ani = MARIO_ANI_BIG_WALKING_FAST_RIGHT;
+			}
 		}
 	}
 	if (state == MARIO_STATE_WALKING_LEFT) {
@@ -601,6 +612,9 @@ void CMario::RenderMarioAniBig(int& ani) {
 		}
 		if (!isOnGround) {
 			ani = MARIO_ANI_BIG_JUMPINGUP_LEFT;
+			if (isFlying) {
+				ani = MARIO_ANI_BIG_FLY_LEFT;
+			}
 		}
 		if (isKicking) {
 			ani = MARIO_ANI_BIG_KICKING_LEFT;
@@ -608,13 +622,22 @@ void CMario::RenderMarioAniBig(int& ani) {
 		if (isHolding) {
 			ani = MARIO_ANI_BIG_HOLD_WALKING_LEFT;
 		}
+		if (isRunning && isOnGround) {
+			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX) {
+				ani = MARIO_ANI_BIG_WALKING_FAST_LEFT;
+			}
+		}
 	}
 	if (state == MARIO_STATE_JUMP) {
 		if (nx > 0) {
 			ani = MARIO_ANI_BIG_JUMPINGUP_RIGHT;
+			if (isFlying)
+				ani = MARIO_ANI_BIG_FLY_RIGHT;
 		}
 		if (nx < 0) {
 			ani = MARIO_ANI_BIG_JUMPINGUP_LEFT;
+			if (isFlying)
+				ani = MARIO_ANI_BIG_FLY_LEFT;
 		}
 	}
 	if (state == MARIO_STATE_JUMP_X) {
@@ -816,6 +839,7 @@ void CMario::SetState(int state)
 		}
 		if (speedStack == MARIO_SPEED_STACK) {
 			isFlying = true;
+			normalFlyPullDown = false;
 			StartFlying();
 		}
 		isOnGround = false;
@@ -1102,7 +1126,7 @@ void CMario::HandleSpeedStack() {
 	if (GetTickCount64() - running_stop > MARIO_SPEED_STACK_LOST_TIME && !isRunning)
 	{
 		running_stop = GetTickCount64();
-		//speedStack--;
+		speedStack--;
 		isReadyToFly = false;
 		if (speedStack < 0)
 		{
@@ -1114,11 +1138,14 @@ void CMario::HandleSpeedStack() {
 }
 
 void CMario::HandleFlying() {
-	if (isFlying && isReadyToFly)
+	if (isFlying)
 	{
-		/*DebugOut(L"vy::%f\n", vy);
-		vy = -MARIO_FLY_SPEED;
-		ay = -MARIO_GRAVITY;*/
+		if (vy <= -MARIO_NORMAL_JUMP_MAX) {
+			normalFlyPullDown = true;
+		}
+	}
+	if (normalFlyPullDown && isFlying) {
+		ay = MARIO_GRAVITY;
 	}
 	if (GetTickCount64() - fly_start > MARIO_FLYING_TIME && fly_start != 0 && isFlying)
 	{

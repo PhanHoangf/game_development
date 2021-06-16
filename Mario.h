@@ -129,6 +129,7 @@
 #define MARIO_ANI_BIG_HOLD_IDLE_RIGHT			71
 #define MARIO_ANI_BIG_HOLD_WALKING_RIGHT		72
 #define MARIO_ANI_BIG_HOLD_JUMPING_RIGHT		73
+#define MARIO_ANI_BIG_FLY_LEFT					106
 
 #endif // !MARIO_BIG_ANI_RIGHT
 
@@ -146,6 +147,8 @@
 #define MARIO_ANI_BIG_HOLD_IDLE_LEFT		75
 #define MARIO_ANI_BIG_HOLD_WALKING_LEFT		76
 #define MARIO_ANI_BIG_HOLD_JUMPING_LEFT		77
+#define MARIO_ANI_BIG_FLY_RIGHT				105
+
 
 #endif // !MARIO_BIG_ANI_LEFT
 
@@ -228,6 +231,7 @@
 #define MARIO_TURNING_TOTAL_TIME	350
 #define MARIO_TURING_TIME			70
 #define MARIO_TURING_STACK  5
+#define MARIO_NORMAL_JUMP_MAX 0.35f
 
 
 class CMario : public CGameObject
@@ -268,7 +272,7 @@ class CMario : public CGameObject
 	bool isReadyToRun = false;
 
 	bool isReadyToFly = false;
-	bool isFlying = true;
+	bool isFlying = false;
 
 	Tail* tail;
 
@@ -279,7 +283,8 @@ public:
 	int marioScore = 0;
 	int coin = 0;
 	bool isFlapping = false;
-	int speedStack = 7;
+	int speedStack = 0;
+	bool normalFlyPullDown = false;
 	vector<int> cards;
 
 	CMario(float x = 0.0f, float y = 0.0f);
