@@ -11,7 +11,8 @@
 #define MARIO_WALKING_SPEED_MIN		0.05f
 #define MARIO_RUNNING_SPEED_MAX		0.2f
 #define MARIO_SPEED_STACK	7
-#define MARIO_SPEED_STACK_TIME	200
+#define MARIO_SPEED_STACK_TIME	150
+#define MARIO_SPEED_STACK_LOST_TIME	200
 
 #define MARIO_WALKING_SPEED		0.15f
 #define MARIO_ACCELERATION		0.0003f
@@ -27,7 +28,7 @@
 
 #define MARIO_JUMP_MAX	0.28f
 #define MARIO_SUPER_JUMP_MAX 0.30f
-
+#define MARIO_FLYING_MAX 0.35f
 
 #ifndef MARIO_LEVEL
 
@@ -93,6 +94,7 @@
 #define MARIO_ANI_SMALL_HOLD_WALKING_RIGHT		64
 #define MARIO_ANI_SMALL_HOLD_JUMPING_RIGHT		65
 #define MARIO_ANI_SMALL_KICKING_RIGHT			66
+#define MARIO_ANI_SMALL_FLY_RIGHT				103
 
 #endif // !MARIO_SMALL_ANI_RIGHT
 
@@ -109,6 +111,7 @@
 #define MARIO_ANI_SMALL_HOLD_WALKING_LEFT		68
 #define MARIO_ANI_SMALL_HOLD_JUMPING_LEFT		69
 #define MARIO_ANI_SMALL_KICKING_LEFT			70
+#define MARIO_ANI_SMALL_FLY_LEFT				104
 
 #endif // !MARIO_SMALL_ANI_LEFT
 
@@ -216,6 +219,7 @@
 #define MARIO_UNTOUCHABLE_TIME 5000
 #define MARIO_TRANSFORM_TIME 500
 #define MARIO_KICKING_TIME	200	
+#define MARIO_FLYING_TIME			5000
 
 #define MARIO_WORLD_MAP_IDLE 0
 
@@ -239,6 +243,7 @@ class CMario : public CGameObject
 	DWORD start_turning_state;
 	DWORD start_speed_stack;
 	DWORD running_stop;
+	DWORD fly_start;
 	int direction;
 
 	float start_x;			// initial position of Mario at scene
@@ -262,6 +267,8 @@ class CMario : public CGameObject
 	bool isRunning = false;
 	bool isReadyToRun = false;
 
+	bool isReadyToFly = false;
+	bool isFlying = true;
 
 	Tail* tail;
 
@@ -272,7 +279,7 @@ public:
 	int marioScore = 0;
 	int coin = 0;
 	bool isFlapping = false;
-	int speedStack = 1;
+	int speedStack = 7;
 	vector<int> cards;
 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -302,6 +309,7 @@ public:
 	void StartRunning() { start_running = GetTickCount64(); }
 	void StartTurning() { start_turning_state = GetTickCount64(); isTuring = true; }
 	void StartSpeedStack() { start_speed_stack = GetTickCount64(); }
+	void StartFlying() { fly_start = GetTickCount64(); }
 
 	void StopTransform() { isTransforming = false; start_transform = 0; isChangingY = false; }
 	void StopKicking() { start_kicking = 0; isKicking = false; }
@@ -327,6 +335,7 @@ public:
 	void HandleTurning();
 	void HandleFlapping();
 	void HandleSpeedStack();
+	void HandleFlying();
 
 	void pullDown() {
 		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;
