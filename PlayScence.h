@@ -63,6 +63,7 @@ protected:
 
 	Grid* grid;
 	int objId = 0;
+	bool isTurnOnCamY = false;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);

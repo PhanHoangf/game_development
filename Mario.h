@@ -175,6 +175,8 @@
 #define MARIO_ANI_TAIL_TURNING_LEFT				96
 #define MARIO_ANI_TAIL_FLAPPING_LEFT			98
 
+#define MARIO_ANI_TAIL_FLY_UP_LEFT				110
+
 #define MARIO_SPRITE_WHACK_LEFT_1_ID	12813
 #define MARIO_SPRITE_WHACK_LEFT_2_ID	12814
 #define MARIO_SPRITE_WHACK_LEFT_3_ID	12815
@@ -207,6 +209,8 @@
 #define MARIO_ANI_TAIL_TURNING_RIGHT			95
 #define MARIO_ANI_TAIL_FLAPPING_RIGHT			97
 
+#define MARIO_ANI_TAIL_FLY_UP_RIGHT				107
+
 #define MARIO_SPRITE_WHACK_RIGHT_1_ID	12803
 #define MARIO_SPRITE_WHACK_RIGHT_2_ID	12804
 #define MARIO_SPRITE_WHACK_RIGHT_3_ID	12805
@@ -231,7 +235,7 @@
 #define MARIO_TURNING_TOTAL_TIME	350
 #define MARIO_TURING_TIME			70
 #define MARIO_TURING_STACK  5
-#define MARIO_NORMAL_JUMP_MAX 0.35f
+#define MARIO_NORMAL_FLY_MAX 0.35f
 
 
 class CMario : public CGameObject
@@ -272,7 +276,9 @@ class CMario : public CGameObject
 	bool isReadyToRun = false;
 
 	bool isReadyToFly = false;
-	bool isFlying = false;
+	
+
+	
 
 	Tail* tail;
 
@@ -284,7 +290,13 @@ public:
 	int coin = 0;
 	bool isFlapping = false;
 	int speedStack = 0;
+	
 	bool normalFlyPullDown = false;
+	bool isFlying = false;
+	
+	bool tailFlyPullDown = false;
+	bool isTailFlying = false;
+	
 	vector<int> cards;
 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -341,6 +353,7 @@ public:
 	void HandleFlapping();
 	void HandleSpeedStack();
 	void HandleFlying();
+	void HandleTailFlying();
 
 	void pullDown() {
 		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;

@@ -581,6 +581,10 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_A:
 		mario->SetIsReadyToRun(true);
 		break;
+	case DIK_S:
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
+			mario->isFlapping = true;
+		break;
 	case DIK_Q:
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
 		break;
@@ -644,10 +648,10 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 		cx = mw - sw;
 
 	//CamY
-	//if (isTurnOnCamY)
-	//	cy -= sh / 2;
-	//else
-	cy = mh - sh;
+	if (isTurnOnCamY)
+		cy -= sh / 2;
+	else
+		cy = mh - sh;
 
 	if (cy <= -32)//Top Edge
 		cy = -32;
@@ -655,10 +659,10 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 		cy = mh - sh;
 
 	//Update CamY when Flying
-/*	if (player->isFlying)
+	if (player->isFlying || player->isTailFlying)
 		isTurnOnCamY = true;
-	if (cy > mh - sh && !player->isFlying)
-		isTurnOnCamY = false;*/
+	if (cy > mh - sh && !player->isFlying || cy > mh - sh && !player->isTailFlying)
+		isTurnOnCamY = false;
 	game->SetCamPos(ceil(cx), ceil(cy));
 	currentMap->SetCamPos(cx, cy);
 	hud->SetPosition(ceil(cx), ceil(cy + sh));
@@ -691,10 +695,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 			mario->SetState(MARIO_STATE_TAIL_ATTACK);
 		}
 	}*/
-	else if (game->IsKeyDown(DIK_S)) {
-		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
-			mario->isFlapping = true;
-	}
+	//else if (game->IsKeyDown(DIK_S)) {
+	//	if (mario->GetLevel() == MARIO_LEVEL_TAIL)
+	//		mario->isFlapping = true;
+	//}
 	/*else if (game->IsKeyDown(DIK_A)) {
 		mario->SetIsReadyToRun(true);
 	}*/

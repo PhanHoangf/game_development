@@ -25,9 +25,9 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_BIG;
+	//level = MARIO_LEVEL_BIG;
 	//level = MARIO_LEVEL_SMALL;
-	//level = MARIO_LEVEL_TAIL;
+	level = MARIO_LEVEL_TAIL;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
 	ay = MARIO_ACCELERATION_JUMP;
@@ -53,7 +53,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//DebugOut(L"vy::%f\n", vy);
 
 	limitMarioSpeed(vx, nx);
-	if (!isFlying)
+	if (!isFlying && !isTailFlying)
 		handleMarioJump();
 	HandleFlapping();
 
@@ -65,6 +65,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isOnGround) {
 		isFlying = false;
+		isTailFlying = false;
 	}
 
 	coEvents.clear();
@@ -668,7 +669,6 @@ void CMario::RenderMarioAniBig(int& ani) {
 
 void CMario::RenderMarioAniTail(int& ani) {
 	if (state == MARIO_STATE_IDLE) {
-		//DebugOut(L"hold::%d\n", hold);
 		if (isHolding) {
 			if (nx > 0) {
 				ani = MARIO_ANI_TAIL_HOLD_IDLE_RIGHT;
@@ -694,8 +694,11 @@ void CMario::RenderMarioAniTail(int& ani) {
 			ani = MARIO_ANI_TAIL_WALKING_RIGHT;
 		}
 		if (!isOnGround) {
-			if (this->isFlapping)
+			if (isFlapping)
 				ani = MARIO_ANI_TAIL_FLAPPING_RIGHT;
+			else if (isTailFlying) {
+				ani = MARIO_ANI_TAIL_FLY_UP_RIGHT;
+			}
 			else ani = MARIO_ANI_TAIL_JUMPINGUP_RIGHT;
 		}
 		if (isKicking) {
@@ -703,6 +706,14 @@ void CMario::RenderMarioAniTail(int& ani) {
 		}
 		if (isHolding) {
 			ani = MARIO_ANI_BIG_HOLD_WALKING_RIGHT;
+		}
+		if (isRunning && isOnGround) {
+			if (abs(vx) >= MARIO_SPEED_MAX) {
+				ani = MARIO_ANI_TAIL_WALKING_FAST_RIGHT;
+			}
+			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX) {
+				ani = MARIO_ANI_TAIL_RUNNING_RIGHT;
+			}
 		}
 	}
 	if (state == MARIO_STATE_WALKING_LEFT) {
@@ -715,6 +726,9 @@ void CMario::RenderMarioAniTail(int& ani) {
 		if (!isOnGround) {
 			if (isFlapping)
 				ani = MARIO_ANI_TAIL_FLAPPING_LEFT;
+			else if (isTailFlying) {
+				ani = MARIO_ANI_TAIL_FLY_UP_LEFT;
+			}
 			else ani = MARIO_ANI_TAIL_JUMPINGUP_LEFT;
 		}
 		if (isKicking) {
@@ -723,18 +737,31 @@ void CMario::RenderMarioAniTail(int& ani) {
 		if (isHolding) {
 			ani = MARIO_ANI_BIG_HOLD_WALKING_LEFT;
 		}
+		if (isRunning && isOnGround) {
+			if (abs(vx) >= MARIO_SPEED_MAX) {
+				ani = MARIO_ANI_TAIL_WALKING_FAST_LEFT;
+			}
+			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX) {
+				ani = MARIO_ANI_TAIL_RUNNING_LEFT;
+			}
+		}
 	}
 	if (state == MARIO_STATE_JUMP) {
 		if (nx > 0) {
-			int res = isFlapping ? 1 : 0;
 			if (isFlapping)
 				ani = MARIO_ANI_TAIL_FLAPPING_RIGHT;
+			else if (isTailFlying)
+				ani = MARIO_ANI_TAIL_FLY_UP_RIGHT;
 			else
 				ani = MARIO_ANI_TAIL_JUMPINGUP_RIGHT;
 		}
 		if (nx < 0) {
-			if (isFlapping) ani = MARIO_ANI_TAIL_FLAPPING_LEFT;
-			else ani = MARIO_ANI_TAIL_JUMPINGUP_LEFT;
+			if (isFlapping)
+				ani = MARIO_ANI_TAIL_FLAPPING_LEFT;
+			else if (isTailFlying)
+				ani = MARIO_ANI_TAIL_FLY_UP_LEFT;
+			else
+				ani = MARIO_ANI_TAIL_JUMPINGUP_LEFT;
 		}
 	}
 	if (state == MARIO_STATE_JUMP_X) {
@@ -838,7 +865,7 @@ void CMario::SetState(int state)
 			isJumping = true;
 		}
 		if (speedStack == MARIO_SPEED_STACK) {
-			isFlying = true;
+			level == MARIO_LEVEL_TAIL ? isTailFlying = true : isFlying = true;
 			normalFlyPullDown = false;
 			StartFlying();
 		}
@@ -987,7 +1014,7 @@ void CMario::HandleTransform(int level) {
 	if (isTransforming) {
 		SetState(MARIO_STATE_TRANSFORM);
 		HandleChangeYTransform();
-		if (GetTickCount() - start_transform > MARIO_TRANSFORM_TIME) {
+		if (GetTickCount64() - start_transform > MARIO_TRANSFORM_TIME) {
 			StopTransform();
 			//SetState(MARIO_STATE_JUMP_X);
 		}
@@ -1138,10 +1165,17 @@ void CMario::HandleSpeedStack() {
 }
 
 void CMario::HandleFlying() {
-	if (isFlying)
-	{
-		if (vy <= -MARIO_NORMAL_JUMP_MAX) {
-			normalFlyPullDown = true;
+	if (level == MARIO_LEVEL_SMALL || level == MARIO_LEVEL_BIG) {
+		if (isFlying)
+		{
+			if (vy <= -MARIO_NORMAL_FLY_MAX) {
+				normalFlyPullDown = true;
+			}
+		}
+	}
+	else {
+		if (isTailFlying) {
+
 		}
 	}
 	if (normalFlyPullDown && isFlying) {
