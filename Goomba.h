@@ -56,9 +56,9 @@ class CGoomba : public CGameObject
 	bool isWalking = false;
 	bool isJumping = false;
 	bool isHighJumping = false;
-	
+
 	bool isDiedByKoopas = false;
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
@@ -89,4 +89,7 @@ public:
 	void SetIsWhackedDying(bool isWhackedDying) { this->isWhackedDying = isWhackedDying; }
 	void SetIsDying(bool isDying) { this->isDying = isDying; }
 	void ResetStartWalking() { walking_start = 0; }
+	
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
 };

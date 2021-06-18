@@ -596,9 +596,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
+	/*case DIK_SPACE:
 		mario->ay = MARIO_GRAVITY;
-		break;
+		break;*/
 	case DIK_A:
 		mario->SetIsReadyToRun(false);
 		break;
@@ -653,8 +653,8 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	else
 		cy = mh - sh;
 
-	if (cy <= -32)//Top Edge
-		cy = -32;
+	if (cy <= 0)//Top Edge
+		cy = 0;
 	if (cy + sh >= mh)//Bottom Edge
 		cy = mh - sh;
 

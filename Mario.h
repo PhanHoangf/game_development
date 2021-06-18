@@ -226,7 +226,7 @@
 #define MARIO_UNTOUCHABLE_TIME 5000
 #define MARIO_TRANSFORM_TIME 500
 #define MARIO_KICKING_TIME	200	
-#define MARIO_FLYING_TIME			5000
+#define MARIO_FLYING_TIME	5000
 
 #define MARIO_WORLD_MAP_IDLE 0
 
@@ -252,6 +252,7 @@ class CMario : public CGameObject
 	DWORD start_speed_stack;
 	DWORD running_stop;
 	DWORD fly_start;
+	DWORD tail_fly_start;
 	int direction;
 
 	float start_x;			// initial position of Mario at scene
@@ -276,9 +277,7 @@ class CMario : public CGameObject
 	bool isReadyToRun = false;
 
 	bool isReadyToFly = false;
-	
 
-	
 
 	Tail* tail;
 
@@ -290,13 +289,15 @@ public:
 	int coin = 0;
 	bool isFlapping = false;
 	int speedStack = 0;
-	
+
 	bool normalFlyPullDown = false;
 	bool isFlying = false;
-	
+
 	bool tailFlyPullDown = false;
 	bool isTailFlying = false;
-	
+
+	float x0, y0;
+
 	vector<int> cards;
 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -319,14 +320,16 @@ public:
 	bool GetIsReadyToHold() { return isReadyToHold; }
 	int GetUntouchable() { return untouchable; }
 	bool GetIsReadyToRun() { return isReadyToRun; }
+	Tail* GetTail() { return this->tail; }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
-	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount(); SetLevel(level); }
+	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount64(); SetLevel(level); }
 	void StartKicking() { start_kicking = GetTickCount64(); isKicking = true; }
 	void StartRunning() { start_running = GetTickCount64(); }
 	void StartTurning() { start_turning_state = GetTickCount64(); isTuring = true; }
 	void StartSpeedStack() { start_speed_stack = GetTickCount64(); }
 	void StartFlying() { fly_start = GetTickCount64(); }
+	void StartTailFlying() { tail_fly_start = GetTickCount64(); }
 
 	void StopTransform() { isTransforming = false; start_transform = 0; isChangingY = false; }
 	void StopKicking() { start_kicking = 0; isKicking = false; }
@@ -363,4 +366,6 @@ public:
 	void AddScore(float x, float y, int score);
 	void AddCoin() { this->coin++; }
 	void AddCard(int cardId) { cards.push_back(cardId); }
+
+	void InitTail();
 };

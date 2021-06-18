@@ -140,12 +140,11 @@ void BoomerangKoopas::DestroyBoomerang(vector<LPGAMEOBJECT>* coObjects) {
 			}
 		}
 	}
-
-	if (this->boomerang != NULL) {
+	/*if (this->boomerang != NULL) {
 		if (!this->boomerang->IsInViewPort()) {
 			this->boomerang->isDestroyed = true;
 		}
-	}
+	}*/
 }
 
 void BoomerangKoopas::SetState(int state) {
@@ -202,7 +201,6 @@ bool BoomerangKoopas::IsGoPassThrowPoint(float x) {
 }
 
 void BoomerangKoopas::HoldBoomerang() {
-
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -220,9 +218,4 @@ void BoomerangKoopas::HoldBoomerang() {
 	this->boomerang->SetIsAppear(true);
 	this->boomerang->SetState(BOOMERANG_STATE_IDLE);
 	currentScene->AddSpecialObject(this->boomerang);
-	//new Unit(currentScene->GetGrid(), boomerang, boomerang->x, boomerang->y, 0);
-	//boomerangs.push_back(boomerang);
-	//this->boomerang = boomerang;
-	//currentBoomerang++;
-	//currentScene->AddSpecialObject(this->boomerang);
 }

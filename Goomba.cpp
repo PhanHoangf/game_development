@@ -30,6 +30,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt, coObjects);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
+
 	if (GetTickCount64() - dying_start >= GOOMBA_TIME_DIYING && isDying)
 	{
 		isDying = false;
@@ -41,7 +42,14 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-	vy = GOOMBA_GRAVITY * dt;
+	if (GetTickCount64() - dying_start >= GOOMBA_TIME_DIYING_BY_TAIL && isWhackedDying)
+	{
+		isWhackedDying = false;
+		isDestroyed = true;
+		return;
+	}
+
+	vy += GOOMBA_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -57,8 +65,22 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
-
-	if (coEvents.size() == 0) {
+	if (mario != NULL && state != GOOMBA_STATE_DIE) {
+		if (mario->isTuring && mario->GetLevel() == MARIO_LEVEL_TAIL && state != GOOMBA_STATE_DIE && state != GOOMBA_STATE_DIE_BY_TAIL)
+		{
+			mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+			GetBoundingBox(oLeft, oTop, oRight, oBottom);
+			if (isColliding(floor(mLeft), mTop, ceil(mRight), mBottom))
+			{
+				mario->AddScore(x, y, 100);
+				//SetDirection(mario->nx);
+				SetState(GOOMBA_STATE_DIE_BY_TAIL);
+				//mario->GetTail()->ShowHitEffect();
+				return;
+			}
+		}
+	}
+	if (coEvents.size() == 0 || state == GOOMBA_STATE_DIE_BY_TAIL) {
 		x += dx;
 		y += dy;
 		//vy += GOOMBA_GRAVITY * dt;
@@ -161,5 +183,12 @@ void CGoomba::SetState(int state)
 		break;
 	case GOOMBA_STATE_WALKING:
 		vx = -GOOMBA_WALKING_SPEED;
+		break;
+	case GOOMBA_STATE_DIE_BY_TAIL:
+		vy = -GOOMBA_DIE_DEFLECT_SPEED;
+		vx = -vx;
+		ay = GOOMBA_GRAVITY;
+		StartDying(true);
+		break;
 	}
 }
