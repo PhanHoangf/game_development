@@ -210,7 +210,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 					else {
 						x += dx;
-						y = y0;
 					}
 				}
 			} // if Goomba
@@ -400,15 +399,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float cx = CGame::GetInstance()->GetCamPosX();
 
 	//! Limit y when fly
-	if (y <= cy || y <= 0) {
-		y = cy + 16;
+	if (y <= cy) {
+		if (isFlying || isTailFlying) {
+			y = cy + 16;
+		}
 	}
 
 	if (x <= cx) {
 		x = cx;
 	}
-	DebugOut(L"ay::%f\n", ay);
-
 	tail->Update(dt, coObjects);
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -1131,6 +1130,7 @@ void CMario::HandleBasicMarioDie() {
 		if (level == MARIO_LEVEL_TAIL) {
 			SetLevel(MARIO_LEVEL_BIG);
 			StartUntouchable();
+			SetState(MARIO_STATE_IDLE);
 		}
 		else if (level == MARIO_LEVEL_BIG) {
 			SetLevel(MARIO_LEVEL_SMALL);
@@ -1142,7 +1142,7 @@ void CMario::HandleBasicMarioDie() {
 		}
 	}
 	else {
-		y = y0;
+		x = x0 + dx;
 	}
 }
 

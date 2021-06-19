@@ -37,8 +37,21 @@ void QuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b) {
 
 void QuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	CGameObject::Update(dt);
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
+
+
+	float mLeft, mTop, mRight, mBottom;
+
+	if (mario != NULL && totalItems > 0 && state != QUESTION_BRICK_HIT && mario->isTuring) {
+		mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+		if (isColliding(mLeft, mTop, mRight, mBottom)) {
+			SetState(QUESTION_BRICK_HIT);
+		}
+
+	}
 
 	if (coEvents.size() == 0)
 	{
@@ -55,7 +68,7 @@ void QuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			y = start_y;
 			isFallingDown = false;
 			vy = 0;
-			if (tag != ITEM_COIN_QUESTION_BRICK_COIN) {
+ 			if (tag != ITEM_COIN_QUESTION_BRICK_COIN) {
 				DebugOut(L"item::%d\n", tag);
 				CreateItem(tag);
 			}
@@ -103,7 +116,7 @@ void QuestionBrick::CreateItem(int itemType) {
 		Leaf* obj = dynamic_cast<Leaf*>(this->obj);
 		obj->SetAppear(true);
 		obj->SetPosition(x, y);
- 		obj->SetState(LEAF_STATE_UP);
+		obj->SetState(LEAF_STATE_UP);
 		currentScene->AddSpecialObject(obj);
 	}
 }

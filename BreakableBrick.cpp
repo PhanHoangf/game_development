@@ -14,9 +14,19 @@ void BreakableBrick::Render()
 
 void BreakableBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	CGameObject::Update(dt);
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	float mLeft, mTop, mRight, mBottom;
+	if (mario != NULL) {
+		mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+		if (isColliding(mLeft, mTop, mRight, mBottom) && mario->isTuring) {
+			this->Break();
+		}
+	}
 
 	if (isDestroyed)
 		return;
+
 }
 
 void BreakableBrick::Break() {

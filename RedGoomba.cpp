@@ -36,6 +36,7 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = currentScene->GetPlayer();
 
 	if (GetTickCount64() - GetDyingStart() >= GOOMBA_TIME_DIYING && GetIsDying())
 	{
@@ -49,9 +50,17 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		return;
 	}
 
+	if (GetTickCount64() - dying_start >= GOOMBA_TIME_DIYING_BY_TAIL && isWhackedDying)
+	{
+		isWhackedDying = false;
+		isDestroyed = true;
+		return;
+	}
+
 	//! Update goomba y when die
 
 	vy += ay * dt;
+
 
 
 	if (state != GOOMBA_STATE_DIE && isHaveWings) {
@@ -89,7 +98,8 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
 
-	if (coEvents.size() == 0) {
+
+	if (coEvents.size() == 0 || state == GOOMBA_STATE_DIE_BY_TAIL) {
 		x += dx;
 		y += dy;
 	}
@@ -202,6 +212,10 @@ void RedGoomba::SetState(int state) {
 		StartDying();
 		break;
 	case GOOMBA_STATE_DIE_BY_TAIL:
+		vy = -GOOMBA_DIE_DEFLECT_SPEED;
+		vx = -vx;
+		ay = GOOMBA_GRAVITY;
+		StartDying(true);
 		break;
 	default:
 		break;

@@ -56,6 +56,9 @@ protected:
 	vector<LPGAMEOBJECT> specialObjects; //! Coin in brick 
 	vector<LPGAMEOBJECT> objInPipe;
 
+	vector<LPGAMEOBJECT> objRenderFirst;
+	vector<LPGAMEOBJECT> objRenderSecond;
+
 	vector<Unit*> objectGrid;
 
 	CMap* currentMap;
@@ -84,11 +87,11 @@ public:
 	virtual void Unload();
 	virtual void SetCam(float cx, float cy, DWORD dt = 0);
 	CMario* GetPlayer() { return player; }
-	vector<LPGAMEOBJECT> GetObjects() { return objects; }
-	void AddObject(LPGAMEOBJECT obj) { this->objects.push_back(obj); }
+	vector<LPGAMEOBJECT> GetObjects() { return objRenderSecond; }
+	//void AddObject(LPGAMEOBJECT obj) { this->objects.push_back(obj); }
 	void AddSpecialObject(LPGAMEOBJECT obj) { this->specialObjects.push_back(obj); }
 	void AddMovingObject(LPGAMEOBJECT obj) { this->mObjects.push_back(obj); }
-	void deleteLastObject() { this->objects.pop_back(); }
+	//void deleteLastObject() { this->objects.pop_back(); }
 
 	Grid* GetGrid() { if (this->grid != NULL) return this->grid; }
 	//friend class CPlayScenceKeyHandler;

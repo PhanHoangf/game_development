@@ -401,8 +401,8 @@ void CPlayScene::Update(DWORD dt)
 
 
 
-	for (size_t i = 0;i < objects.size(); i++) {
-		coObjects.push_back(objects[i]);
+	for (size_t i = 0;i < objRenderFirst.size(); i++) {
+		coObjects.push_back(objRenderFirst[i]);
 	}
 
 	for (size_t i = 0;i < specialObjects.size(); i++) {
@@ -410,8 +410,8 @@ void CPlayScene::Update(DWORD dt)
 			coObjects.push_back(specialObjects[i]);
 	}
 
-	for (size_t i = 0;i < objInPipe.size(); i++) {
-		coObjects.push_back(objInPipe[i]);
+	for (size_t i = 0;i < objRenderSecond.size(); i++) {
+		coObjects.push_back(objRenderSecond[i]);
 	}
 
 
@@ -435,23 +435,21 @@ void CPlayScene::Update(DWORD dt)
 	//	objectGrid[i]->GetObject()->Update(dt, &coObjects);
 	//}
 
-	for (size_t i = 0; i < objects.size(); i++)
+	for (size_t i = 0; i < objRenderFirst.size(); i++)
 	{
-		if (objects[i]->IsInViewPort()) {
-			objects[i]->Update(dt, &coObjects);
+		if (objRenderFirst[i]->IsInViewPort()) {
+			objRenderFirst[i]->Update(dt, &coObjects);
 		}
-		else {
-			objects[i]->Update(0, &coObjects);
-		}
+		else objRenderFirst[i]->Update(0, &coObjects);
 	}
 
-	for (size_t i = 0; i < objInPipe.size(); i++)
+	for (size_t i = 0; i < objRenderSecond.size(); i++)
 	{
-		if (objInPipe[i]->IsInViewPort()) {
-			objInPipe[i]->Update(dt, &coObjects);
+		if (objRenderSecond[i]->IsInViewPort()) {
+			objRenderSecond[i]->Update(dt, &coObjects);
 		}
 		else {
-			objInPipe[i]->Update(0, &coObjects);
+			objRenderSecond[i]->Update(0, &coObjects);
 		}
 	}
 
@@ -481,8 +479,8 @@ void CPlayScene::GetObjectFromGrid() {
 	cam_y = game->GetCamPosY();
 
 	objectGrid.clear();
-	objects.clear();
-	objInPipe.clear();
+	objRenderFirst.clear();
+	objRenderSecond.clear();
 
 	objectGrid = grid->getObjectsInViewPort(cam_x, cam_y);
 
@@ -490,9 +488,9 @@ void CPlayScene::GetObjectFromGrid() {
 	{
 		LPGAMEOBJECT obj = objectGrid[i]->GetObject();
 		if (dynamic_cast<PiranhaPlant*>(obj) || dynamic_cast<PiranhaPlantFire*>(obj)) {
-			objInPipe.push_back(obj);
+			objRenderFirst.push_back(obj);
 		}
-		else objects.push_back(obj);
+		else objRenderSecond.push_back(obj);
 	}
 }
 
@@ -521,18 +519,14 @@ void CPlayScene::Render()
 
 
 
-	for (int i = 0; i < objInPipe.size(); i++)
+	for (int i = 0; i < objRenderFirst.size(); i++)
 	{
-		if (!objInPipe[i]->isDestroyed) {
-			objInPipe[i]->Render();
-		}
+		objRenderFirst[i]->Render();
 	}
 
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < objRenderSecond.size(); i++)
 	{
-		if (!objects[i]->isDestroyed) {
-			objects[i]->Render();
-		}
+		objRenderSecond[i]->Render();
 	}
 
 	for (int i = 0; i < specialObjects.size(); i++)
@@ -550,12 +544,20 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	for (int i = 0; i < objRenderFirst.size(); i++)
+		delete objRenderFirst[i];
 
-	objects.clear();
+	for (int i = 0; i < objRenderSecond.size(); i++)
+		delete objRenderSecond[i];
+
+	for (int i = 0; i < specialObjects.size(); i++)
+		delete specialObjects[i];
+
+	objRenderFirst.clear();
+	objRenderSecond.clear();
+	specialObjects.clear();
 	player = NULL;
-	objId = 0;
+	grid = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
@@ -596,9 +598,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	switch (KeyCode)
 	{
-	/*case DIK_SPACE:
+	case DIK_SPACE:
 		mario->ay = MARIO_GRAVITY;
-		break;*/
+		break;
 	case DIK_A:
 		mario->SetIsReadyToRun(false);
 		break;

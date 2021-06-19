@@ -68,8 +68,8 @@ void Grid::Move(Unit* unit, float x, float y) {
 	int oldCol = (int)(unit->_x / CELL_WIDTH);
 
 	// See which cell it's moving to.
-	int newRow = (int)(x / Grid::CELL_HEIGHT);
-	int newCol = (int)(y / Grid::CELL_WIDTH);
+	int newRow = (int)(y / Grid::CELL_HEIGHT);
+	int newCol = (int)(x / Grid::CELL_WIDTH);
 
 	if (newRow < 0 || newRow >= totalRows || newCol < 0 ||
 		newCol >= totalCols)

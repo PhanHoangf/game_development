@@ -48,7 +48,7 @@
 
 class CGoomba : public CGameObject
 {
-	DWORD dying_start = 0;
+	
 	DWORD chasing_start = 0;
 	DWORD walking_start = 0;
 	bool isDying = false;
@@ -63,6 +63,7 @@ class CGoomba : public CGameObject
 	virtual void Render();
 
 public:
+	DWORD dying_start = 0;
 	CGoomba();
 	int jumping_stacks = 0;
 	virtual void SetState(int state);
