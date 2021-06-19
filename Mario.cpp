@@ -89,10 +89,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
-	}
-
-	if (untouchable) {
-
+		isAttacked = false;
 	}
 
 	// No collision occured, proceed normall
@@ -194,23 +191,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 				if (e->nx != 0) {
-					if (untouchable != 1) {
-						if (level == MARIO_LEVEL_SMALL) {
-							SetState(MARIO_STATE_DIE);
-						}
-						//! 1: Set back to level small -> 2: start untouchable
-						if (level == MARIO_LEVEL_BIG) {
-							SetLevel(MARIO_LEVEL_SMALL);
-							StartUntouchable();
-						}
-						if (level == MARIO_LEVEL_TAIL) {
-							SetLevel(MARIO_LEVEL_BIG);
-							StartUntouchable();
-						}
-					}
-					else {
-						x += dx;
-					}
+					HandleBasicMarioDie();
 				}
 			} // if Goomba
 			if (dynamic_cast<BoomerangKoopas*>(e->obj)) // if e->obj is Goomba 
@@ -248,36 +229,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			} // if Goomba
 			if (dynamic_cast<CKoopas*>(e->obj)) {
 				CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
-				if (e->nx != 0 || e->ny > 0) {
-					vy = 0;
-					if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_SPINNING) {
-						if (untouchable != 1) {
-							if (level == MARIO_LEVEL_SMALL) SetState(MARIO_STATE_DIE);
-							else if (level == MARIO_LEVEL_BIG) {
-								StartUntouchable();
-								SetLevel(MARIO_LEVEL_SMALL);
-							}
-							else if (level == MARIO_LEVEL_TAIL) {
-								StartUntouchable();
-								SetLevel(MARIO_LEVEL_BIG);
-							}
-						}
-						else {
-							y = y0;
-							x += dx;
-						}
+				if (e->nx != 0) {
+					if (koopas->GetState() == KOOPAS_STATE_IN_SHELL || koopas->GetState() == KOOPAS_STATE_SHELL_UP) {
+						SetState(MARIO_STATE_KICK);
+						koopas->SetState(KOOPAS_STATE_SPINNING);
 					}
-					if (koopas->GetState() == KOOPAS_STATE_IN_SHELL) {
-						DebugOut(L"collision with KOOPAS\n");
-						if (isReadyToHold) {
-							isHolding = true;
-							koopas->SetIsBeingHeld(true);
-						}
-						else {
-							koopas->SetIsBeingHeld(false);
-							koopas->SetState(KOOPAS_STATE_SPINNING);
-							SetState(MARIO_STATE_KICK);
-						}
+					else {
+						HandleBasicMarioDie();
+					}
+				}
+				if (e->ny > 0) {
+					if (koopas->GetState() == KOOPAS_STATE_IN_SHELL || koopas->GetState() == KOOPAS_STATE_SHELL_UP) {
+						SetState(MARIO_STATE_KICK);
+						koopas->SetState(KOOPAS_STATE_SPINNING);
+					}
+					else {
+						koopas->x = this->x + nx * 2;
+						HandleBasicMarioDie();
 					}
 				}
 				if (e->ny < 0) {
@@ -439,7 +407,10 @@ void CMario::Render()
 			ani = MARIO_ANI_TRANSFORM_SMALL_RIGHT;
 		}
 		else ani = MARIO_ANI_TRANSFORM_SMALL_LEFT;
-		if (level == MARIO_LEVEL_TAIL) ani = MARIO_ANI_TRANSFORM_BANG;
+		if (level == MARIO_LEVEL_TAIL || isBangAni) {
+			ani = MARIO_ANI_TRANSFORM_BANG;
+		}
+		
 	}
 
 	if (untouchable) alpha = 128;
@@ -1045,6 +1016,10 @@ void CMario::HandleTransform(int level) {
 		HandleChangeYTransform();
 		if (GetTickCount64() - start_transform > MARIO_TRANSFORM_TIME) {
 			StopTransform();
+			isBangAni = false;
+			if (isAttacked) {
+				StartUntouchable();
+			}
 			//SetState(MARIO_STATE_JUMP_X);
 		}
 	}
@@ -1100,7 +1075,7 @@ void CMario::HandleMarioKicking() {
 	if (isKicking) {
 		if (GetTickCount64() - start_kicking > MARIO_KICKING_TIME) {
 			StopKicking();
-			//SetState(MARIO_STATE_IDLE);
+			SetState(MARIO_STATE_IDLE);
 		}
 	}
 }
@@ -1126,14 +1101,16 @@ void CMario::HandleMarioHolding() {
 
 void CMario::HandleBasicMarioDie() {
 	if (untouchable != 1) {
+		isAttacked = true;
 		x = x0;
+		y = y0 + dy - 1;
 		if (level == MARIO_LEVEL_TAIL) {
-			SetLevel(MARIO_LEVEL_BIG);
+			StartTransform(MARIO_LEVEL_BIG);
 			StartUntouchable();
 			SetState(MARIO_STATE_IDLE);
 		}
 		else if (level == MARIO_LEVEL_BIG) {
-			SetLevel(MARIO_LEVEL_SMALL);
+			StartTransform(MARIO_LEVEL_SMALL);
 			StartUntouchable();
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
 		}
@@ -1143,6 +1120,7 @@ void CMario::HandleBasicMarioDie() {
 	}
 	else {
 		x = x0 + dx;
+		y = y0 + dy - 1;
 	}
 }
 

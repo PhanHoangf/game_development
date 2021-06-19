@@ -517,7 +517,7 @@ void CPlayScene::Render()
 
 	player->Render();
 
-
+	
 
 	for (int i = 0; i < objRenderFirst.size(); i++)
 	{

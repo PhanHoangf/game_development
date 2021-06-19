@@ -47,7 +47,7 @@ void PiranhaPlantFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	if (y >= limitY + BBHeight && vy > 0)
 	{
-		y = limitY + BBHeight;
+		y = limitY + BBHeight + 12;
 		SetState(PIRANHAPLANT_STATE_INACTIVE);
 		StartDelay();
 	}

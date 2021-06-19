@@ -78,6 +78,16 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
+	if (mario != NULL) {
+		if (mario->isTuring && mario->GetLevel() == MARIO_LEVEL_TAIL) {
+			mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+			if (isColliding(floor(mLeft), floor(mTop), ceil(mRight), ceil(mBottom))) {
+				SetState(KOOPAS_STATE_SHELL_UP);
+				if (tag == KOOPAS_GREEN_PARA)
+					tag = KOOPAS_GREEN;
+			}
+		}
+	}
 	// No collision occured, proceed normall
 	if (coEvents.size() == 0)
 	{

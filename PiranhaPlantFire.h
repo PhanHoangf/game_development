@@ -65,6 +65,6 @@ public:
 		if (tag == 0)
 			BBHeight = PIRANHAPLANT_GREEN_BBOX_HEIGHT;
 		else BBHeight = PIRANHAPLANT_RED_BBOX_HEIGHT;
-		limitY = ly - BBHeight;
+		limitY = ly - BBHeight - 12;
 	}
 };

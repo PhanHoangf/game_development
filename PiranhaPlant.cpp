@@ -20,7 +20,7 @@ PiranhaPlant::PiranhaPlant()
 
 void PiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
-	if (GetTickCount() - dying_start >= PIRANHAPLANT_DIYING_TIME && dying_start != 0)
+	if (GetTickCount64() - dying_start >= PIRANHAPLANT_DIYING_TIME && dying_start != 0)
 		isDestroyed = true;
 	if (state == PIRANHAPLANT_STATE_DEATH)
 		return;
@@ -38,7 +38,7 @@ void PiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		y = limitY + PIRANHAPLANT_BBOX_HEIGHT;
 		SetState(PIRANHAPLANT_STATE_INACTIVE);
 	}
-	if (GetTickCount() - biting_start >= PIRANHAPLANT_BITING_TIME && biting_start != 0)
+	if (GetTickCount64() - biting_start >= PIRANHAPLANT_BITING_TIME && biting_start != 0)
 	{
 		if (y == limitY)
 			vy = PIRANHAPLANT_DARTING_SPEED;
@@ -62,9 +62,16 @@ void PiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			|| ceil(mario->x) >= x + PIRANHAPLANT_BBOX_WIDTH + PIRANHAPLANT_ACTIVE_RANGE)
 			&& state == PIRANHAPLANT_STATE_INACTIVE && biting_start == 0)
 			SetState(PIRANHAPLANT_STATE_DARTING);
+		
+		//! Die
+		mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+		
+		if (isColliding(floor(mLeft), mTop, ceil(mRight), mBottom) && mario->isTuring) {
+			mario->AddScore(x, y, 100);
+			SetState(PIRANHAPLANT_STATE_DEATH);
+		}
+
 	}
-
-
 }
 
 void PiranhaPlant::Render()

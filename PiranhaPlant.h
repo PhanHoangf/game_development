@@ -24,7 +24,6 @@ class PiranhaPlant :
 	DWORD biting_start = 0;
 	DWORD dying_start = 0;
 	float limitY = 0;
-
 	
 public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);

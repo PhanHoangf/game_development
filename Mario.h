@@ -277,8 +277,8 @@ class CMario : public CGameObject
 	bool isReadyToRun = false;
 
 	bool isReadyToFly = false;
-
-
+	bool isAttacked = false;
+	bool isBangAni = false;
 	Tail* tail;
 
 public:
@@ -323,7 +323,7 @@ public:
 	Tail* GetTail() { return this->tail; }
 
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
-	void StartTransform(int level) { isTransforming = true; start_transform = GetTickCount64(); SetLevel(level); }
+	void StartTransform(int level) { if (this->level == MARIO_LEVEL_TAIL) isBangAni = true; isTransforming = true; start_transform = GetTickCount64(); SetLevel(level); }
 	void StartKicking() { start_kicking = GetTickCount64(); isKicking = true; }
 	void StartRunning() { start_running = GetTickCount64(); }
 	void StartTurning() { start_turning_state = GetTickCount64(); isTuring = true; }
