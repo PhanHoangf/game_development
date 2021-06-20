@@ -11,6 +11,10 @@ void Tail::GetBoundingBox(float& l, float& t, float& r, float& b)
 }
 
 void Tail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+	
+	if (GetTickCount64() - hit_start >= TAIL_HIT_TIME && hit_start != 0)
+		hit_start = 0;
+
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (x < mario->x)
 		nx = -1;
@@ -39,12 +43,12 @@ void Tail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 }
 
 void Tail::Render() {
-	/*if (hit_start) {
+	if (hit_start) {
 		if (nx < 0)
 			CSprites::GetInstance()->Get(TAIL_HIT_SPRITE_ID)->Draw(x - 2, y);
 		if (nx > 0)
 			CSprites::GetInstance()->Get(TAIL_HIT_SPRITE_ID)->Draw(x + TAIL_BBOX_WIDTH - 2, y);
-	}*/
+	}
 	RenderBoundingBox();
 }
 

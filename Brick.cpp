@@ -35,6 +35,13 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		y += dy;
 		x += dx;
 	}
+	float mLeft, mTop, mRight, mBottom;
+	if (mario != NULL) {
+		mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+		if (mario->isTuring && isColliding(mLeft, mTop, mRight, mBottom) && state != BRICK_STATE_HIT) {
+			SetState(BRICK_STATE_HIT);
+		}
+	}
 	if (state == BRICK_STATE_HIT && isPushed) {
 		if (this->type == PUSH_TO_RIGHT) {
 			if (x - start_x >= PUSH_MAX) {

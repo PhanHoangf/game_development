@@ -16,10 +16,18 @@ CKoopas::CKoopas(int tag)
 	this->start_tag = tag;
 	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
 		this->nx = -1;
-		//this->SetState(KOOPAS_STATE_INACTIVE);
-		this->SetState(KOOPAS_STATE_WALKING);
 	}
-	else this->SetState(KOOPAS_STATE_WALKING);
+	this->SetState(KOOPAS_STATE_WALKING);
+}
+
+void CKoopas::Reset() {
+	this->x = start_x;
+	this->y = start_y;
+	this->tag = start_tag;
+	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
+		this->nx = -1;
+	}
+	this->SetState(KOOPAS_STATE_WALKING);
 }
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -39,13 +47,17 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
-
+	
 	/*if (state == KOOPAS_STATE_INACTIVE && mario->x <= 1200.0f) return;
 	if (state == KOOPAS_STATE_INACTIVE && mario->x >= 1200.0f) {
 		SetState(KOOPAS_STATE_WALKING);
 	}*/
 
-	if (GetTickCount() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
+	/*if (!IsInViewPort()) {
+		Reset();
+	}*/
+
+	if (GetTickCount64() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
 		shell_start = 0;
 		StartReviving();
 	}
@@ -85,6 +97,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetState(KOOPAS_STATE_SHELL_UP);
 				if (tag == KOOPAS_GREEN_PARA)
 					tag = KOOPAS_GREEN;
+				mario->GetTail()->ShowHitEffect();
 			}
 		}
 	}
@@ -242,6 +255,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				tmp->Break();
 				mario->AddScore(x, y, 150);
 			}
+
 			if (dynamic_cast<Coin*>(e->obj)) {
 				x += dx;
 			}

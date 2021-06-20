@@ -30,6 +30,9 @@ void PiranhaPlantFire::Render()
 
 void PiranhaPlantFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
+	if (GetTickCount64() - dying_start >= PIRANHAPLANT_DIYING_TIME && dying_start != 0)
+		isDestroyed = true;
+
 	if (state == PIRANHAPLANT_STATE_DEATH)
 		return;
 
@@ -94,6 +97,13 @@ void PiranhaPlantFire::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		if (floor(mario->x) < x - 60 || floor(mario->x) > x + PIRANHAPLANT_BBOX_WIDTH + 60) {
 			isMarioInActiveZone = false;
 		}
+
+		mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+
+		if (isColliding(floor(mLeft), mTop, ceil(mRight), mBottom) && mario->isTuring) {
+			mario->AddScore(x, y, 100);
+			SetState(PIRANHAPLANT_STATE_DEATH);
+		}
 	}
 }
 
@@ -117,6 +127,11 @@ void PiranhaPlantFire::SetState(int state) {
 	case PIRANHAPLANT_STATE_SHOOTING:
 		vy = 0;
 		Shoot();
+		break;
+	case PIRANHAPLANT_STATE_DEATH:
+		vy = 0;
+		//SetType(IGNORE);
+		StartDying();
 		break;
 	case PIRANHAPLANT_STATE_INACTIVE:
 		vy = 0;

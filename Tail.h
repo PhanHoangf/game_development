@@ -4,6 +4,7 @@
 #define TAIL_BBOX_WIDTH		8
 #define TAIL_BBOX_HEIGHT	6
 #define TAIL_HIT_SPRITE_ID	10998	
+#define TAIL_HIT_TIME 25
 
 class Tail :
     public CGameObject
@@ -14,6 +15,7 @@ public:
     virtual void Render();
     Tail(float x, float y) { this->x = x; this->y = y; }
     void SetState(int state);
+    void ShowHitEffect() { hit_start = GetTickCount64(); };
     virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
 

@@ -31,8 +31,7 @@ void BoomerangKoopas::Render() {
 }
 
 void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	//DebugOut(L"vx::%f\n", this->vx);
-
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	CGameObject::Update(dt, coObjects);
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -40,6 +39,7 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 
 	vy += BOOMERANG_KOOPAS_GRAVITY * dt;
+	
 	coEvents.clear();
 
 	if (state != BOOMERANG_KOOPAS_STATE_DIE) {
@@ -74,23 +74,39 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		}
 
 		if (IsGoPassThrowPoint(x)) {
-			//DebugOut(L"IN\n");
 			state = BOOMERANG_KOOPAS_STATE_THROW;
-			if (!isHoldingBoomerang && currentBoomerang < 1) {
+			if (!isHoldingBoomerang && currentBoomerang < 2) {
 				HoldBoomerang();
 				isHoldingBoomerang = true;
 			}
 		}
 
-		/*if (this->boomerang != NULL) {
-			if (!this->boomerang->IsInViewPort())
-				this->boomerang->isDestroyed = true;
-		}*/
-
-		if (isHoldingBoomerang) this->boomerang->SetPosition(this->x + 8, this->y - 4);
+		if (isHoldingBoomerang && currentBoomerang < 2) {
+			this->boomerang->SetPosition(this->x + 8, this->y - 4);
+		}
 	}
 
-	DestroyBoomerang(coObjects);
+	//DestroyBoomerang(coObjects);
+
+	if (state == BOOMERANG_KOOPAS_STATE_DIE) {
+		if (this->boomerang != NULL) {
+			this->boomerang->isDestroyed = true;
+			this->boomerang = NULL;
+		}
+		x += dx;
+		y += dy;
+	}
+
+	float mLeft, mTop, mRight, mBottom;
+
+	if (mario != NULL) {
+		mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+		if (mario->isTuring && isColliding(mLeft, mTop, mRight, mBottom) && state != BOOMERANG_KOOPAS_STATE_DIE) {
+			SetState(BOOMERANG_KOOPAS_STATE_DIE);
+			mario->AddScore(x, y, 100);
+			mario->GetTail()->ShowHitEffect();
+		}
+	}
 
 	if (coEvents.size() == 0)
 	{
@@ -107,6 +123,7 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		// block every object first!
+		float x0 = x;
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
@@ -124,6 +141,14 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				if (e->nx != 0) {
 					bRang->isDestroyed = true;
 					currentBoomerang--;
+					x = x0 + dx;
+				}
+			}
+			if (dynamic_cast<CKoopas*>(e->obj)) {
+				CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+				if (e->nx != 0 || e->ny != 0) {
+					if (koopas->GetState() == KOOPAS_STATE_SPINNING)
+						SetState(BOOMERANG_KOOPAS_STATE_DIE);
 				}
 			}
 		}
@@ -140,11 +165,6 @@ void BoomerangKoopas::DestroyBoomerang(vector<LPGAMEOBJECT>* coObjects) {
 			}
 		}
 	}
-	/*if (this->boomerang != NULL) {
-		if (!this->boomerang->IsInViewPort()) {
-			this->boomerang->isDestroyed = true;
-		}
-	}*/
 }
 
 void BoomerangKoopas::SetState(int state) {
@@ -203,9 +223,9 @@ bool BoomerangKoopas::IsGoPassThrowPoint(float x) {
 void BoomerangKoopas::HoldBoomerang() {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(BOOMERANG_ANI_SET_ID);
 
 	this->boomerang = new Boomerang(this->x, this->y);
-	LPANIMATION_SET ani_set = animation_sets->Get(BOOMERANG_ANI_SET_ID);
 	this->boomerang->SetAnimationSet(ani_set);
 	if (nx < 0) {
 		this->boomerang->SetPosition(this->x + 8, this->y - 4);

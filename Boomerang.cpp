@@ -33,6 +33,8 @@ void Boomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		this->isDestroyed = true;
 	}*/
 
+	if (isDestroyed) return;
+
 	if (y <= limitY) {
 		vy = BOOMERANG_GRAVITY;
 		ax = -this->nx * BOOMERANG_ACCELERATION;
@@ -47,7 +49,7 @@ void Boomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	float oLeft, oTop, oRight, oBottom;
 
 	mario->GetBoundingBox(mLeft, mTop, mRight, mBottom);
-	if (isColliding(mLeft, mTop, mRight, mBottom) && mario->state != MARIO_STATE_DIE) {
+	if (isColliding(mLeft, mTop, mRight, mBottom) && mario->state != MARIO_STATE_DIE && state != BOOMERANG_STATE_IDLE) {
 		mario->HandleBasicMarioDie();
 	}
 

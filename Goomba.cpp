@@ -75,7 +75,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				mario->AddScore(x, y, 100);
 				//SetDirection(mario->nx);
 				SetState(GOOMBA_STATE_DIE_BY_TAIL);
-				//mario->GetTail()->ShowHitEffect();
+				mario->GetTail()->ShowHitEffect();
 				return;
 			}
 		}

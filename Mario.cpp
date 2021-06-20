@@ -351,9 +351,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 			if (dynamic_cast<Boomerang*>(e->obj)) {
-				/*	if (e->ny < 0) {
-						y += dy;
-					}*/
+				if (e->ny != 0 || e->nx != 0) {
+					y = y0 + dy;
+					x = x0 + dx;
+				}
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
@@ -410,7 +411,7 @@ void CMario::Render()
 		if (level == MARIO_LEVEL_TAIL || isBangAni) {
 			ani = MARIO_ANI_TRANSFORM_BANG;
 		}
-		
+
 	}
 
 	if (untouchable) alpha = 128;

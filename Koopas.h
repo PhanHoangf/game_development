@@ -70,8 +70,6 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void StartDying() { dying_start = GetTickCount64(); }
 	void Reset();
-	int CalRevivable();
-	bool CalKillable(vector<LPGAMEOBJECT>* coObjects);
 	bool CalTurnable(LPGAMEOBJECT object, vector<LPGAMEOBJECT>* coObjects);
 	void HandleBeingHeld(LPGAMEOBJECT player);
 };
