@@ -189,6 +189,9 @@
     <ClCompile Include="Tail.cpp">
       <Filter>Player\Tail</Filter>
     </ClCompile>
+    <ClCompile Include="FireFlower.cpp">
+      <Filter>GameObject\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="Tail.h">
       <Filter>Player\Tail</Filter>
+    </ClInclude>
+    <ClInclude Include="FireFlower.h">
+      <Filter>GameObject\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -510,6 +510,8 @@ Resources\Tilemap\world1-1.txt
 30014	156	144	172	160	21
 30015	178	144	194	160	21
 30016	200	153	216	160	21
+# === FIRE_FLOWER ===
+30017	336	189	352	205	20
 # ==== Goomba ==== 
 # --- Yellow ---
 #walk 
@@ -936,6 +938,8 @@ Resources\Tilemap\world1-1.txt
 # ==== Switch ====
 305	30014	100	30015	100
 306	30016	100
+# === FIRE_FLOWER ===
+307	30017	100
 # ==== Goomba  =========
 # --- Yellow ---
 #walk
@@ -1076,6 +1080,8 @@ Resources\Tilemap\world1-1.txt
 36	301	302
 # MushRoom
 37	303	304
+# FIRE_FLOWER
+38	307
 # Switch
 77	305	306
 # Goomba

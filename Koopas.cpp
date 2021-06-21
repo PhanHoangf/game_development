@@ -259,6 +259,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<Coin*>(e->obj)) {
 				x += dx;
+				if (e->ny < 0) {
+					y += dy;
+				}
 			}
 		}
 	}
@@ -363,21 +366,24 @@ void CKoopas::SetState(int state)
 
 void CKoopas::HandleBeingHeld(LPGAMEOBJECT player) {
 	CMario* mario = dynamic_cast<CMario*>(player);
-	if (isBeingHeld && state == KOOPAS_STATE_IN_SHELL && mario->GetIsHolding()) {
-		x = mario->x + MARIO_BIG_BBOX_WIDTH * mario->nx;
-		if (mario->GetLevel() == MARIO_LEVEL_BIG || (mario->GetLevel() == MARIO_LEVEL_TAIL)) {
-			y = mario->y + 9;
+	if (isBeingHeld && mario->GetIsHolding()) {
+		if (state == KOOPAS_STATE_IN_SHELL || state == KOOPAS_STATE_SHELL_UP) {
+			x = mario->x + MARIO_BIG_BBOX_WIDTH * mario->nx;
+			if (mario->GetLevel() != MARIO_LEVEL_SMALL) {
+				y = mario->y + 9;
+			}
+			else {
+				y = mario->y;
+			}
+			vy = 0;
 		}
-		else {
-			y = mario->y;
-		}
-		vy = 0;
-		DebugOut(L"Held & Shell\n");
 	}
-	else if (isBeingHeld && !mario->GetIsHolding() && state == KOOPAS_STATE_IN_SHELL) {
-		this->nx = mario->nx;
-		isBeingHeld = false;
-		mario->StartKicking();
-		SetState(KOOPAS_STATE_SPINNING);
+	else if (isBeingHeld && !mario->GetIsHolding()) {
+		if (state == KOOPAS_STATE_SHELL_UP || state == KOOPAS_STATE_IN_SHELL) {
+			this->nx = mario->nx;
+			isBeingHeld = false;
+			mario->StartKicking();
+			SetState(KOOPAS_STATE_SPINNING);
+		}
 	}
 }

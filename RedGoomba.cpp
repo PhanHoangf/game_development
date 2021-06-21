@@ -12,7 +12,7 @@ RedGoomba::RedGoomba() {
 }
 
 void RedGoomba::Render() {
-	int ani = -1;
+	int ani = GOOMBA_RED_ANI_WALKING;
 	if (isHaveWings) {
 		if (state == GOOMBA_STATE_RED_WINGSWALKING) {
 			ani = GOOMBA_RED_ANI_WINGSWALKING;
@@ -91,13 +91,28 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	coEvents.clear();
 
-	//if (state != GOOMBA_STATE_DIE) {
-	CalcPotentialCollisions(coObjects, coEvents);
-	//}
+	if (state != GOOMBA_STATE_DIE) {
+		CalcPotentialCollisions(coObjects, coEvents);
+	}
 
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
 
+	if (mario != NULL && state != GOOMBA_STATE_DIE) {
+		if (mario->isTuring && mario->GetLevel() == MARIO_LEVEL_TAIL && state != GOOMBA_STATE_DIE && state != GOOMBA_STATE_DIE_BY_TAIL)
+		{
+			mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+			GetBoundingBox(oLeft, oTop, oRight, oBottom);
+			if (isColliding(floor(mLeft), mTop, ceil(mRight), mBottom))
+			{
+				mario->AddScore(x, y, 100);
+				//SetDirection(mario->nx);
+				SetState(GOOMBA_STATE_DIE_BY_TAIL);
+				mario->GetTail()->ShowHitEffect();
+				return;
+			}
+		}
+	}
 
 	if (coEvents.size() == 0 || state == GOOMBA_STATE_DIE_BY_TAIL) {
 		x += dx;

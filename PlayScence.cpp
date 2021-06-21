@@ -405,16 +405,14 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(objRenderFirst[i]);
 	}
 
-	for (size_t i = 0;i < specialObjects.size(); i++) {
-		if (!specialObjects[i]->GetIsDestroy())
-			coObjects.push_back(specialObjects[i]);
-	}
-
 	for (size_t i = 0;i < objRenderSecond.size(); i++) {
 		coObjects.push_back(objRenderSecond[i]);
 	}
 
-
+	for (size_t i = 0;i < specialObjects.size(); i++) {
+		if (!specialObjects[i]->GetIsDestroy())
+			coObjects.push_back(specialObjects[i]);
+	}
 	//for (size_t i = 0; i < objects.size(); i++)
 	//{
 	//	if (!objects[i]->GetIsDestroy())
@@ -694,7 +692,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		mario->SetState(MARIO_STATE_JUMP_X);
 	}
 	else if (game->IsKeyDown(DIK_DOWN)) {
-		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround() || mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetIsOnGround())
+		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround() ||
+			mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetIsOnGround() ||
+			mario->GetLevel() == MARIO_LEVEL_FIRE && mario->GetIsOnGround())
 			mario->SetState(MARIO_STATE_SITDOWN);
 	}
 	/*else if (game->IsKeyDown(DIK_Q)) {

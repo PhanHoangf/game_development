@@ -22,12 +22,14 @@
 #include "Point.h"
 #include "PlayScence.h"
 #include "BreakableBrick.h"
+#include "FireFlower.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_BIG;
+	//level = MARIO_LEVEL_BIG;
 	//level = MARIO_LEVEL_SMALL;
 	//level = MARIO_LEVEL_TAIL;
+	level = MARIO_LEVEL_FIRE;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
 	ay = MARIO_ACCELERATION_JUMP;
@@ -291,6 +293,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					AddScore(this->x, this->y, 1000);
 				}
 			}
+			if (dynamic_cast<FireFlower*>(e->obj)) {
+				FireFlower* fireFlower = dynamic_cast<FireFlower*>(e->obj);
+				if (e->ny != 0 || e->nx != 0) {
+					if (level != MARIO_LEVEL_FIRE) StartTransform(MARIO_LEVEL_FIRE);
+					fireFlower->isAppear = false;
+					fireFlower->SetIsDestroyed(true);
+					AddScore(this->x, this->y, 1000);
+				}
+			}
 			if (dynamic_cast<Switch*>(e->obj)) {
 				Switch* sw = dynamic_cast<Switch*>(e->obj);
 				if (e->ny < 0) {
@@ -408,13 +419,16 @@ void CMario::Render()
 	if (level == MARIO_LEVEL_BIG) {
 		RenderMarioAniBig(ani);
 	}
+	if (level == MARIO_LEVEL_FIRE) {
+		RenderMarioAniFire(ani);
+	}
 
 	if (state == MARIO_STATE_TRANSFORM) {
 		if (nx > 0) {
 			ani = MARIO_ANI_TRANSFORM_SMALL_RIGHT;
 		}
 		else ani = MARIO_ANI_TRANSFORM_SMALL_LEFT;
-		if (level == MARIO_LEVEL_TAIL || isBangAni) {
+		if (level == MARIO_LEVEL_TAIL || isBangAni || level == MARIO_LEVEL_FIRE) {
 			ani = MARIO_ANI_TRANSFORM_BANG;
 		}
 
@@ -844,6 +858,130 @@ void CMario::RenderMarioAniTail(int& ani) {
 	}
 }
 
+void CMario::RenderMarioAniFire(int& ani) {
+	if (state == MARIO_STATE_IDLE) {
+		//DebugOut(L"hold::%d\n", hold);
+		if (isKicking) {
+			if (nx > 0) {
+				ani = MARIO_ANI_FIRE_KICKING_RIGHT;
+			}
+			if (nx < 0) {
+				ani = MARIO_ANI_FIRE_KICKING_LEFT;
+			}
+		}
+		else if (isHolding) {
+			if (nx > 0) {
+				ani = MARIO_ANI_FIRE_HOLD_IDLE_RIGHT;
+			}
+			if (nx < 0) {
+				ani = MARIO_ANI_FIRE_HOLD_IDLE_LEFT;
+			}
+		}
+		else {
+			if (nx > 0) {
+				ani = MARIO_ANI_FIRE_IDLE_RIGHT;
+			}
+			if (nx < 0) {
+				ani = MARIO_ANI_FIRE_IDLE_LEFT;
+			}
+		}
+	}
+	if (state == MARIO_STATE_WALKING_RIGHT) {
+		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
+			ani = MARIO_ANI_FIRE_BRAKING_LEFT;
+		}
+		if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
+			ani = MARIO_ANI_FIRE_WALKING_RIGHT;
+		}
+		if (!isOnGround) {
+			ani = MARIO_ANI_FIRE_JUMPINGUP_RIGHT;
+			if (isFlying) {
+				ani = MARIO_ANI_FIRE_FLY_RIGHT;
+			}
+			if (isHolding)
+				ani = MARIO_ANI_FIRE_HOLD_JUMPINGUP_RIGHT;
+		}
+		if (isKicking) {
+			ani = MARIO_ANI_FIRE_KICKING_RIGHT;
+		}
+		if (isHolding) {
+			ani = MARIO_ANI_FIRE_HOLD_WALKING_RIGHT;
+		}
+		if (isRunning && isOnGround) {
+			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX && !isHolding) {
+				ani = MARIO_ANI_FIRE_WALKING_FAST_RIGHT;
+			}
+		}
+	}
+	if (state == MARIO_STATE_WALKING_LEFT) {
+		if (isChangeDirection && abs(vx) > MARIO_WALKING_SPEED_MIN) {
+			ani = MARIO_ANI_FIRE_BRAKING_RIGHT;
+		}
+		if (!isChangeDirection && isOnGround || abs(vx) < MARIO_WALKING_SPEED_MIN && isOnGround) {
+			ani = MARIO_ANI_FIRE_WALKING_LEFT;
+		}
+		if (!isOnGround) {
+			ani = MARIO_ANI_FIRE_JUMPINGUP_LEFT;
+			if (isFlying) {
+				ani = MARIO_ANI_FIRE_FLY_LEFT;
+			}
+			if (isHolding)
+				ani = MARIO_ANI_FIRE_HOLD_JUMPINGUP_LEFT;
+		}
+		if (isKicking) {
+			ani = MARIO_ANI_FIRE_KICKING_LEFT;
+		}
+		if (isHolding) {
+			ani = MARIO_ANI_FIRE_HOLD_WALKING_LEFT;
+		}
+		if (isRunning && isOnGround) {
+			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX && !isHolding) {
+				ani = MARIO_ANI_FIRE_WALKING_FAST_LEFT;
+			}
+		}
+	}
+	if (state == MARIO_STATE_JUMP) {
+		if (nx > 0) {
+			ani = MARIO_ANI_FIRE_JUMPINGUP_RIGHT;
+			if (isFlying)
+				ani = MARIO_ANI_FIRE_FLY_RIGHT;
+			if (isHolding)
+				ani = MARIO_ANI_BIG_HOLD_JUMPING_RIGHT;
+		}
+		if (nx < 0) {
+			ani = MARIO_ANI_FIRE_JUMPINGUP_LEFT;
+			if (isFlying)
+				ani = MARIO_ANI_FIRE_FLY_LEFT;
+			if (isHolding)
+				ani = MARIO_ANI_FIRE_HOLD_JUMPINGUP_LEFT;
+		}
+	}
+	if (state == MARIO_STATE_JUMP_X) {
+		if (nx > 0) {
+			ani = MARIO_ANI_FIRE_JUMPINGUP_RIGHT;
+		}
+		if (nx < 0) {
+			ani = MARIO_ANI_FIRE_JUMPINGUP_LEFT;
+		}
+	}
+	if (state == MARIO_STATE_SITDOWN) {
+		RenderMarioSit(ani);
+	}
+	if (state == MARIO_STATE_KICK) {
+		if (isKicking)
+		{
+			if (nx > 0) ani = MARIO_ANI_FIRE_KICKING_RIGHT;
+			if (nx < 0) ani = MARIO_ANI_FIRE_KICKING_LEFT;
+		}
+	}
+	/*if (state == MARIO_STATE_HOLD) {
+		if (isHolding) {
+			if (nx > 0) ani = MARIO_ANI_BIG_HOLD_WALKING_RIGHT;
+			if (nx < 0) ani = MARIO_ANI_BIG_HOLD_WALKING_LEFT;
+		}
+	}*/
+}
+
 void CMario::SetState(int state)
 {
 	/*DebugOut(L"state::%d\n", state);*/
@@ -970,7 +1108,7 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	left = x;
 	top = y;
-	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_TAIL)
+	if (level != MARIO_LEVEL_SMALL)
 	{
 
 		right = x + MARIO_BIG_BBOX_WIDTH;
@@ -1119,6 +1257,10 @@ void CMario::RenderMarioSit(int& ani) {
 			if (nx > 0) ani = MARIO_ANI_TAIL_SITTING_RIGHT;
 			else ani = MARIO_ANI_TAIL_SITTING_LEFT;
 		}
+		else if (level == MARIO_LEVEL_FIRE) {
+			if (nx > 0) ani = MARIO_ANI_FIRE_SITTING_RIGHT;
+			else ani = MARIO_ANI_FIRE_SITTING_LEFT;
+		}
 		else {
 			if (nx > 0) ani = MARIO_ANI_BIG_SITTING_RIGHT;
 			else ani = MARIO_ANI_BIG_SITTING_LEFT;
@@ -1160,6 +1302,11 @@ void CMario::HandleBasicMarioDie() {
 		x = x0;
 		y = y0 + dy - 1;
 		if (level == MARIO_LEVEL_TAIL) {
+			StartTransform(MARIO_LEVEL_BIG);
+			StartUntouchable();
+			SetState(MARIO_STATE_IDLE);
+		}
+		else if (level == MARIO_LEVEL_FIRE) {
 			StartTransform(MARIO_LEVEL_BIG);
 			StartUntouchable();
 			SetState(MARIO_STATE_IDLE);

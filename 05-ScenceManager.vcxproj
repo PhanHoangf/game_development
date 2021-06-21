@@ -135,6 +135,7 @@
     <ClCompile Include="CardItem.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="FireBullet.cpp" />
+    <ClCompile Include="FireFlower.cpp" />
     <ClCompile Include="GreenBush.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HUD.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="CardItem.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="FireBullet.h" />
+    <ClInclude Include="FireFlower.h" />
     <ClInclude Include="GreenBush.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HUD.h" />

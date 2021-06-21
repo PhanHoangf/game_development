@@ -8,6 +8,7 @@
 #include "Mario.h"
 #include "Switch.h"
 #include "Leaf.h"
+#include "FireFlower.h"
 
 QuestionBrick::QuestionBrick(int tag, int type) : CGameObject() {
 	state = QUESTION_BRICK_NORMAL;
@@ -119,6 +120,13 @@ void QuestionBrick::CreateItem(int itemType) {
 		obj->SetState(LEAF_STATE_UP);
 		currentScene->AddSpecialObject(obj);
 	}
+	if (dynamic_cast<FireFlower*>(this->obj)) {
+		FireFlower* obj = dynamic_cast<FireFlower*>(this->obj);
+		obj->isAppear = true;
+		obj->SetPosition(x, y);
+		obj->SetState(FIRE_FLOWER_STATE_UP);
+		currentScene->AddSpecialObject(obj);
+	}
 }
 
 CGameObject* QuestionBrick::SetUpItem(int itemType) {
@@ -145,10 +153,15 @@ CGameObject* QuestionBrick::SetUpItem(int itemType) {
 			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 			obj->SetAnimationSet(ani_set);
 		}
-		if (mario->GetLevel() == MARIO_LEVEL_BIG || mario->GetLevel() == MARIO_LEVEL_TAIL) {
+		if (mario->GetLevel() == MARIO_LEVEL_BIG) {
 			obj = new Leaf();
 			ani_set_id = LEAF_ANI_SET_ID;
 			LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+			obj->SetAnimationSet(ani_set);
+		}
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL || mario->GetLevel() == MARIO_LEVEL_FIRE) {
+			obj = new FireFlower(x, y);
+			LPANIMATION_SET ani_set = animation_sets->Get(FIRE_FLOWER_ANI_ID);
 			obj->SetAnimationSet(ani_set);
 		}
 	}
