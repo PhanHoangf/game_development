@@ -517,7 +517,7 @@ void CPlayScene::Render()
 
 	player->Render();
 
-	
+
 
 	for (int i = 0; i < objRenderFirst.size(); i++)
 	{
@@ -582,6 +582,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_A:
 		mario->SetIsReadyToRun(true);
+		mario->SetIsReadyToHold(true);
 		break;
 	case DIK_S:
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
@@ -603,6 +604,10 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 		break;
 	case DIK_A:
 		mario->SetIsReadyToRun(false);
+		mario->SetIsReadyToHold(false);
+		if (mario->GetIsHolding()) {
+			mario->SetHolding(false);
+		}
 		break;
 	case DIK_S:
 		mario->isFlapping = false;

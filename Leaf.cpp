@@ -12,8 +12,8 @@ void Leaf::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void Leaf::Render()
 {
-	/*if (!isAppear || isDestroyed)
-		return;*/
+	if (!isAppear || isDestroyed)
+		return;
 	int ani = LEAF_ANI_LEFT;
 	if (state == LEAF_STATE_FALLING)
 	{
@@ -33,7 +33,9 @@ void Leaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	x += dx;
 	y += dy;
 
-
+	if (!IsInViewPort()) {
+		isDestroyed = true;
+	}
 
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();

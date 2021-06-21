@@ -47,7 +47,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = currentScene->GetPlayer();
-	
+
 	/*if (state == KOOPAS_STATE_INACTIVE && mario->x <= 1200.0f) return;
 	if (state == KOOPAS_STATE_INACTIVE && mario->x >= 1200.0f) {
 		SetState(KOOPAS_STATE_WALKING);
@@ -136,7 +136,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (tag == KOOPAS_RED_PARA)
 						tag = KOOPAS_RED;
 					this->SetState(KOOPAS_STATE_DEATH);
-					//mario->AddScore(x, y, 100, true);
+					mario->AddScore(x, y, 100);
+					x += dx;
 				}
 				else
 				{
@@ -362,12 +363,21 @@ void CKoopas::SetState(int state)
 
 void CKoopas::HandleBeingHeld(LPGAMEOBJECT player) {
 	CMario* mario = dynamic_cast<CMario*>(player);
-	if (isBeingHeld && state == KOOPAS_STATE_IN_SHELL) {
+	if (isBeingHeld && state == KOOPAS_STATE_IN_SHELL && mario->GetIsHolding()) {
 		x = mario->x + MARIO_BIG_BBOX_WIDTH * mario->nx;
-		mario->GetLevel() == MARIO_LEVEL_BIG ? y = mario->y + 9 : y = mario->y;
+		if (mario->GetLevel() == MARIO_LEVEL_BIG || (mario->GetLevel() == MARIO_LEVEL_TAIL)) {
+			y = mario->y + 9;
+		}
+		else {
+			y = mario->y;
+		}
 		vy = 0;
+		DebugOut(L"Held & Shell\n");
 	}
-	else {
-
+	else if (isBeingHeld && !mario->GetIsHolding() && state == KOOPAS_STATE_IN_SHELL) {
+		this->nx = mario->nx;
+		isBeingHeld = false;
+		mario->StartKicking();
+		SetState(KOOPAS_STATE_SPINNING);
 	}
 }

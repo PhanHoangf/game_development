@@ -64,11 +64,14 @@ void PiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			SetState(PIRANHAPLANT_STATE_DARTING);
 		
 		//! Die
-		mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
-		
-		if (isColliding(floor(mLeft), mTop, ceil(mRight), mBottom) && mario->isTuring) {
-			mario->AddScore(x, y, 100);
-			SetState(PIRANHAPLANT_STATE_DEATH);
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL) {
+			mario->GetTail()->GetBoundingBox(mLeft, mTop, mRight, mBottom);
+
+			if (isColliding(floor(mLeft), mTop, ceil(mRight), mBottom) && mario->isTuring) {
+				mario->AddScore(x, y, 100);
+				SetState(PIRANHAPLANT_STATE_DEATH);
+				mario->GetTail()->ShowHitEffect();
+			}
 		}
 
 	}

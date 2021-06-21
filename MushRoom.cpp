@@ -19,6 +19,10 @@ void MushRoom::Render() {
 
 void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
+	if (!IsInViewPort()) {
+		isDestroyed = false;
+	}
+
 	CGameObject::Update(dt);
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
