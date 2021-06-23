@@ -452,8 +452,11 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	for (size_t i = 0;i < specialObjects.size(); i++) {
-		if (specialObjects[i]->IsInViewPort()) {
+		if (specialObjects[i]->IsInViewPort() && !specialObjects[i]->isDestroyed) {
 			specialObjects[i]->Update(dt, &coObjects);
+		}
+		else {
+			specialObjects[i]->Update(0, &coObjects);
 		}
 	}
 
@@ -588,6 +591,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_Q:
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
+		if (mario->GetLevel() == MARIO_LEVEL_FIRE && !mario->GetIsHolding()) mario->ShootFireBall();
 		break;
 	}
 }

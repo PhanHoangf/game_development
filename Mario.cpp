@@ -23,6 +23,7 @@
 #include "PlayScence.h"
 #include "BreakableBrick.h"
 #include "FireFlower.h"
+#include "MarioBullet.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -85,6 +86,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	HandleTurning();
 	HandleSpeedStack();
 	HandleFlying();
+	HandleShooting();
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
@@ -192,7 +194,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
 					}
 				}
-				if (e->nx != 0) {
+				if (e->nx > 0 || e->nx < 0) {
 					HandleBasicMarioDie();
 				}
 			} // if Goomba
@@ -372,6 +374,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					y = y0 + dy;
 					x = x0 + dx;
 				}
+			}
+			if (dynamic_cast<MarioBullet*>(e->obj)) {
+				x = x0 + dx;
+				if (e->ny > 0) {
+					y = y0 + dx;
+				}
+				else y = y0;
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
@@ -877,6 +886,14 @@ void CMario::RenderMarioAniFire(int& ani) {
 				ani = MARIO_ANI_FIRE_HOLD_IDLE_LEFT;
 			}
 		}
+		else if (isShooting) {
+			if (nx > 0) {
+				ani = MARIO_ANI_SHOOTING_RIGHT;
+			}
+			if (nx < 0) {
+				ani = MARIO_ANI_SHOOTING_LEFT;
+			}
+		}
 		else {
 			if (nx > 0) {
 				ani = MARIO_ANI_FIRE_IDLE_RIGHT;
@@ -907,6 +924,9 @@ void CMario::RenderMarioAniFire(int& ani) {
 		if (isHolding) {
 			ani = MARIO_ANI_FIRE_HOLD_WALKING_RIGHT;
 		}
+		if (isShooting) {
+			ani = MARIO_ANI_SHOOTING_RIGHT;
+		}
 		if (isRunning && isOnGround) {
 			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX && !isHolding) {
 				ani = MARIO_ANI_FIRE_WALKING_FAST_RIGHT;
@@ -934,6 +954,9 @@ void CMario::RenderMarioAniFire(int& ani) {
 		if (isHolding) {
 			ani = MARIO_ANI_FIRE_HOLD_WALKING_LEFT;
 		}
+		if (isShooting) {
+			ani = MARIO_ANI_SHOOTING_LEFT;
+		}
 		if (isRunning && isOnGround) {
 			if (abs(vx) >= MARIO_RUNNING_SPEED_MAX && !isHolding) {
 				ani = MARIO_ANI_FIRE_WALKING_FAST_LEFT;
@@ -947,6 +970,9 @@ void CMario::RenderMarioAniFire(int& ani) {
 				ani = MARIO_ANI_FIRE_FLY_RIGHT;
 			if (isHolding)
 				ani = MARIO_ANI_BIG_HOLD_JUMPING_RIGHT;
+			if (isShooting) {
+				ani = MARIO_ANI_SHOOTING_RIGHT;
+			}
 		}
 		if (nx < 0) {
 			ani = MARIO_ANI_FIRE_JUMPINGUP_LEFT;
@@ -954,6 +980,9 @@ void CMario::RenderMarioAniFire(int& ani) {
 				ani = MARIO_ANI_FIRE_FLY_LEFT;
 			if (isHolding)
 				ani = MARIO_ANI_FIRE_HOLD_JUMPINGUP_LEFT;
+			if (isShooting) {
+				ani = MARIO_ANI_SHOOTING_LEFT;
+			}
 		}
 	}
 	if (state == MARIO_STATE_JUMP_X) {
@@ -1403,8 +1432,26 @@ void CMario::HandleFlying() {
 	}
 }
 
-void CMario::InitTail() {
-	/*if (this->tail == NULL && level == MARIO_LEVEL_TAIL) {
-		this->tail = new Tail(this->x, this->y);
-	}*/
+
+void CMario::ShootFireBall() {
+	if (shootTimes < MARIO_MAX_BULLET) {
+		CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+		MarioBullet* bullet = new MarioBullet(this->nx);
+		LPANIMATION_SET ani_set = animation_sets->Get(MARIO_BULLET_ANI_SET_ID);
+		bullet->SetAnimationSet(ani_set);
+		if (nx > 0) bullet->SetPosition(this->x + MARIO_BULLET_BBOX_WIDTH, this->y + 8);
+		else  bullet->SetPosition(this->x, this->y + 8);
+		bullet->isAppear = true;
+		currentScene->AddSpecialObject(bullet);
+		bullet->SetState(MARIO_BULLET_STATE_DOWN);
+		StartShooting();
+		shootTimes++;
+	}
+}
+
+void CMario::HandleShooting() {
+	if (isShooting && GetTickCount64() - start_shooting >= MARIO_SHOOTING_TIME) {
+		StopShooting();
+	}
 }

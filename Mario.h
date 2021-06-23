@@ -287,6 +287,7 @@
 #define MARIO_TRANSFORM_TIME 500
 #define MARIO_KICKING_TIME	200	
 #define MARIO_FLYING_TIME	5000
+#define MARIO_SHOOTING_TIME			150
 
 #define MARIO_WORLD_MAP_IDLE 0
 
@@ -315,6 +316,7 @@ class CMario : public CGameObject
 	DWORD running_stop;
 	DWORD fly_start;
 	DWORD tail_fly_start;
+	DWORD start_shooting;
 	int direction;
 
 	float start_x;			// initial position of Mario at scene
@@ -343,6 +345,7 @@ class CMario : public CGameObject
 	bool isBangAni = false;
 	Tail* tail;
 
+
 public:
 	bool isTuring = false;
 	int turningStack = 0;
@@ -358,7 +361,11 @@ public:
 	bool tailFlyPullDown = false;
 	bool isTailFlying = false;
 
+	bool isShooting = false;
+
 	float x0, y0;
+
+	int shootTimes = 0;
 
 	vector<int> cards;
 
@@ -392,10 +399,12 @@ public:
 	void StartSpeedStack() { start_speed_stack = GetTickCount64(); }
 	void StartFlying() { fly_start = GetTickCount64(); }
 	void StartTailFlying() { tail_fly_start = GetTickCount64(); }
+	void StartShooting() { start_shooting = GetTickCount64(); isShooting = true; }
 
 	void StopTransform() { isTransforming = false; start_transform = 0; isChangingY = false; }
 	void StopKicking() { start_kicking = 0; isKicking = false; }
 	void StopSpeedStack() { start_speed_stack = 0; }
+	void StopShooting() { start_shooting = 0; isShooting = false; }
 
 	void limitMarioSpeed(float& vx, int nx);
 	void slowDownVx() { vx = int(abs(vx) / 2); }
@@ -420,6 +429,8 @@ public:
 	void HandleSpeedStack();
 	void HandleFlying();
 	void HandleTailFlying();
+	void HandleShooting();
+
 
 	void pullDown() {
 		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;
@@ -430,5 +441,7 @@ public:
 	void AddCoin() { this->coin++; }
 	void AddCard(int cardId) { cards.push_back(cardId); }
 
-	void InitTail();
+	//void InitTail();
+
+	void ShootFireBall();
 };

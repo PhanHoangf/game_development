@@ -67,6 +67,9 @@
     <Filter Include="Player\Tail">
       <UniqueIdentifier>{aedc7ddc-9398-435a-b888-5e668ce3a687}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player\Bullet">
+      <UniqueIdentifier>{e0b86d54-b64f-49b7-9ba8-8e9e14f026dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -192,6 +195,9 @@
     <ClCompile Include="FireFlower.cpp">
       <Filter>GameObject\Items</Filter>
     </ClCompile>
+    <ClCompile Include="MarioBullet.cpp">
+      <Filter>Player\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -316,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="FireFlower.h">
       <Filter>GameObject\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioBullet.h">
+      <Filter>Player\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
