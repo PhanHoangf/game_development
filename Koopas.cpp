@@ -137,7 +137,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						tag = KOOPAS_RED;
 					this->SetState(KOOPAS_STATE_DEATH);
 					mario->AddScore(x, y, 100);
-					x += dx;
+					koopas->x += koopas->dx;
 				}
 				else
 				{
@@ -306,17 +306,19 @@ void CKoopas::Render()
 		else
 			ani = KOOPAS_ANI_WALKING_RIGHT;
 	}
-	if (tag == KOOPAS_GREEN_PARA || tag == KOOPAS_RED_PARA)
-		if (this->nx < 0)
-			ani = KOOPAS_ANI_PARA_LEFT;
-		else
-			ani = KOOPAS_ANI_PARA_RIGHT;
-	if (reviving_start != 0)
-	{
-		if (state == KOOPAS_STATE_IN_SHELL)
-			ani = KOOPAS_ANI_SHAKE;
-		if (state == KOOPAS_STATE_SHELL_UP)
-			ani = KOOPAS_ANI_SHAKE_UP;
+	if (state != KOOPAS_STATE_DEATH) {
+		if (tag == KOOPAS_GREEN_PARA || tag == KOOPAS_RED_PARA)
+			if (this->nx < 0)
+				ani = KOOPAS_ANI_PARA_LEFT;
+			else
+				ani = KOOPAS_ANI_PARA_RIGHT;
+		if (reviving_start != 0)
+		{
+			if (state == KOOPAS_STATE_IN_SHELL)
+				ani = KOOPAS_ANI_SHAKE;
+			if (state == KOOPAS_STATE_SHELL_UP)
+				ani = KOOPAS_ANI_SHAKE_UP;
+		}
 	}
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();

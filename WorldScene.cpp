@@ -293,7 +293,7 @@ void WorldSceneKeyHandler::OnKeyDown(int KeyCode)
 				player->SetState(PLAYER_STATE_DOWN);
 			break;
 		case DIK_S:
-			if (player->sceneId == 1)
+			if (player->sceneId == 1 || player->sceneId == 2)
 				player->ChooseScene(player->sceneId);
 			break;
 		}

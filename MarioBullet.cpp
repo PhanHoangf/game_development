@@ -109,6 +109,12 @@ void MarioBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				isDestroyed = true;
 				mario->shootTimes--;
 			}
+			else if (dynamic_cast<BoomerangKoopas*>(e->obj)) {
+				mario->AddScore(x, y, 100);
+				e->obj->SetState(BOOMERANG_KOOPAS_STATE_DIE);
+				isDestroyed = true;
+				mario->shootTimes--;
+			}
 			else
 			{
 				x += dx;

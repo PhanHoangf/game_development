@@ -54,7 +54,7 @@ void WorldPlayer::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				StopPoint* stp = dynamic_cast<StopPoint*>(e->obj);
 				stp->GetAcceptMovement(moveLeft, moveUp, moveRight, moveBottom);
 				stp->GetSceneId(sceneId);
-				DebugOut(L"[ML]::%d \t, [MU]::%d \t, [MR]::%d \t, [MB]::%d \t, [SCN_ID]::%d \n", moveLeft, moveUp, moveRight, moveBottom, sceneId);
+				DebugOut(L"[x]::%f \t,[ML]::%d \t, [MU]::%d \t, [MR]::%d \t, [MB]::%d \t, [SCN_ID]::%d \n", stp->x, moveLeft, moveUp, moveRight, moveBottom, sceneId);
 			}
 		}
 	}

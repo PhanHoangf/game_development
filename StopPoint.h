@@ -38,6 +38,7 @@ public:
 		mRight = this->moveRight;
 		mBottom = this->moveBottom;
 	}
+
 	void SetSceneId(int scnId) { sceneId = scnId; }
 	void GetSceneId(int& scnId) { scnId = this->sceneId; }
 };

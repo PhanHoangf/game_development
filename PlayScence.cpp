@@ -236,13 +236,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BLOCK_LINE:
 		obj = new Block();
 		break;
-		/*case OBJECT_TYPE_PORTAL:
-		{
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
-			obj = new CPortal(x, y, r, b, scene_id);
-		}*/
+	case OBJECT_TYPE_PORTAL:
+	{
+		float r = atof(tokens[4].c_str());
+		float b = atof(tokens[5].c_str());
+		int scene_id = atoi(tokens[6].c_str());
+		obj = new CPortal(scene_id, x, y);
+		break;
+	}
 	case OBJECT_TYPE_CARD: {
 		obj = new CardItem();
 		break;
@@ -277,6 +278,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	//else if (dynamic_cast<CardItem*>(obj)) {
 	//	this->AddSpecialObject(obj);
 	//}
+	if (dynamic_cast<CPortal*>(obj)) {
+		this->specialObjects.push_back(obj);
+	}
 	else {
 		obj->id = objID;
 		Unit* unit = new Unit(this->grid, obj, objRow, objCol);

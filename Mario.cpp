@@ -48,7 +48,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	//DebugOut(L"mario->x: %f\n", x);
+	DebugOut(L"mario->x: %f\n", x);
 
 	// Simple fall down
 	if (!isJumpOnMusicBrick)
@@ -384,6 +384,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
+				DebugOut(L"portal");
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
@@ -480,10 +481,10 @@ void CMario::RenderMarioAniSmall(int& ani) {
 	if (state == MARIO_STATE_IDLE) {
 		if (isKicking) {
 			if (nx > 0) {
-				ani = MARIO_ANI_BIG_KICKING_RIGHT;
+				ani = MARIO_ANI_SMALL_KICKING_RIGHT;
 			}
 			if (nx < 0) {
-				ani = MARIO_ANI_BIG_KICKING_LEFT;
+				ani = MARIO_ANI_SMALL_KICKING_LEFT;
 			}
 		}
 		else if (isHolding) {
@@ -1351,7 +1352,7 @@ void CMario::HandleBasicMarioDie() {
 	}
 	else {
 		x = x0 + dx;
-		y = y0 + dy - 1;
+		y = y0;
 	}
 }
 
