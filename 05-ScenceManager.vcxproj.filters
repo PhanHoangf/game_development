@@ -70,6 +70,9 @@
     <Filter Include="Player\Bullet">
       <UniqueIdentifier>{e0b86d54-b64f-49b7-9ba8-8e9e14f026dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\IntroScene">
+      <UniqueIdentifier>{d803779e-29f2-4db5-99b1-4a6be0afdd90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -198,6 +201,12 @@
     <ClCompile Include="MarioBullet.cpp">
       <Filter>Player\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>Scene\IntroScene</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroGround.cpp">
+      <Filter>Scene\IntroScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -325,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="MarioBullet.h">
       <Filter>Player\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
+      <Filter>Scene\IntroScene</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroGround.h">
+      <Filter>Scene\IntroScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

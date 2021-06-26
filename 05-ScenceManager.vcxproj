@@ -139,6 +139,8 @@
     <ClCompile Include="GreenBush.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="IntroGround.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -183,6 +185,8 @@
     <ClInclude Include="GreenBush.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="IntroGround.h" />
+    <ClInclude Include="IntroScene.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Map.h" />

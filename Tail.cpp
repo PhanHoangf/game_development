@@ -16,30 +16,32 @@ void Tail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		hit_start = 0;
 
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (x < mario->x)
-		nx = -1;
-	else
-		nx = 1;
-	if (mario->nx > 0)
-	{
-		if (mario->turningStack == 1 || mario->turningStack == 5)
-			x = mario->x - TAIL_BBOX_WIDTH;
-		else if (mario->turningStack == 3)
-			x = mario->x + MARIO_BIG_BBOX_WIDTH;
-		else x = mario->x - 8;
+	if (mario != NULL) {
+		if (x < mario->x)
+			nx = -1;
+		else
+			nx = 1;
+		if (mario->nx > 0)
+		{
+			if (mario->turningStack == 1 || mario->turningStack == 5)
+				x = mario->x - TAIL_BBOX_WIDTH;
+			else if (mario->turningStack == 3)
+				x = mario->x + MARIO_BIG_BBOX_WIDTH;
+			else x = mario->x - 8;
+		}
+		else
+		{
+			if (mario->turningStack == 1 || mario->turningStack == 5)
+				x = mario->x + MARIO_BIG_BBOX_WIDTH;
+			else if (mario->turningStack == 3)
+				x = mario->x - TAIL_BBOX_WIDTH;
+			else x = mario->x + MARIO_BIG_BBOX_WIDTH;
+		}
+		//x = mario->x - TAIL_BBOX_WIDTH;
+		float mLeft, mTop, mRight, mBottom;
+		y = mario->y + TAIL_BBOX_WIDTH * 2 + 1;
+		//y = mario->y;
 	}
-	else
-	{
-		if (mario->turningStack == 1 || mario->turningStack == 5)
-			x = mario->x + MARIO_BIG_BBOX_WIDTH;
-		else if (mario->turningStack == 3)
-			x = mario->x - TAIL_BBOX_WIDTH;
-		else x = mario->x + MARIO_BIG_BBOX_WIDTH;
-	}
-	//x = mario->x - TAIL_BBOX_WIDTH;
-	float mLeft, mTop, mRight, mBottom;
-	y = mario->y + TAIL_BBOX_WIDTH * 2 + 1;
-	//y = mario->y;
 }
 
 void Tail::Render() {

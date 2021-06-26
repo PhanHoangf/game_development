@@ -24,6 +24,7 @@
 #include "BreakableBrick.h"
 #include "FireFlower.h"
 #include "MarioBullet.h"
+#include "IntroGround.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -48,7 +49,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	DebugOut(L"mario->x: %f\n", x);
+	//DebugOut(L"mario->x: %f\n", x);
 
 	// Simple fall down
 	if (!isJumpOnMusicBrick)
@@ -139,8 +140,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			GetBoundingBox(mLeft, mTop, mRight, mBottom);
 			e->obj->GetBoundingBox(oLeft, oTop, oRight, oBottom);
+			if (dynamic_cast<IntroGround*>(e->obj)) {
 
-			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj)) {
+			}
+			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj) || dynamic_cast<IntroGround*>(e->obj)) {
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				if (e->ny < 0) {
 					isOnGround = true; vy = 0;
@@ -381,6 +384,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					y = y0 + dx;
 				}
 				else y = y0;
+			}
+			if (dynamic_cast<CMario*>(e->obj)) {
+				CMario* tmp = dynamic_cast<CMario*>(e->obj);
+				x = x0;
+				y = y0;
+				if (e->ny < 0)
+				{
+					vy = -0.7f;
+					//isDeflect = true;
+				}
+				else
+				{
+					SetState(MARIO_STATE_SITDOWN);
+					vx = vy = 0;
+				}
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{

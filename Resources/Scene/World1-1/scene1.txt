@@ -1499,4 +1499,4 @@ Resources/Scene/World1-1/world1-1_GridInfo.txt
 #50	100	380	0	3	1	130	147	1
 # --- SCENE PORTAL ----
 # type	x	y	ani_set_id	r	b	scene_id
-50	2700	400	0	0	150	0
+50	2800	400	0	0	150	0

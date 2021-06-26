@@ -319,11 +319,9 @@ class CMario : public CGameObject
 	DWORD start_shooting;
 	int direction;
 
-	float start_x;			// initial position of Mario at scene
-	float start_y;
 	bool isOnGround = false;
 
-	bool isJumping = false;
+	
 	bool isSitting = false;
 	bool isReadyToSit = true;
 	bool isChangeDirection = false;
@@ -366,6 +364,7 @@ public:
 	float x0, y0;
 
 	int shootTimes = 0;
+	bool isJumping = false;
 
 	vector<int> cards;
 
@@ -377,7 +376,7 @@ public:
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
 	void SetAccelerate(float accelerate);
-	void SetDirection(int direct) { direction = direct; }
+	void SetDirection(int direct) { nx = direct; }
 	void SetHolding(bool hold) { isHolding = hold; }
 	void SetIsReadyToHold(bool hold) { isReadyToHold = hold; }
 	void SetIsJumpOnMusicBrick(bool isJump) { isJumpOnMusicBrick = isJump; }
