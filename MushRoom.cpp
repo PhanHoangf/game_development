@@ -32,7 +32,7 @@ void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		mario->GetBoundingBox(mLeft, mTop, mRight, mBottom);
 		if (isColliding(mLeft, mTop, mRight, mBottom))
 		{
-			
+
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
 				mario->StartTransform(MARIO_LEVEL_BIG);
 				isAppear = false;
@@ -41,7 +41,7 @@ void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			}
 			/*if (tag == MUSHROOM_TYPE_RED)
 			{
-				
+
 			}*/
 			/*else
 			{
@@ -132,13 +132,16 @@ void MushRoom::SetState(int state) {
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (state)
 	{
+	case MUSHROOM_STATE_IDLE:
+		vy = vx = 0;
+		break;
 	case MUSHROOM_STATE_UP:
 		vy = -0.05f;
 		start_y = y;
 		break;
 	case MUSHROOM_STATE_RIGHT:
 		vy = MUSHROOM_GRAVITY;
-		vx = vx = mario->nx * MUSHROOM_SPEED;
+		vx = mario->nx * MUSHROOM_SPEED;
 		break;
 	case MUSHROOM_STATE_LEFT:
 		vy = MUSHROOM_GRAVITY;

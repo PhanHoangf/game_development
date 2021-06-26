@@ -6,7 +6,10 @@
 #include "Utils.h"
 //#include "Brick.h"
 #include "IntroGround.h"
-
+#include "Leaf.h"
+#include "MushRoom.h"
+#include "Goomba.h"
+#include "Koopas.h"
 
 using namespace std;
 
@@ -14,7 +17,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new IntroSceneKeyHandler(this);
-	StartScrolling();
+	//StartScrolling();
 }
 
 void CIntroScene::_ParseSection_TEXTURES(string line) {
@@ -73,6 +76,7 @@ void CIntroScene::_ParseSection_ANIMATIONS(string line) {
 	CAnimations::GetInstance()->Add(ani_id, ani);
 	if (ani_id == 800)
 		Three = ani;
+
 }
 
 void CIntroScene::_ParseSection_ANIMATION_SETS(string line) {
@@ -98,6 +102,8 @@ void CIntroScene::_ParseSection_ANIMATION_SETS(string line) {
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
 	if (ani_set_id == ANISET_BACKGROUND_ID)
 		BackGround = s;
+	if (ani_set_id == ANISET_ARROW_ID)
+		Arrow = s;
 }
 
 void CIntroScene::_ParseSection_OBJECTS(string line) {
@@ -126,21 +132,6 @@ void CIntroScene::_ParseSection_OBJECTS(string line) {
 	case OBJECT_TYPE_GROUND:
 		obj = new IntroGround();
 		break;
-	case OBJECT_TYPE_MARIO:
-		obj = new CMario(x, y);
-		if (luigi == NULL) {
-			luigi = (CMario*)obj;
-			luigi->SetState(MARIO_STATE_IDLE);
-			luigi->SetLevel(MARIO_LEVEL_BIG);
-		}
-		else {
-			mario = (CMario*)obj;
-			mario->SetDirection(-1);
-			mario->SetState(MARIO_STATE_IDLE);
-			mario->SetLevel(MARIO_LEVEL_BIG);
-			player = mario;
-		}
-		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -156,70 +147,8 @@ void CIntroScene::_ParseSection_OBJECTS(string line) {
 }
 
 void CIntroScene::Update(DWORD dt) {
-	vector<LPGAMEOBJECT> coObjects;
-
-	for (size_t i = 0;i < objects.size(); i++) {
-		coObjects.push_back(objects[i]);
-	}
-
-	for (size_t i = 0;i < objects.size(); i++) {
-		objects[i]->Update(dt, &coObjects);
-	}
-
-
-	if (section == 0) {
-		mario->SetPosition(mario->start_x, mario->y);
-		luigi->SetPosition(luigi->start_x, luigi->y);
-
-		if (GetTickCount64() - scrolling_up >= SCROLLING_TIME / 2)
-		{
-			mario->SetState(MARIO_STATE_WALKING_LEFT);
-			luigi->SetState(MARIO_STATE_WALKING_RIGHT);
-		}
-
-		pointY = -(float)(GetTickCount64() - scrolling_up) / 10;
-		if (GetTickCount64() - scrolling_up >= SCROLLING_TIME)
-			StartFirstSection();
-	}
-	if (section == 1) {
-		if (luigi->x >= 48.0f && luigi->state != MARIO_STATE_JUMP && luigiJump == 0)
-		{
-			luigi->SetState(MARIO_STATE_JUMP);
-			luigi->SetSpeed(0, -MARIO_JUMP_SPEED_MIN);
-			luigiJump++;
-		}
-		else if(luigi->GetIsOnGround()) {
-			luigi->SetState(MARIO_STATE_WALKING_RIGHT);
-			//luigi->SetSpeed(0, -MARIO_JUMP_SPEED_MIN);
-		}
-		if (luigi->y <= MARIO_BIG_BBOX_HEIGHT)
-		{
-			luigi->y = MARIO_BIG_BBOX_HEIGHT;
-			//luigi->isDeflect = false;
-
-			mario->SetState(MARIO_STATE_IDLE);
-			scrolling_down = GetTickCount64();
-			pointY = -187;
-		}
-		if (scrolling_down != 0)
-		{
-			if (pointY < 0)
-				pointY += 5;
-			else
-				pointY = 0;
-		}
-		else
-		{
-			pointY = -300;
-		}
-		if (luigi->x > GROUND_WIDTH) {
-			scrolling_down = 0;
-			StartSecondSection();
-			luigi->SetState(MARIO_STATE_IDLE);
-			luigi->SetDirection(-1);
-			luigi->SetPosition(luigi->x + KOOPAS_BBOX_WIDTH, luigi->y);
-			luigi->SetSpeed(0, 0);
-		}
+	if (GetTickCount64() - start_switch >= SWITCH_TIME && isSwitching) {
+		CGame::GetInstance()->SwitchScene(WORLD_SCENE_ID);
 	}
 }
 
@@ -266,35 +195,28 @@ void CIntroScene::Load() {
 }
 
 void CIntroScene::Render() {
-	BackGround->at(section)->Render(0, pointY);
-	if (section >= 2) {
-		Three->Render(THREE_X, THREE_Y);
-	}
-	for (size_t i = 2; i < objects.size(); i++)
+	BackGround->at(3)->Render(0, 0);
+	Three->Render(THREE_X, THREE_Y);
+	for (size_t i = 0; i < objects.size(); i++)
 		objects[i]->Render();
-	if (GetTickCount64() - scrolling_up >= SCROLLING_TIME / 2) {
-		mario->Render();
-		luigi->Render();
-	}
+	if (start_switch != 0)
+		Arrow->at(0)->Render(ARROW_X, ARROW_Y);
+	else
+		Arrow->at(1)->Render(ARROW_X, ARROW_Y);
 }
 
 void CIntroScene::Unload() {
+	
+	for (size_t i = 2; i < objects.size(); i++)
+		delete objects[i];
+	
+	objects.clear();
+	BackGround = NULL;
+	Arrow = NULL;
+	Three = NULL;
+	start_switch = 0;
+	isSwitching = false;
 
+	DebugOut(L"Unload Intro Scene\n");
 }
 
-void CIntroScene::StartSecondSection()
-{
-	section = 2;
-	pointY = 0;
-	/*for (size_t i = 0; i < fallingObjects.size(); i++)
-	{
-		fallingObjects[i]->SetSpeed(0, MARIO_JUMP_SPEED_MAX);
-		if (dynamic_cast<CMushRoom*>(fallingObjects[i]))
-			fallingObjects[i]->SetState(MUSHROOM_STATE_WALK);
-		if (dynamic_cast<CLeaf*>(fallingObjects[i]))
-		{
-			fallingObjects[i]->SetState(LEAF_STATE_FALLING);
-			fallingObjects[i]->SetSpeed(LEAF_SPEED, LEAF_GRAVITY * 2);
-		}
-	}*/
-}

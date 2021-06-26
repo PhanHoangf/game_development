@@ -3,6 +3,8 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Mario.h"
+#include "Game.h"
+#include <dinput.h>
 
 #define OBJECT_TYPE_MARIO		0
 #define OBJECT_TYPE_GROUND		4
@@ -28,10 +30,15 @@
 
 #define THREE_X	112
 #define THREE_Y	96
+#define ARROW_Y 144
+#define ARROW_X	70
 
 #define GROUND_WIDTH	256
 
 #define SCROLLING_TIME	2000
+#define SWITCH_TIME	3000
+
+#define WORLD_SCENE_ID	0
 
 class CIntroScene : public CScene {
 public:
@@ -43,42 +50,47 @@ public:
 	void _ParseSection_OBJECTS(string line);
 
 public:
-	CGoomba* goomba = nullptr;
+	/*CGoomba* goomba = nullptr;
 	CKoopas* koopas = nullptr;
 	CMario* mario = nullptr;
 	CMario* luigi = nullptr;
-	CMario* player;
+	CMario* player;*/
 	vector<LPGAMEOBJECT> objects;
-	vector<LPGAMEOBJECT> fallingObjects;
 	LPANIMATION_SET BackGround;
 	LPANIMATION Three;
-	DWORD scrolling_up = 0;
-	DWORD scrolling_down = 0;
-	int section;
-	float pointY = 0; //! For scrolling background up
-	int luigiJump = 0;
+	LPANIMATION_SET Arrow;
+	DWORD start_switch = 0;
+	bool isSwitching = false;
+	//DWORD scrolling_up = 0;
+	//DWORD scrolling_down = 0;
+	//int section;
+	//float pointY = 0; //! For scrolling background up
+	//int luigiJump = 0;
 	CIntroScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-	void StartScrolling() { scrolling_up = GetTickCount64(); }
-	void StartScrollingDown() { scrolling_down = GetTickCount64(); }
-	void StartFirstSection()
-	{
-		section = 1;
-		pointY = 0;
-	}
-	void StartSecondSection();
-	CMario* GetPlayer() { return player; }
+	/*void StartScrolling() { scrolling_up = GetTickCount64(); }
+	void StartScrollingDown() { scrolling_down = GetTickCount64(); }*/
 };
 
 class IntroSceneKeyHandler : public CScenceKeyHandler
 {
 public:
 	virtual void KeyState(BYTE* states) {};
-	virtual void OnKeyDown(int KeyCode) {};
+	virtual void OnKeyDown(int KeyCode) {
+		CIntroScene* intro = ((CIntroScene*)CGame::GetInstance()->GetCurrentScene());
+		switch (KeyCode)
+		{
+		case DIK_RETURN:
+			intro->start_switch = GetTickCount64();
+			intro->isSwitching = true;
+		default:
+			break;
+		}
+	};
 	virtual void OnKeyUp(int KeyCode) {};
 	IntroSceneKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
 };
