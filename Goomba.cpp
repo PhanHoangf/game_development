@@ -73,7 +73,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (isColliding(floor(mLeft), mTop, ceil(mRight), mBottom))
 			{
 				mario->AddScore(x, y, 100);
-				//SetDirection(mario->nx);
+				SetDirection(mario->nx);
 				SetState(GOOMBA_STATE_DIE_BY_TAIL);
 				mario->GetTail()->ShowHitEffect();
 				return;
@@ -133,9 +133,10 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 			if (dynamic_cast<CKoopas*>(e->obj)) {
-				if (e->nx != 0 && e->obj->GetState() == KOOPAS_STATE_SPINNING) {
-					isDiedByKoopas = true;
-					SetState(GOOMBA_STATE_DIE);
+				if (e->nx != 0 || e->ny != 0) {
+					if (e->obj->GetState() == KOOPAS_STATE_SPINNING) {
+						SetState(GOOMBA_STATE_DIE_BY_TAIL);
+					}
 				}
 			}
 			/*if (dynamic_cast<CMario*>(e->obj)) {

@@ -566,7 +566,7 @@ void CPlayScene::Unload()
 	player = NULL;
 	grid = NULL;
 
- 	buh->BackUp(hud->GetMarioLife(), hud->GetScore(), hud->GetMoney(), hud->GetCards());
+ 	//buh->BackUp(hud->GetMarioLife(), hud->GetScore(), hud->GetMoney(), hud->GetCards());
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

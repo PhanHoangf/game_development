@@ -88,7 +88,6 @@ HUD::HUD(int typeHUD) {
 	for (unsigned int i = 0; i < MARIO_SPEED_STACK - 1; i++)
 		powerMelterSprite.push_back((CSprites::GetInstance()->Get(SPRITE_FILLARROW_ID)));
 	int sceneId = CGame::GetInstance()->GetCurrentScene()->GetSceneId();
-	//CBackupHud* buh = CBackupHud::GetInstance();
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	mario = currentScene->GetPlayer();

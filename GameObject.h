@@ -84,6 +84,7 @@ public:
 		return 0;
 	}
 	void SetIsDestroyed(bool destroy) { this->isDestroyed = destroy; }
+	void SetDirection(int nx) { this->nx = nx; }
 	void RenderBoundingBox();
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }

@@ -28,9 +28,9 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	//level = MARIO_LEVEL_BIG;
+	level = MARIO_LEVEL_BIG;
 	//level = MARIO_LEVEL_SMALL;
-	level = MARIO_LEVEL_TAIL;
+	//level = MARIO_LEVEL_TAIL;
 	//level = MARIO_LEVEL_FIRE;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
@@ -56,7 +56,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy += ay * dt;
 	vx += ax * dt;
 	//DebugOut(L"vy::%f\n", vy);
-
+	if (isHolding) {
+		DebugOut(L"vx::%f\n", vx);
+	}
 	limitMarioSpeed(vx, nx);
 	if (!isFlying && !isTailFlying)
 		handleMarioJump();
@@ -1348,7 +1350,10 @@ void CMario::HandleBasicMarioDie() {
 	if (untouchable != 1) {
 		isAttacked = true;
 		x = x0;
-		y = y0 + dy - 1;
+		if (state == MARIO_STATE_SITDOWN) 
+			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
+		else 
+			y = y0 + dy - 1;
 		if (level == MARIO_LEVEL_TAIL) {
 			StartTransform(MARIO_LEVEL_BIG);
 			StartUntouchable();
@@ -1362,7 +1367,8 @@ void CMario::HandleBasicMarioDie() {
 		else if (level == MARIO_LEVEL_BIG) {
 			StartTransform(MARIO_LEVEL_SMALL);
 			StartUntouchable();
-			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
+			//y -= MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT;
+			SetState(MARIO_STATE_IDLE);
 		}
 		else {
 			SetState(MARIO_STATE_DIE);

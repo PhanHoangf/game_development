@@ -59,7 +59,8 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	//! Update goomba y when die
 
-	vy += ay * dt;
+	if(state != GOOMBA_STATE_DIE && !isWhackedDying)
+		vy += ay * dt;
 
 
 
@@ -106,7 +107,7 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			if (isColliding(floor(mLeft), mTop, ceil(mRight), mBottom))
 			{
 				mario->AddScore(x, y, 100);
-				//SetDirection(mario->nx);
+				SetDirection(mario->nx);
 				SetState(GOOMBA_STATE_DIE_BY_TAIL);
 				mario->GetTail()->ShowHitEffect();
 				return;
@@ -174,13 +175,11 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			if (dynamic_cast<QuestionBrick*>(e->obj)) {
 				if (e->nx != 0)
 				{
-					DebugOut(L"COLLISION VX\n");
 					vx = -vx;
 					this->nx = -this->nx;
 				}
 				if (e->ny != 0) {
 					vx = vx;
-					DebugOut(L"COLLISION VY\n");
 				}
 			}
 			if (dynamic_cast<CGoomba*>(e->obj)) {
@@ -189,6 +188,14 @@ void RedGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				}
 				if (e->ny != 0) {
 					y += dy;
+				}
+			}
+			if (dynamic_cast<CKoopas*>(e->obj)) {
+				if (e->nx != 0 || e->ny != 0) {
+					if (e->obj->GetState() == KOOPAS_STATE_SPINNING) {
+						isHaveWings = false;
+						SetState(GOOMBA_STATE_DIE_BY_TAIL);
+					}
 				}
 			}
 		}
