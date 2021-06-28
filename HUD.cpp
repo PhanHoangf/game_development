@@ -173,16 +173,18 @@ void HUD::AddCard() {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	mario = currentScene->GetPlayer();
 	cards.clear();
-	if (mario->cards.size() > 0) {
-		for (int i = 0; i < mario->cards.size(); i++) {
-			int index = mario->cards[i];
-			cards.push_back(index);
-			if (startTakingCard == 0) {
-				isTakingCard = true;
-				startTakingCard = GetTickCount64();
-			}
-			if (GetTickCount64() - startTakingCard > 1000) {
-				isTakingCard = false;
+	if (mario != NULL) {
+		if (mario->cards.size() > 0) {
+			for (int i = 0; i < mario->cards.size(); i++) {
+				int index = mario->cards[i];
+				cards.push_back(index);
+				if (startTakingCard == 0) {
+					isTakingCard = true;
+					startTakingCard = GetTickCount64();
+				}
+				if (GetTickCount64() - startTakingCard > 1000) {
+					isTakingCard = false;
+				}
 			}
 		}
 	}

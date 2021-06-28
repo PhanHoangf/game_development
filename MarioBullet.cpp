@@ -94,23 +94,23 @@ void MarioBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			if (dynamic_cast<CGoomba*>(e->obj)) {
 				e->obj->SetState(GOOMBA_STATE_DIE_BY_TAIL);
 				isDestroyed = true;
-				mario->AddScore(x, y, 100);
+				mario->AddScore(x, y, 100, false);
 				mario->shootTimes--;
 			}
 			else if (dynamic_cast<CKoopas*>(e->obj)) {
-				mario->AddScore(x, y, 100);
+				mario->AddScore(x, y, 100, false);
 				e->obj->SetState(KOOPAS_STATE_DEATH);
 				isDestroyed = true;
 				mario->shootTimes--;
 			}
 			else if (dynamic_cast<PiranhaPlant*>(e->obj) || dynamic_cast<PiranhaPlantFire*>(e->obj)) {
-				mario->AddScore(x, y, 100);
+				mario->AddScore(x, y, 100, false);
 				e->obj->SetState(200);
 				isDestroyed = true;
 				mario->shootTimes--;
 			}
 			else if (dynamic_cast<BoomerangKoopas*>(e->obj)) {
-				mario->AddScore(x, y, 100);
+				mario->AddScore(x, y, 100, false);
 				e->obj->SetState(BOOMERANG_KOOPAS_STATE_DIE);
 				isDestroyed = true;
 				mario->shootTimes--;

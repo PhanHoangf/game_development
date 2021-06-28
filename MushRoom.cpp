@@ -37,7 +37,7 @@ void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				mario->StartTransform(MARIO_LEVEL_BIG);
 				isAppear = false;
 				isDestroyed = true;
-				mario->AddScore(x, y, 1000);
+				mario->AddScore(x, y, 1000, false);
 			}
 			/*if (tag == MUSHROOM_TYPE_RED)
 			{

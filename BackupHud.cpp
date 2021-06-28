@@ -17,9 +17,9 @@ void CBackupHud::BackUp(int life, int score, int money, vector<int> cards) {
 	this->money = money;
 	marioCards.clear();
 	if (cards.size() > 0) {
-		for (size_t i = 0; i < cards.size(); i++) {
+		/*for (size_t i = 0; i < cards.size(); i++) {
 			marioCards.push_back(cards[i]);
-		}
+		}*/
 	}
 }
 

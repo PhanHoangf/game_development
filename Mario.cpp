@@ -99,6 +99,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		isAttacked = false;
 	}
 
+	if (GetTickCount64() - start_score_time >= STACK_SCORE_TIME && isStackingScore) {
+		isStackingScore = false;
+		stackScoreTimes = 0;
+	}
+
 	// No collision occured, proceed normall
 	if (coEvents.size() == 0)
 	{
@@ -138,7 +143,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float mLeft, mTop, mRight, mBottom;
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
-			if (state == MARIO_STATE_DIE) return;
+			if (state == MARIO_STATE_DIE || isSwitchScene) return;
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			GetBoundingBox(mLeft, mTop, mRight, mBottom);
 			e->obj->GetBoundingBox(oLeft, oTop, oRight, oBottom);
@@ -405,6 +410,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				DebugOut(L"portal");
+				isSwitchScene = true;
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
@@ -1350,9 +1356,9 @@ void CMario::HandleBasicMarioDie() {
 	if (untouchable != 1) {
 		isAttacked = true;
 		x = x0;
-		if (state == MARIO_STATE_SITDOWN) 
+		if (state == MARIO_STATE_SITDOWN)
 			y -= MARIO_BIG_BBOX_HEIGHT - MARIO_BBOX_SIT_HEIGHT;
-		else 
+		else
 			y = y0 + dy - 1;
 		if (level == MARIO_LEVEL_TAIL) {
 			StartTransform(MARIO_LEVEL_BIG);
@@ -1395,12 +1401,36 @@ void CMario::HandleTurning() {
 
 }
 
-void CMario::AddScore(float x, float y, int score) {
+void CMario::AddScore(float x, float y, int score, bool isStack) {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	start_score_time = GetTickCount64();
+
+	if (isStack) {
+		if (!isStackingScore) {
+			isStackingScore = true;
+		}
+		else {
+			if (stackScoreTimes == 5) {
+				score *= 10;
+				stackScoreTimes = 5;
+			}
+			else {
+				score = score * pow(2, stackScoreTimes);
+			}
+		}
+
+		stackScoreTimes++;
+	}
+
 	Point* point = new Point(score);
+	int previousScore = score;
+
 	point->SetPosition(x, y);
 	currentScene->AddSpecialObject(point);
+
 	this->marioScore += score;
+
 }
 
 void CMario::HandleFlapping() {

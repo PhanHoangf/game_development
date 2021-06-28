@@ -565,8 +565,8 @@ void CPlayScene::Unload()
 	specialObjects.clear();
 	player = NULL;
 	grid = NULL;
-
- 	//buh->BackUp(hud->GetMarioLife(), hud->GetScore(), hud->GetMoney(), hud->GetCards());
+	if (hud != NULL)
+		buh->BackUp(hud->GetMarioLife(), hud->GetScore(), hud->GetMoney(), hud->GetCards());
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

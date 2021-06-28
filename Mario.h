@@ -299,6 +299,7 @@
 #define MARIO_NORMAL_FLY_MAX 0.35f
 
 #define MARIO_MAX_BULLET	2
+#define STACK_SCORE_TIME	2000
 
 
 class CMario : public CGameObject
@@ -317,6 +318,7 @@ class CMario : public CGameObject
 	DWORD fly_start;
 	DWORD tail_fly_start;
 	DWORD start_shooting;
+	DWORD start_score_time;
 	int direction;
 
 	bool isOnGround = false;
@@ -341,6 +343,8 @@ class CMario : public CGameObject
 	bool isReadyToFly = false;
 	bool isAttacked = false;
 	bool isBangAni = false;
+
+	bool isSwitchScene = false;
 	Tail* tail;
 
 
@@ -360,6 +364,8 @@ public:
 	bool isTailFlying = false;
 
 	bool isShooting = false;
+	bool isStackingScore = false;
+	int stackScoreTimes = 0;
 
 	float x0, y0;
 
@@ -436,7 +442,7 @@ public:
 	}
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	void AddScore(float x, float y, int score);
+	void AddScore(float x, float y, int score, bool isStack = true);
 	void AddCoin() { this->coin++; }
 	void AddCard(int cardId) { cards.push_back(cardId); }
 

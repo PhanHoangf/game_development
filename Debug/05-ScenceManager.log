@@ -1,23 +1,24 @@
-﻿  Mario.cpp
+﻿  PlayScence.cpp
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Tail.h(18,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(393,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(394,145): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(395,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(396,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(397,60): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(398,61): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(399,49): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(400,58): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(401,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(409,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(399,79): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(400,145): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(401,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(402,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(403,60): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(404,61): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(405,49): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(406,58): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(407,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.h(415,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(70,64): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(71,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Goomba.h(72,54): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\QuestionBrick.h(26,1): warning C4005: 'ITEM_LEAF': macro redefinition
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Brick.h(14): message : see previous definition of 'ITEM_LEAF'
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(65,56): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(66,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(71,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\BoomerangKoopas.h(64,48): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\QuestionBrick.h(26,1): warning C4005: 'ITEM_LEAF': macro redefinition
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Brick.h(14): message : see previous definition of 'ITEM_LEAF'
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(37,32): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Coin.h(41,31): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlantFire.h(24,1): warning C4005: 'PIRANHAPLANT_ANI_DEATH': macro redefinition
@@ -27,10 +28,29 @@ D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlantFire.h(56,46): w
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlantFire.h(57,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PiranhaPlantFire.h(58,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Leaf.h(39,52): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\BoomerangKoopas.h(64,48): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\MarioBullet.h(26,14): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.cpp(1386,33): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.cpp(1413,33): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.cpp(1422,32): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Mario.cpp(1465,45): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(89,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(142,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(164,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(165,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(171,13): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(173,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(175,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(177,22): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(179,15): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(181,16): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(183,16): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(241,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(242,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(527,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(532,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(537,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(553,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(556,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(559,20): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(631,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(632,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(633,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(634,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(629,28): warning C4101: 'my': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(629,24): warning C4101: 'mx': unreferenced local variable
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe
