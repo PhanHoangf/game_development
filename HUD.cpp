@@ -78,18 +78,24 @@ vector<LPSPRITE> HUD::StringToSprite(string str)
 			sprites.push_back(sprite);
 	}
 	return sprites;
-
 }
 
 HUD::HUD(int typeHUD) {
 	initFonts();
-	//CSprites* sprite = CSprites::GetInstance();
 	playerSprite = CSprites::GetInstance()->Get(SPRITE_ICONMARIO_ID);
-	//cardSprites = CSprites::GetInstance()->Get(50059);
 	TakenCards = CAnimationSets::GetInstance()->Get(CARD_ANI_SET_ID);
 	PAni = CAnimations::GetInstance()->Get(ANI_P_ID);
 	for (unsigned int i = 0; i < MARIO_SPEED_STACK - 1; i++)
 		powerMelterSprite.push_back((CSprites::GetInstance()->Get(SPRITE_FILLARROW_ID)));
+	int sceneId = CGame::GetInstance()->GetCurrentScene()->GetSceneId();
+	//CBackupHud* buh = CBackupHud::GetInstance();
+	
+	//! 0: WORLD_SCENE_ID 
+	if (sceneId != 0)  { 
+		this->marioLife = CBackupHud::GetInstance()->GetMarioLife();
+		this->score = CBackupHud::GetInstance()->GetScore();
+		this->money = CBackupHud::GetInstance()->GetMoney();
+	}
 }
 
 void HUD::Render() {
@@ -147,6 +153,7 @@ void HUD::SetHUD(HUD* hud)
 
 void HUD::AddScore() {
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
 	mario = currentScene->GetPlayer();
 	if (mario->marioScore > 0)
 		this->score = mario->marioScore;

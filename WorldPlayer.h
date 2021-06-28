@@ -25,16 +25,15 @@
 #define LUIGI	1
 
 class WorldPlayer :public CGameObject {
-	float start_x;
-	float start_y;
 	int level;
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
-	virtual void Render();
+	
+	
 public:
 	int moveLeft, moveUp, moveRight, moveBottom, sceneId;
 	WorldPlayer(float x = 0.0f, float y = 0.0f);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-
+	virtual void Render();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	void SetLevel(int l) { level = l; };
 	void SetState(int state);
 	void ChooseScene(int sceneId) { CGame::GetInstance()->SwitchScene(sceneId); }

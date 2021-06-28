@@ -73,6 +73,9 @@
     <Filter Include="Scene\IntroScene">
       <UniqueIdentifier>{d803779e-29f2-4db5-99b1-4a6be0afdd90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HUD\BackupHud">
+      <UniqueIdentifier>{887ec8c4-1ffe-4fad-b7c0-a6ba1393e52b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -207,6 +210,9 @@
     <ClCompile Include="IntroGround.cpp">
       <Filter>Scene\IntroScene</Filter>
     </ClCompile>
+    <ClCompile Include="BackupHud.cpp">
+      <Filter>HUD\BackupHud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -340,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="IntroGround.h">
       <Filter>Scene\IntroScene</Filter>
+    </ClInclude>
+    <ClInclude Include="BackupHud.h">
+      <Filter>HUD\BackupHud</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

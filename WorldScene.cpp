@@ -167,12 +167,18 @@ void WorldScene::_ParseSection_OBJECTS(string line) {
 	switch (object_type)
 	{
 	case OBJECT_TYPE_PLAYER:
+
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] PLAYER object was created before!\n");
 			return;
 		}
-		obj = new WorldPlayer(x, y);
+
+		if (lastX != 0.0f || lastY != 0.0f)
+			obj = new WorldPlayer(lastX, lastY);
+		else
+			obj = new WorldPlayer(x, y);
+
 		player = (WorldPlayer*)obj;
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -196,9 +202,19 @@ void WorldScene::_ParseSection_OBJECTS(string line) {
 	}
 
 	// General object setup
-	obj->SetPosition(x, y);
+	if (dynamic_cast<WorldPlayer*>(obj))
+	{
+		if (lastX != 0.0f || lastY != 0.0f)
+		{
+			obj->SetPosition(lastX, lastY);
+		}
+	}
+	else
+		obj->SetPosition(x, y);
+
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 	obj->SetAnimationSet(ani_set);
+	//if (dynamic_cast<WorldPlayer*>(obj)) return;
 	objects.push_back(obj);
 }
 
@@ -266,11 +282,13 @@ void WorldScene::Render()
 	currentMap->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	//player->Render();
 	hud->Render();
 }
 
 void WorldSceneKeyHandler::OnKeyDown(int KeyCode)
 {
+	WorldScene* ws = ((WorldScene*)CGame::GetInstance()->GetCurrentScene());
 	WorldPlayer* player = ((WorldScene*)scence)->GetPlayer();
 	if (player != NULL)
 	{
@@ -294,7 +312,11 @@ void WorldSceneKeyHandler::OnKeyDown(int KeyCode)
 			break;
 		case DIK_S:
 			if (player->sceneId == 1 || player->sceneId == 2)
+			{
+				ws->lastX = player->x;
+				ws->lastY = player->y;
 				player->ChooseScene(player->sceneId);
+			}
 			break;
 		}
 	}
@@ -315,6 +337,7 @@ void WorldScene::Update(DWORD dt) {
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
+	//player->Update(dt, &coObjects);
 	CGame::GetInstance()->SetCamPos(0, 0);
 	hud->SetPosition(0, currentMap->GetMapHeight());
 }

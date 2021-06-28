@@ -20,7 +20,7 @@ class WorldScene : public CScene {
 	HUD* hud = NULL;
 	vector<LPGAMEOBJECT> objects;
 	WorldPlayer* player = NULL;
-
+	
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
@@ -30,6 +30,9 @@ class WorldScene : public CScene {
 	void _ParseSection_TILEMAP_DATA(string line);
 
 public:
+	float lastX = 0.0f;
+	float lastY = 0.0f;
+
 	WorldScene(int id, LPCWSTR filePath);
 	virtual void Load();
 	virtual void Update(DWORD dt);

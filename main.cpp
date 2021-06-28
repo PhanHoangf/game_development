@@ -37,6 +37,7 @@
 
 CGame *game;
 
+
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) {

@@ -549,20 +549,24 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
+	CBackupHud* buh = CBackupHud::GetInstance();
+	for (int i = 0; i < specialObjects.size(); i++)
+		delete specialObjects[i];
+
 	for (int i = 0; i < objRenderFirst.size(); i++)
 		delete objRenderFirst[i];
 
 	for (int i = 0; i < objRenderSecond.size(); i++)
 		delete objRenderSecond[i];
 
-	for (int i = 0; i < specialObjects.size(); i++)
-		delete specialObjects[i];
 
 	objRenderFirst.clear();
 	objRenderSecond.clear();
 	specialObjects.clear();
 	player = NULL;
 	grid = NULL;
+
+ 	buh->BackUp(hud->GetMarioLife(), hud->GetScore(), hud->GetMoney(), hud->GetCards());
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

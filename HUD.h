@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Mario.h"
 #include <map>
+#include "BackupHud.h"
+
 
 #define FONT_BBOX_WIDTH						8
 #define DEFAULT_TIME						300
@@ -58,7 +60,6 @@
 
 class HUD :public CGameObject {
 	CMario* mario;
-
 	std::map<char, LPSPRITE> fonts;
 
 	LPSPRITE playerSprite = NULL;
@@ -97,4 +98,9 @@ public:
 	void RenderCard();
 	void AddCard();
 	void AddSpeedStack();
+
+	int GetMarioLife() { return marioLife; }
+	int GetScore() { return score; }
+	int GetMoney() { return money; }
+	vector<int> GetCards() { return cards; }
 };
