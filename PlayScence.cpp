@@ -580,7 +580,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
-		mario->SetState(MARIO_STATE_JUMP);
+		if (mario->isTailFlying) {
+			mario->vy = -0.025f;
+			mario->ay = -MARIO_GRAVITY;
+		}
+		else {
+			mario->SetState(MARIO_STATE_JUMP);
+		}
 		break;
 	case DIK_R:
 		mario->Reset();
@@ -678,8 +684,13 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	//Update CamY when Flying
 	if (player->isFlying || player->isTailFlying)
 		isTurnOnCamY = true;
-	if (cy > mh - sh && !player->isFlying || cy > mh - sh && !player->isTailFlying)
+	if (cy < mh - sh && !player->isTailFlying)
 		isTurnOnCamY = false;
+
+	DebugOut(L"cy::%f\n", cy);
+	DebugOut(L"mh::%f\n", mh);
+	DebugOut(L"sh::%f\n", sh);
+
 	game->SetCamPos(ceil(cx), ceil(cy));
 	currentMap->SetCamPos(cx, cy);
 	hud->SetPosition(ceil(cx), ceil(cy + sh));

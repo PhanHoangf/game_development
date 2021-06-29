@@ -47,10 +47,10 @@ D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(537,20): warn
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(553,20): warning C4018: '<': signed/unsigned mismatch
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(556,20): warning C4018: '<': signed/unsigned mismatch
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(559,20): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(631,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(632,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(633,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(634,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(629,28): warning C4101: 'my': unreferenced local variable
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(629,24): warning C4101: 'mx': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(637,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(638,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(639,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(640,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(635,28): warning C4101: 'my': unreferenced local variable
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\PlayScence.cpp(635,24): warning C4101: 'mx': unreferenced local variable
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe

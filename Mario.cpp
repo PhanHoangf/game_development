@@ -28,9 +28,9 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_BIG;
+	//level = MARIO_LEVEL_BIG;
 	//level = MARIO_LEVEL_SMALL;
-	//level = MARIO_LEVEL_TAIL;
+	level = MARIO_LEVEL_TAIL;
 	//level = MARIO_LEVEL_FIRE;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
@@ -1482,6 +1482,7 @@ void CMario::HandleFlying() {
 	if (GetTickCount64() - tail_fly_start > MARIO_FLYING_TIME && tail_fly_start != 0 && isTailFlying)
 	{
 		tail_fly_start = 0;
+		speedStack = 0;
 		isRunning = false;
 		isTailFlying = false;
 	}
