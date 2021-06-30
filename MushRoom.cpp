@@ -20,7 +20,7 @@ void MushRoom::Render() {
 void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	if (!IsInViewPort()) {
-		isDestroyed = false;
+		isDestroyed = true;
 	}
 
 	CGameObject::Update(dt);

@@ -53,9 +53,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(KOOPAS_STATE_WALKING);
 	}*/
 
-	/*if (!IsInViewPort()) {
-		isDestroyed = true;
-	}*/
+	if (!IsInViewPort() && mario->x > start_x + 100) {
+		isReviable = true;
+	}
 
 	if (GetTickCount64() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
 		shell_start = 0;

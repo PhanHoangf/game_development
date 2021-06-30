@@ -414,7 +414,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	for (size_t i = 0;i < specialObjects.size(); i++) {
-		if (!specialObjects[i]->GetIsDestroy())
+		if (!specialObjects[i]->GetIsDestroy() && !specialObjects[i]->isIgnore)
 			coObjects.push_back(specialObjects[i]);
 	}
 	//for (size_t i = 0; i < objects.size(); i++)
@@ -447,7 +447,7 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objRenderSecond.size(); i++)
 	{
-		if (objRenderSecond[i]->IsInViewPort()) {
+		if (objRenderSecond[i]->IsInViewPort() && !objRenderSecond[i]->isIgnore) {
 			objRenderSecond[i]->Update(dt, &coObjects);
 		}
 		else {
@@ -495,6 +495,15 @@ void CPlayScene::GetObjectFromGrid() {
 		if (dynamic_cast<PiranhaPlant*>(obj) || dynamic_cast<PiranhaPlantFire*>(obj)) {
 			objRenderFirst.push_back(obj);
 		}
+		else if (dynamic_cast<CKoopas*>(obj)) {
+			CKoopas* kp = dynamic_cast<CKoopas*>(obj);
+			if (kp->isReviable && !kp->IsInViewPort()) {
+				kp->Reset();
+				kp->isReviable = false;
+				objRenderSecond.push_back(kp);
+			}
+			else objRenderSecond.push_back(kp);
+		}
 		else objRenderSecond.push_back(obj);
 	}
 }
@@ -520,7 +529,7 @@ void CPlayScene::Render()
 		}
 	}*/
 
-	player->Render();
+
 
 
 
@@ -531,7 +540,8 @@ void CPlayScene::Render()
 
 	for (int i = 0; i < objRenderSecond.size(); i++)
 	{
-		objRenderSecond[i]->Render();
+		if (!objRenderSecond[i]->isIgnore)
+			objRenderSecond[i]->Render();
 	}
 
 	for (int i = 0; i < specialObjects.size(); i++)
@@ -540,6 +550,8 @@ void CPlayScene::Render()
 			specialObjects[i]->Render();
 		}
 	}
+
+	player->Render();
 
 	hud->Render();
 }
@@ -689,6 +701,10 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 		isTurnOnCamY = true;
 	else if (cy > mh - sh - 16)
 		isTurnOnCamY = false;
+
+	DebugOut(L"cy::%f\n", cy);
+	/*DebugOut(L"mh::%f\n", mh);
+	DebugOut(L"sh::%f\n", sh);*/
 
 	game->SetCamPos(ceil(cx), ceil(cy));
 	currentMap->SetCamPos(cx, cy);

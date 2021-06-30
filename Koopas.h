@@ -46,6 +46,8 @@
 #define LIMIT_KOOPAS_BLOCK_X_RIGHT 596
 #define LIMIT_KOOPAS_BLOCK_X_LEFT 510
 
+#define RESET_DISTANCE	100
+
 class CKoopas : public CGameObject
 {
 	DWORD reviving_start = 0;

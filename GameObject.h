@@ -69,6 +69,7 @@ public:
 	int tag = 0;
 	int type = 0;
 	bool isDestroyed = false;
+	bool isIgnore = false;
 
 	LPANIMATION_SET animation_set;
 

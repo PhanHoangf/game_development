@@ -319,9 +319,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<Switch*>(e->obj)) {
 				Switch* sw = dynamic_cast<Switch*>(e->obj);
 				if (e->ny < 0) {
-					if (sw->GetState() != SWITCH_STATE_PRESSED)
+					if (sw->GetState() != SWITCH_STATE_PRESSED) {
 						sw->SetState(SWITCH_STATE_PRESSED);
-					vy = -MARIO_JUMP_DEFLECT_SPEED;
+						sw->isIgnore = true;
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+					}
 				}
 			}
 			if (dynamic_cast<FireBullet*>(e->obj)) {
@@ -336,7 +338,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			if (dynamic_cast<RedGoomba*>(e->obj)) {
 				RedGoomba* rGoomba = dynamic_cast<RedGoomba*>(e->obj);
-				if (e->ny < 0) {
+				if (e->ny < 0 && rGoomba->state != GOOMBA_STATE_DIE) {
 					if (!rGoomba->isHaveWings) {
 						rGoomba->SetState(GOOMBA_STATE_DIE);
 					}
