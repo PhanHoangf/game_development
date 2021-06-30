@@ -59,8 +59,7 @@ class CGoomba : public CGameObject
 
 	bool isDiedByKoopas = false;
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void Render();
+	
 
 public:
 	DWORD dying_start = 0;
@@ -70,7 +69,10 @@ public:
 	void StartDying(bool l = false) { dying_start = GetTickCount64(); if (l) isWhackedDying = true; else isDying = true; }
 	void StartChasing() { chasing_start = GetTickCount64(); }
 	void StartWalking() { walking_start = GetTickCount64(); isWalking = true; }
-
+	
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Render();
+	
 	//Get
 	bool GetIsWalking() { return isWalking; }
 	bool GetIsJumping() { return isJumping; }

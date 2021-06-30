@@ -54,7 +54,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}*/
 
 	/*if (!IsInViewPort()) {
-		Reset();
+		isDestroyed = true;
 	}*/
 
 	if (GetTickCount64() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {

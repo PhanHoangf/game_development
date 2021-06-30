@@ -91,7 +91,7 @@ void MarioBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 				}
 			}
 
-			if (dynamic_cast<CGoomba*>(e->obj)) {
+			if (dynamic_cast<CGoomba*>(e->obj) && e->obj->GetState() != GOOMBA_STATE_DIE_BY_TAIL) {
 				e->obj->SetState(GOOMBA_STATE_DIE_BY_TAIL);
 				isDestroyed = true;
 				mario->AddScore(x, y, 100, false);

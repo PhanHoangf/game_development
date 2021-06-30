@@ -670,10 +670,13 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	if (cx >= mw - sw)//Right Edge
 		cx = mw - sw;
 
+
+
 	//CamY
 	if (isTurnOnCamY)
 		cy -= sh / 2;
 	else
+		//cy -= sh / 2;
 		cy = mh - sh;
 
 	if (cy <= 0)//Top Edge
@@ -684,12 +687,8 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	//Update CamY when Flying
 	if (player->isFlying || player->isTailFlying)
 		isTurnOnCamY = true;
-	if (cy < mh - sh && !player->isTailFlying)
+	else if (cy > mh - sh - 16)
 		isTurnOnCamY = false;
-
-	DebugOut(L"cy::%f\n", cy);
-	DebugOut(L"mh::%f\n", mh);
-	DebugOut(L"sh::%f\n", sh);
 
 	game->SetCamPos(ceil(cx), ceil(cy));
 	currentMap->SetCamPos(cx, cy);

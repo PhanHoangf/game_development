@@ -49,11 +49,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	//DebugOut(L"mario->x: %f\n", x);
+	DebugOut(L"mario->y: %f\n", y);
 
 	// Simple fall down
 	if (!isJumpOnMusicBrick)
+	{
 		vy += ay * dt;
+	}
 	vx += ax * dt;
 	//DebugOut(L"vy::%f\n", vy);
 	if (isHolding) {
