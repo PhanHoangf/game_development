@@ -49,7 +49,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	DebugOut(L"mario->y: %f\n", y);
+	//DebugOut(L"mario->y: %f\n", y);
 
 	// Simple fall down
 	if (!isJumpOnMusicBrick)
@@ -1466,7 +1466,7 @@ void CMario::HandleSpeedStack() {
 }
 
 void CMario::HandleFlying() {
-	if (level == MARIO_LEVEL_SMALL || level == MARIO_LEVEL_BIG) {
+	if (level != MARIO_LEVEL_TAIL) {
 		if (isFlying)
 		{
 			if (vy <= -MARIO_NORMAL_FLY_MAX) {

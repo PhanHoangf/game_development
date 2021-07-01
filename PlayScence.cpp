@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-
+#include <algorithm>
 #include "PlayScence.h"
 #include "Utils.h"
 #include "Textures.h"
@@ -497,14 +497,26 @@ void CPlayScene::GetObjectFromGrid() {
 		}
 		else if (dynamic_cast<CKoopas*>(obj)) {
 			CKoopas* kp = dynamic_cast<CKoopas*>(obj);
-			if (kp->isReviable && !kp->IsInViewPort()) {
-				kp->Reset();
-				kp->isReviable = false;
-				objRenderSecond.push_back(kp);
+			if (kp->isReviable && kp->start_x < player->x) {
+				if (find(reviableObjects.begin(), reviableObjects.end(), kp) != reviableObjects.end()) {
+					continue;
+				}
+				else {
+					reviableObjects.push_back(kp);
+					continue;
+				}
 			}
-			else objRenderSecond.push_back(kp);
+			/*else if (kp->start_x > cam_x + kp->GetWidth())
+				objRenderSecond.push_back(obj);*/
+			else objRenderSecond.push_back(obj);
 		}
 		else objRenderSecond.push_back(obj);
+	}
+
+	for (size_t i = 0; i < reviableObjects.size(); i++) {
+		if (reviableObjects[i]->start_x <= cam_x) {
+			((CKoopas*)reviableObjects[i])->Reset();
+		}
 	}
 }
 
@@ -513,6 +525,10 @@ void CPlayScene::UpdateGrid() {
 	{
 		LPGAMEOBJECT obj = objectGrid[i]->GetObject();
 		float newPosX, newPosY;
+		if (dynamic_cast<CKoopas*>(obj)) {
+			obj->GetPosition(newPosX, newPosY);
+			DebugOut(L"x::%f \t y::%f\n", newPosX, newPosY);
+		}
 		obj->GetPosition(newPosX, newPosY);
 		objectGrid[i]->Move(newPosX, newPosY);
 	}
@@ -702,7 +718,7 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	else if (cy > mh - sh - 16)
 		isTurnOnCamY = false;
 
-	DebugOut(L"cy::%f\n", cy);
+	//DebugOut(L"cy::%f\n", cy);
 	/*DebugOut(L"mh::%f\n", mh);
 	DebugOut(L"sh::%f\n", sh);*/
 

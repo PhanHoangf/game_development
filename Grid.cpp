@@ -1,5 +1,6 @@
 #pragma
 #include "Grid.h"
+#include "Koopas.h"
 Unit::Unit(Grid* grid, LPGAMEOBJECT obj, float x, float y, int typeAdd) {
 
 	this->_grid = grid;
@@ -118,7 +119,7 @@ vector<Unit*> Grid::getObjectsInViewPort(float cam_x, float cam_y) {
 		endCol = ENDCOL;
 	if (startCol < 0)
 		startCol = 0;
-	//DebugOut(L"[GRID] %d %d\n", startCol, endCol);
+	DebugOut(L"[GRID] %d %d\n", startCol, endCol);
 	int startRow = (int)(cam_y / CELL_HEIGHT);
 	int endRow = (int)ceil((cam_y + 256) / CELL_HEIGHT);
 	int ENDROW = (int)ceil((mapHeight) / CELL_HEIGHT);
@@ -142,7 +143,7 @@ vector<Unit*> Grid::getObjectsInViewPort(float cam_x, float cam_y) {
 						unit->_next->_prev = unit->_prev;
 					if (unit->_prev != NULL)
 						unit->_prev->_next = unit->_next;
-					Unit* tmp = unit;
+					Unit* tmp = unit; 
 					unit = unit->_next;
 					delete tmp->GetObject();
 					delete tmp;

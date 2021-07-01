@@ -73,5 +73,6 @@ public:
 	void StartDying() { dying_start = GetTickCount64(); }
 	void Reset();
 	bool CalTurnable(LPGAMEOBJECT object, vector<LPGAMEOBJECT>* coObjects);
+	void CalRevivable();
 	void HandleBeingHeld(LPGAMEOBJECT player);
 };

@@ -55,6 +55,7 @@ protected:
 	vector<LPGAMEOBJECT> mObjects; //! Moving objects
 	vector<LPGAMEOBJECT> specialObjects; //! Coin in brick 
 	vector<LPGAMEOBJECT> objInPipe;
+	vector<LPGAMEOBJECT> reviableObjects; // koopas
 
 	vector<LPGAMEOBJECT> objRenderFirst;
 	vector<LPGAMEOBJECT> objRenderSecond;

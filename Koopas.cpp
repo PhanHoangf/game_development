@@ -24,6 +24,7 @@ void CKoopas::Reset() {
 	this->x = start_x;
 	this->y = start_y;
 	this->tag = start_tag;
+	this->isReviable = false;
 	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
 		this->nx = -1;
 	}
@@ -53,9 +54,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(KOOPAS_STATE_WALKING);
 	}*/
 
-	if (!IsInViewPort() && mario->x > start_x + 100) {
-		isReviable = true;
-	}
+	CalRevivable();
 
 	if (GetTickCount64() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
 		shell_start = 0;
@@ -386,6 +385,24 @@ void CKoopas::HandleBeingHeld(LPGAMEOBJECT player) {
 			isBeingHeld = false;
 			mario->StartKicking();
 			SetState(KOOPAS_STATE_SPINNING);
+		}
+	}
+}
+
+void CKoopas::CalRevivable() {
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	float cx = CGame::GetInstance()->GetCamPosX();
+	if (mario == NULL) {
+		return;
+	}
+	else {
+		if (!IsInViewPort()) {
+			DebugOut(L"Revive\n");
+			DebugOut(L"CX::%f\n", cx);
+			isReviable = true;
+		}
+		else {
+			isReviable = false;
 		}
 	}
 }
