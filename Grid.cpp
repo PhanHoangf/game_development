@@ -119,7 +119,7 @@ vector<Unit*> Grid::getObjectsInViewPort(float cam_x, float cam_y) {
 		endCol = ENDCOL;
 	if (startCol < 0)
 		startCol = 0;
-	DebugOut(L"[GRID] %d %d\n", startCol, endCol);
+	//DebugOut(L"[GRID] %d %d\n", startCol, endCol);
 	int startRow = (int)(cam_y / CELL_HEIGHT);
 	int endRow = (int)ceil((cam_y + 256) / CELL_HEIGHT);
 	int ENDROW = (int)ceil((mapHeight) / CELL_HEIGHT);

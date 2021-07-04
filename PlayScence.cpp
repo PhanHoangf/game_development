@@ -16,6 +16,7 @@
 #include "PiranhaPlantFire.h"
 #include "RedGoomba.h"
 #include "Leaf.h"
+#include "PipePortal.h"
 
 using namespace std;
 
@@ -154,6 +155,13 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
+	CBackupHud* hud = CBackupHud::GetInstance();
+
+	if (hud->GetPlayer() != NULL) {
+		player = hud->GetPlayer();
+		player->SetPosition(90.0f, 80.0f);
+	}
+
 	vector<string> tokens = split(line);
 
 	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
@@ -255,6 +263,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new MusicBrick(x, y);
 		break;
 	}
+	case OBJECT_TYPE_PIPE_PORTAL: {
+		float scene_id = atoi(tokens[4].c_str());
+		int pipeUp = atoi(tokens[8].c_str());
+		obj = new CPipePortal(scene_id, x, y, pipeUp);
+		break;
+	}
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -271,14 +285,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		mObjects.push_back(obj);
 	}
 	else objects.push_back(obj);*/
-
 	if (dynamic_cast<CMario*>(obj)) {
 		return;
 	}
 	//else if (dynamic_cast<CardItem*>(obj)) {
 	//	this->AddSpecialObject(obj);
 	//}
-	if (dynamic_cast<CPortal*>(obj)) {
+	if (dynamic_cast<CPortal*>(obj) || dynamic_cast<CPipePortal*>(obj)) {
 		this->specialObjects.push_back(obj);
 	}
 	else {
@@ -527,7 +540,7 @@ void CPlayScene::UpdateGrid() {
 		float newPosX, newPosY;
 		if (dynamic_cast<CKoopas*>(obj)) {
 			obj->GetPosition(newPosX, newPosY);
-			DebugOut(L"x::%f \t y::%f\n", newPosX, newPosY);
+			//DebugOut(L"x::%f \t y::%f\n", newPosX, newPosY);
 		}
 		obj->GetPosition(newPosX, newPosY);
 		objectGrid[i]->Move(newPosX, newPosY);
@@ -591,6 +604,9 @@ void CPlayScene::Unload()
 	objRenderFirst.clear();
 	objRenderSecond.clear();
 	specialObjects.clear();
+	if (player != NULL) {
+		buh->SetPlayer(player);
+	}
 	player = NULL;
 	grid = NULL;
 	if (hud != NULL)
@@ -628,7 +644,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetIsReadyToHold(true);
 		break;
 	case DIK_S:
-		if (mario->GetLevel() == MARIO_LEVEL_TAIL)
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL && !mario->GetIsOnGround())
 			mario->isFlapping = true;
 		break;
 	case DIK_Q:
@@ -746,10 +762,15 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		mario->SetState(MARIO_STATE_JUMP_X);
 	}
 	else if (game->IsKeyDown(DIK_DOWN)) {
-		if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround() ||
+		/*if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround() ||
 			mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetIsOnGround() ||
 			mario->GetLevel() == MARIO_LEVEL_FIRE && mario->GetIsOnGround())
+			mario->SetState(MARIO_STATE_SITDOWN);*/
+		if (mario->GetLevel() != MARIO_LEVEL_SMALL && mario->GetIsOnGround() && !mario->canGoIntoPipe)
 			mario->SetState(MARIO_STATE_SITDOWN);
+		if (mario->canGoIntoPipe) {
+			game->SwitchScene(mario->extra_scene_id);
+		}
 	}
 	/*else if (game->IsKeyDown(DIK_Q)) {
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL) {

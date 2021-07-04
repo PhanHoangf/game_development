@@ -25,6 +25,7 @@
 #include "FireFlower.h"
 #include "MarioBullet.h"
 #include "IntroGround.h"
+#include "PipePortal.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -49,7 +50,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	//DebugOut(L"mario->y: %f\n", y);
+	DebugOut(L"mario->y: %f\n", y);
+	DebugOut(L"mario->x: %f\n", x);
 
 	// Simple fall down
 	if (!isJumpOnMusicBrick)
@@ -152,7 +154,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<IntroGround*>(e->obj)) {
 
 			}
-			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj) || dynamic_cast<IntroGround*>(e->obj)) {
+			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj) || dynamic_cast<IntroGround*>(e->obj) || dynamic_cast<CPipePortal*>(e->obj)) {
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				if (e->ny < 0) {
 					isOnGround = true; vy = 0;
@@ -164,6 +166,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vy = 0;
 						ay = MARIO_GRAVITY;
 					}
+				}
+				if (dynamic_cast<CPipePortal*>(e->obj)) {
+					CPipePortal* pp = dynamic_cast<CPipePortal*>(e->obj);
+					extra_scene_id = pp->GetSceneId();
+					canGoIntoPipe = true;
+				}
+				else {
+					extra_scene_id = 0;
+					canGoIntoPipe = false;
 				}
 				if (e->nx != 0 && ceil(mBottom) != oTop) {
 					vx = 0;

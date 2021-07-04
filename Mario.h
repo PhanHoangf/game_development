@@ -348,6 +348,7 @@ class CMario : public CGameObject
 	bool isSwitchScene = false;
 	Tail* tail;
 
+	
 
 public:
 	bool isTuring = false;
@@ -372,6 +373,9 @@ public:
 
 	int shootTimes = 0;
 	bool isJumping = false;
+
+	int extra_scene_id;
+	bool canGoIntoPipe = false;
 
 	vector<int> cards;
 

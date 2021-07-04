@@ -92,7 +92,7 @@ HUD::HUD(int typeHUD) {
 
 	mario = currentScene->GetPlayer();
 	//! 0: WORLD_SCENE_ID 
-	if (sceneId != 0) {
+	if (sceneId != 0 && mario != NULL) {
 		this->marioLife = CBackupHud::GetInstance()->GetMarioLife();
 		mario->marioScore = CBackupHud::GetInstance()->GetScore();
 		mario->coin = CBackupHud::GetInstance()->GetMoney();

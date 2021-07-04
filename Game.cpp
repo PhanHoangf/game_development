@@ -354,7 +354,7 @@ void CGame::_ParseSection_SCENES(string line)
 		LPSCENE scene = new CIntroScene(id, path);
 		scenes[id] = scene;
 	}
-	
+
 }
 
 /*
@@ -402,10 +402,12 @@ void CGame::SwitchScene(int scene_id)
 
 	scenes[current_scene]->Unload();
 
-	CTextures::GetInstance()->Clear();
-	CSprites::GetInstance()->Clear();
-	CAnimations::GetInstance()->Clear();
-	CAnimationSets::GetInstance()->Clear();
+	if (scene_id != 4) {
+		CTextures::GetInstance()->Clear();
+		CSprites::GetInstance()->Clear();
+		CAnimations::GetInstance()->Clear();
+		CAnimationSets::GetInstance()->Clear();
+	}
 
 	current_scene = scene_id;
 	LPSCENE s = scenes[scene_id];

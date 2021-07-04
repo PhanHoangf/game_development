@@ -1,0 +1,2 @@
+#totalCols	totalRows	mapWidth	mapHeight
+4	2	512	192

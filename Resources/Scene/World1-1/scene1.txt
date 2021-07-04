@@ -1104,8 +1104,9 @@ Resources/Scene/World1-1/world1-1_GridInfo.txt
 # [CARD]
 57	2688	336	57	0	0	0	0	1	2	19
 # [MARIO]
-0	80	384	1
+#0	80	384	1
 #0	2258	384	1
+0	2258	110	1
 # [BRICK]
 # ---- platform brick ----
 1	0	416	0	1	0	0	0	2	3	0
@@ -1498,5 +1499,8 @@ Resources/Scene/World1-1/world1-1_GridInfo.txt
 #50	2258	110	0	0	1	132	0	0
 #50	100	380	0	3	1	130	147	1
 # --- SCENE PORTAL ----
-# type	x	y	ani_set_id	r	b	scene_id
-50	2800	400	0	0	150	0
+# type	x	y	ani_set_id	r	b	scene_id	pipeUp
+50	2800	400	0	0	150	0	0
+# --- SCENE PIPE PORTAL ---
+#type	x	y	ani	scene	tag start_x start_y	pipeUp
+500	2258	110	0	4	1	132	0	0

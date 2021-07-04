@@ -398,7 +398,7 @@ void CKoopas::CalRevivable() {
 	else {
 		if (!IsInViewPort()) {
 			DebugOut(L"Revive\n");
-			DebugOut(L"CX::%f\n", cx);
+			//DebugOut(L"CX::%f\n", cx);
 			isReviable = true;
 		}
 		else {

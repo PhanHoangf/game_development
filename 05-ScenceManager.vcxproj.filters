@@ -76,6 +76,9 @@
     <Filter Include="HUD\BackupHud">
       <UniqueIdentifier>{887ec8c4-1ffe-4fad-b7c0-a6ba1393e52b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Others">
+      <UniqueIdentifier>{2f313365-865f-4fce-80f6-52fc0d539472}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -213,6 +216,9 @@
     <ClCompile Include="BackupHud.cpp">
       <Filter>HUD\BackupHud</Filter>
     </ClCompile>
+    <ClCompile Include="PipePortal.cpp">
+      <Filter>GameObject\Others</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -349,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="BackupHud.h">
       <Filter>HUD\BackupHud</Filter>
+    </ClInclude>
+    <ClInclude Include="PipePortal.h">
+      <Filter>GameObject\Others</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
