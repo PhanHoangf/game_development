@@ -32,9 +32,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-
-
-
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);
@@ -155,12 +152,13 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
-	CBackupHud* hud = CBackupHud::GetInstance();
+	/*CBackupHud* hud = CBackupHud::GetInstance();
 
 	if (hud->GetPlayer() != NULL) {
 		player = hud->GetPlayer();
-		player->SetPosition(90.0f, 80.0f);
-	}
+		player->SetPosition(0.0f, 0.0f);
+		player->SetSpeed(0.0f, 0.15f);
+	}*/
 
 	vector<string> tokens = split(line);
 
@@ -415,9 +413,6 @@ void CPlayScene::Update(DWORD dt)
 
 	GetObjectFromGrid();
 
-
-
-
 	for (size_t i = 0;i < objRenderFirst.size(); i++) {
 		coObjects.push_back(objRenderFirst[i]);
 	}
@@ -430,25 +425,9 @@ void CPlayScene::Update(DWORD dt)
 		if (!specialObjects[i]->GetIsDestroy() && !specialObjects[i]->isIgnore)
 			coObjects.push_back(specialObjects[i]);
 	}
-	//for (size_t i = 0; i < objects.size(); i++)
-	//{
-	//	if (!objects[i]->GetIsDestroy())
-	//		coObjects.push_back(objects[i]);
-	//}
-
-	//for (size_t i = 0; i < mObjects.size(); i++)
-	//{
-	//	if (!objects[i]->GetIsDestroy())
-	//		coObjects.push_back(mObjects[i]);
-	//}
 
 	player->Update(dt, &coObjects);
 
-	//coObjects.push_back(player);
-	//for (size_t i = 0; i < objectGrid.size(); i++)
-	//{
-	//	objectGrid[i]->GetObject()->Update(dt, &coObjects);
-	//}
 
 	for (size_t i = 0; i < objRenderFirst.size(); i++)
 	{
@@ -477,11 +456,14 @@ void CPlayScene::Update(DWORD dt)
 		}
 	}
 
-	for (size_t i = 0;i < reviableObjects.size(); i++) {
-		if (dynamic_cast<CKoopas*>(reviableObjects.at(i))) {
-			CKoopas* kp = dynamic_cast<CKoopas*>(reviableObjects.at(i));
-			if (!kp->IsInViewPort() && player->x > kp->start_x + 200.0f) {
-				kp->isReviable = false;
+	if (player != NULL) {
+		for (size_t i = 0;i < reviableObjects.size(); i++) {
+			if (dynamic_cast<CKoopas*>(reviableObjects.at(i))) {
+				CKoopas* kp = dynamic_cast<CKoopas*>(reviableObjects.at(i));
+				if (!kp->IsInViewPort() && player->x > kp->start_x + 150.0f) {
+					/*DebugOut(L"[KOOPAS->SX]::%f \n", kp->start_x);*/
+					kp->isReviable = false;
+				}
 			}
 		}
 	}
@@ -519,7 +501,7 @@ void CPlayScene::GetObjectFromGrid() {
 		}
 		else if (dynamic_cast<CKoopas*>(obj)) {
 			CKoopas* kp = dynamic_cast<CKoopas*>(obj);
-			if (kp->isReviable && kp->start_x < player->x) {
+			if (kp->isReviable && !kp->IsInViewPort()) {
 				if (find(reviableObjects.begin(), reviableObjects.end(), kp) != reviableObjects.end()) {
 					continue;
 				}
@@ -527,10 +509,12 @@ void CPlayScene::GetObjectFromGrid() {
 					reviableObjects.push_back(kp);
 					continue;
 				}
+				DebugOut(L"IN TRUE \n");
 			}
-			/*else if (kp->start_x > cam_x + kp->GetWidth())
-				objRenderSecond.push_back(obj);*/
-			else objRenderSecond.push_back(obj);
+			else if (!kp->isReviable) {
+				objRenderSecond.push_back(obj);
+			}
+
 		}
 		else objRenderSecond.push_back(obj);
 	}
@@ -544,9 +528,12 @@ void CPlayScene::UpdateGrid() {
 		float newPosX, newPosY;
 		if (dynamic_cast<CKoopas*>(obj)) {
 			CKoopas* kp = dynamic_cast<CKoopas*>(obj);
-			if (!kp->IsInViewPort()) {
-				kp->Reset();
-				kp->isReviable = true;
+			if (player != NULL) {
+				bool playerRightToLeft = player->x >= player->x0;
+				if (!kp->IsInViewPort() && kp->x < player->x && playerRightToLeft) {
+					kp->Reset();
+					kp->isReviable = true;
+				}
 			}
 		}
 		obj->GetPosition(newPosX, newPosY);

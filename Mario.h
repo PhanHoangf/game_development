@@ -348,8 +348,6 @@ class CMario : public CGameObject
 	bool isSwitchScene = false;
 	Tail* tail;
 
-	
-
 public:
 	bool isTuring = false;
 	int turningStack = 0;
@@ -418,6 +416,7 @@ public:
 
 	void limitMarioSpeed(float& vx, int nx);
 	void slowDownVx() { vx = int(abs(vx) / 2); }
+	void limitMarioGravity();
 
 	void RenderMarioAniSmall(int& ani);
 	void RenderMarioAniBig(int& ani);
