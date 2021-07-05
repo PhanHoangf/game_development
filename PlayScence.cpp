@@ -617,7 +617,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
+	/*case DIK_SPACE:
 		if (mario->isTailFlying) {
 			mario->vy = -0.025f;
 			mario->ay = -MARIO_GRAVITY;
@@ -625,7 +625,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		else {
 			mario->SetState(MARIO_STATE_JUMP);
 		}
-		break;
+		break;*/
 	case DIK_R:
 		mario->Reset();
 		break;
@@ -634,17 +634,26 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->StartTransform(MARIO_LEVEL_BIG);
 		break;
 	case DIK_A:
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN && !mario->GetIsReadyToRun()) mario->SetState(MARIO_STATE_TAIL_ATTACK);
+		if (mario->GetLevel() == MARIO_LEVEL_FIRE && !mario->GetIsHolding()) mario->ShootFireBall();
 		mario->SetIsReadyToRun(true);
 		mario->SetIsReadyToHold(true);
 		break;
 	case DIK_S:
-		if (mario->GetLevel() == MARIO_LEVEL_TAIL && !mario->GetIsOnGround())
+		if (mario->isTailFlying) {
+			mario->vy = -0.065f;
+			mario->ay = -0.005f;
+		}
+		else if (mario->GetLevel() == MARIO_LEVEL_TAIL && !mario->GetIsOnGround())
 			mario->isFlapping = true;
+		else {
+			mario->SetState(MARIO_STATE_JUMP);
+		}
 		break;
-	case DIK_Q:
+	/*case DIK_Q:
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
 		if (mario->GetLevel() == MARIO_LEVEL_FIRE && !mario->GetIsHolding()) mario->ShootFireBall();
-		break;
+		break;*/
 	}
 }
 
@@ -665,6 +674,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 		break;
 	case DIK_S:
 		mario->isFlapping = false;
+		mario->ay = MARIO_GRAVITY;
 		break;
 	}
 }
@@ -756,10 +766,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		mario->SetState(MARIO_STATE_JUMP_X);
 	}
 	else if (game->IsKeyDown(DIK_DOWN)) {
-		/*if (mario->GetLevel() == MARIO_LEVEL_BIG && mario->GetIsOnGround() ||
-			mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetIsOnGround() ||
-			mario->GetLevel() == MARIO_LEVEL_FIRE && mario->GetIsOnGround())
-			mario->SetState(MARIO_STATE_SITDOWN);*/
 		if (mario->GetLevel() != MARIO_LEVEL_SMALL && mario->GetIsOnGround() && !mario->canGoIntoPipe)
 			mario->SetState(MARIO_STATE_SITDOWN);
 		if (mario->canGoIntoPipe) {

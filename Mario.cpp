@@ -64,6 +64,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		DebugOut(L"vx::%f\n", vx);
 	}
 	limitMarioSpeed(vx, nx);
+	limitMarioGravity();
 	if (!isFlying && !isTailFlying)
 		handleMarioJump();
 	HandleFlapping();
@@ -1477,16 +1478,16 @@ void CMario::HandleSpeedStack() {
 }
 
 void CMario::HandleFlying() {
-	if (level != MARIO_LEVEL_TAIL) {
-		if (isFlying)
+	if (level != -5) {
+		if (isFlying || isTailFlying)
 		{
 			if (vy <= -MARIO_NORMAL_FLY_MAX) {
 				normalFlyPullDown = true;
 			}
 		}
 	}
-	if (normalFlyPullDown && isFlying) {
-		ay = MARIO_GRAVITY;
+	if (normalFlyPullDown && isFlying || normalFlyPullDown && isTailFlying) {
+		ay = 0.001f;
 	}
 	if (GetTickCount64() - fly_start > MARIO_FLYING_TIME && fly_start != 0 && isFlying)
 	{
@@ -1524,5 +1525,11 @@ void CMario::ShootFireBall() {
 void CMario::HandleShooting() {
 	if (isShooting && GetTickCount64() - start_shooting >= MARIO_SHOOTING_TIME) {
 		StopShooting();
+	}
+}
+
+void CMario::limitMarioGravity() {
+	if (vy > 0.5f) {
+		vy = 0.5f;
 	}
 }
