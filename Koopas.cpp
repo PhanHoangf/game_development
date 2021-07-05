@@ -24,7 +24,7 @@ void CKoopas::Reset() {
 	this->x = start_x;
 	this->y = start_y;
 	this->tag = start_tag;
-	this->isReviable = false;
+	//this->isReviable = false;
 	if (tag == KOOPAS_GREEN || tag == KOOPAS_GREEN_PARA) {
 		this->nx = -1;
 	}
@@ -54,7 +54,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(KOOPAS_STATE_WALKING);
 	}*/
 
-	CalRevivable();
+	//CalRevivable();
 
 	if (GetTickCount64() - shell_start >= KOOPAS_SHELL_TIME && shell_start != 0 && state != KOOPAS_STATE_SPINNING) {
 		shell_start = 0;
@@ -397,12 +397,7 @@ void CKoopas::CalRevivable() {
 	}
 	else {
 		if (!IsInViewPort()) {
-			DebugOut(L"Revive\n");
-			//DebugOut(L"CX::%f\n", cx);
 			isReviable = true;
-		}
-		else {
-			isReviable = false;
 		}
 	}
 }

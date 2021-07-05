@@ -1104,9 +1104,9 @@ Resources/Scene/World1-1/world1-1_GridInfo.txt
 # [CARD]
 57	2688	336	57	0	0	0	0	1	2	19
 # [MARIO]
-#0	80	384	1
+0	80	384	1
 #0	2258	384	1
-0	2258	110	1
+#0	2258	110	1
 # [BRICK]
 # ---- platform brick ----
 1	0	416	0	1	0	0	0	2	3	0

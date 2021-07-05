@@ -477,6 +477,15 @@ void CPlayScene::Update(DWORD dt)
 		}
 	}
 
+	for (size_t i = 0;i < reviableObjects.size(); i++) {
+		if (dynamic_cast<CKoopas*>(reviableObjects.at(i))) {
+			CKoopas* kp = dynamic_cast<CKoopas*>(reviableObjects.at(i));
+			if (!kp->IsInViewPort() && player->x > kp->start_x + 200.0f) {
+				kp->isReviable = false;
+			}
+		}
+	}
+
 	//for (size_t i = 0; i < mObjects.size(); i++) {
 	//	mObjects[i]->Update(dt, &coObjects);
 	//}
@@ -526,11 +535,6 @@ void CPlayScene::GetObjectFromGrid() {
 		else objRenderSecond.push_back(obj);
 	}
 
-	for (size_t i = 0; i < reviableObjects.size(); i++) {
-		if (reviableObjects[i]->start_x <= cam_x) {
-			((CKoopas*)reviableObjects[i])->Reset();
-		}
-	}
 }
 
 void CPlayScene::UpdateGrid() {
@@ -539,8 +543,11 @@ void CPlayScene::UpdateGrid() {
 		LPGAMEOBJECT obj = objectGrid[i]->GetObject();
 		float newPosX, newPosY;
 		if (dynamic_cast<CKoopas*>(obj)) {
-			obj->GetPosition(newPosX, newPosY);
-			//DebugOut(L"x::%f \t y::%f\n", newPosX, newPosY);
+			CKoopas* kp = dynamic_cast<CKoopas*>(obj);
+			if (!kp->IsInViewPort()) {
+				kp->Reset();
+				kp->isReviable = true;
+			}
 		}
 		obj->GetPosition(newPosX, newPosY);
 		objectGrid[i]->Move(newPosX, newPosY);
