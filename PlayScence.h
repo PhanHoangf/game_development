@@ -46,6 +46,8 @@
 
 #define MAX_SCENE_LINE 1024
 
+#define EXTRA_SCENE_ID_1	4
+
 
 class CPlayScene : public CScene
 {

@@ -50,9 +50,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	/*DebugOut(L"mario->y: %f\n", y);
-	DebugOut(L"mario->x: %f\n", x);*/
-
+	DebugOut(L"mario->y: %f\n", y);
+	/*DebugOut(L"mario->x: %f\n", x);
+	DebugOut(L"[mario->start_x]::%f \n", start_x);*/
 	// Simple fall down
 	if (!isJumpOnMusicBrick)
 	{
@@ -60,9 +60,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	vx += ax * dt;
 	//DebugOut(L"vy::%f\n", vy);
-	if (isHolding) {
+	/*if (isHolding) {
 		DebugOut(L"vx::%f\n", vx);
-	}
+	}*/
 	limitMarioSpeed(vx, nx);
 	limitMarioGravity();
 	if (!isFlying && !isTailFlying)
@@ -95,6 +95,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	HandleSpeedStack();
 	HandleFlying();
 	HandleShooting();
+	HandleIntoPipe();
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
@@ -110,7 +111,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	// No collision occured, proceed normall
-	if (coEvents.size() == 0)
+	if (coEvents.size() == 0 || isIntoPipe)
 	{
 		x += dx;
 		y += dy;
@@ -152,9 +153,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			GetBoundingBox(mLeft, mTop, mRight, mBottom);
 			e->obj->GetBoundingBox(oLeft, oTop, oRight, oBottom);
-			if (dynamic_cast<IntroGround*>(e->obj)) {
-
-			}
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<QuestionBrick*>(e->obj) || dynamic_cast<IntroGround*>(e->obj) || dynamic_cast<CPipePortal*>(e->obj)) {
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				if (e->ny < 0) {
@@ -172,10 +170,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					CPipePortal* pp = dynamic_cast<CPipePortal*>(e->obj);
 					extra_scene_id = pp->GetSceneId();
 					canGoIntoPipe = true;
+					extra_scene_start_x = pp->extra_start_x;
+					extra_scene_start_y = pp->extra_start_y;
+					limitY = pp->y;
+					isPipeUp = pp->pipeUp == PIPE_UP;
+					if (pp->tag == TO_EXTRA_SCENE) {
+						backToMainScene = false;
+					}
+					else if (pp->tag == TO_MAIN_SCENE) {
+						backToMainScene = true;
+					}
 				}
 				else {
 					extra_scene_id = 0;
 					canGoIntoPipe = false;
+					backToMainScene = false;
 				}
 				if (e->nx != 0 && ceil(mBottom) != oTop) {
 					vx = 0;
@@ -443,7 +452,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	if (x <= cx) {
+	if (x <= cx && x < 0.0f) {
 		x = cx;
 	}
 	tail->Update(dt, coObjects);
@@ -508,6 +517,11 @@ void CMario::Render()
 				if (turningStack == 4)
 					CSprites::GetInstance()->Get(MARIO_SPRITE_WHACK_LEFT_4_ID)->Draw(x, y, alpha);
 			}
+		}
+		else if (isIntoPipe || isOutOfPipe) {
+			int res = isOutOfPipe ? 1 : 0;
+			DebugOut(L"[OUT OF PIPE]: %d\n", res);
+			CSprites::GetInstance()->Get(MARIO_SPRITE_PIPE_TAIL)->Draw(x, y, alpha);
 		}
 		else animation_set->at(ani)->Render(nx > 0 ? x - 6 : x, y, alpha);
 		this->tail->Render();
@@ -804,6 +818,8 @@ void CMario::RenderMarioAniTail(int& ani) {
 				ani = MARIO_ANI_TAIL_FLAPPING_RIGHT;
 			else if (isTailFlying) {
 				ani = MARIO_ANI_TAIL_FLY_UP_RIGHT;
+				if (isFlappingTailFlying)
+					ani = MARIO_ANI_TAIL_FLY_FLAPPING_RIGHT;
 			}
 			else if (isHolding) {
 				ani = MARIO_ANI_TAIL_HOLD_JUMPINGUP_RIGHT;
@@ -837,6 +853,8 @@ void CMario::RenderMarioAniTail(int& ani) {
 				ani = MARIO_ANI_TAIL_FLAPPING_LEFT;
 			else if (isTailFlying) {
 				ani = MARIO_ANI_TAIL_FLY_UP_LEFT;
+				if (isFlappingTailFlying)
+					ani = MARIO_ANI_TAIL_FLY_FLAPPING_LEFT;
 			}
 			else if (isHolding) {
 				ani = MARIO_ANI_TAIL_HOLD_JUMPINGUP_LEFT;
@@ -862,8 +880,11 @@ void CMario::RenderMarioAniTail(int& ani) {
 		if (nx > 0) {
 			if (isFlapping)
 				ani = MARIO_ANI_TAIL_FLAPPING_RIGHT;
-			else if (isTailFlying)
+			else if (isTailFlying) {
 				ani = MARIO_ANI_TAIL_FLY_UP_RIGHT;
+				if (isFlappingTailFlying)
+					ani = MARIO_ANI_TAIL_FLY_FLAPPING_RIGHT;
+			}
 			else if (isHolding)
 				ani = MARIO_ANI_TAIL_HOLD_JUMPINGUP_RIGHT;
 			else
@@ -872,8 +893,11 @@ void CMario::RenderMarioAniTail(int& ani) {
 		if (nx < 0) {
 			if (isFlapping)
 				ani = MARIO_ANI_TAIL_FLAPPING_LEFT;
-			else if (isTailFlying)
+			else if (isTailFlying) {
 				ani = MARIO_ANI_TAIL_FLY_UP_LEFT;
+				if (isFlappingTailFlying)
+					ani = MARIO_ANI_TAIL_FLY_FLAPPING_LEFT;
+			}
 			else if (isHolding)
 				ani = MARIO_ANI_TAIL_HOLD_JUMPINGUP_LEFT;
 			else
@@ -1531,5 +1555,43 @@ void CMario::HandleShooting() {
 void CMario::limitMarioGravity() {
 	if (vy > 0.5f) {
 		vy = 0.5f;
+	}
+}
+
+void CMario::HandleIntoPipe() {
+	if (!isPipeUp) {
+		if (isIntoPipe) {
+			vy = INTO_PIPE_SPEED;
+			if (y >= limitY) {
+				StopIntoPipe();
+				vy = 0;
+				CGame::GetInstance()->SwitchScene(extra_scene_id);
+			}
+		}
+		else if (isOutOfPipe) {
+			vy = INTO_PIPE_SPEED;
+			if (y >= 16.0f) {
+				isOutOfPipe = false;
+			}
+		}
+	}
+	else if (isPipeUp) {
+		if (isIntoPipe) {
+			vy = -INTO_PIPE_SPEED;
+			if (y <= limitY - MARIO_BIG_BBOX_HEIGHT) {
+				StopIntoPipe();
+				vy = 0;
+				CGame::GetInstance()->SwitchScene(extra_scene_id);
+			}
+		}
+		else if (isOutOfPipe) {
+			vy = -INTO_PIPE_SPEED;
+			if (y <= 387.0f - MARIO_BIG_BBOX_HEIGHT - 5.0f) {
+				isOutOfPipe = false;
+				backToMainScene = false;
+				StopIntoPipe();
+				//SetState(MARIO_STATE_IDLE);
+			}
+		}
 	}
 }

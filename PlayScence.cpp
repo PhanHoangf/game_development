@@ -152,13 +152,21 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 */
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
-	/*CBackupHud* hud = CBackupHud::GetInstance();
+	CBackupHud* buh = CBackupHud::GetInstance();
+	int scene_id = CGame::GetInstance()->GetCurrentScene()->GetSceneId();
 
-	if (hud->GetPlayer() != NULL) {
-		player = hud->GetPlayer();
-		player->SetPosition(0.0f, 0.0f);
-		player->SetSpeed(0.0f, 0.15f);
-	}*/
+	//!LOAD MARIO FOR EXTRA_SCENE 
+	if (buh->GetPlayer() != NULL && scene_id == EXTRA_SCENE_ID_1) {
+		player = buh->GetPlayer();
+		player->SetPosition(player->extra_scene_start_x, player->extra_scene_start_y);
+		player->isOutOfPipe = true;
+	}
+
+	if (buh->GetPlayer() != NULL && buh->GetPlayer()->backToMainScene) {
+		player = buh->GetPlayer();
+		player->SetPosition(player->extra_scene_start_x, player->extra_scene_start_y);
+		player->isOutOfPipe = true;
+	}
 
 	vector<string> tokens = split(line);
 
@@ -262,9 +270,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	case OBJECT_TYPE_PIPE_PORTAL: {
-		float scene_id = atoi(tokens[4].c_str());
 		int pipeUp = atoi(tokens[8].c_str());
-		obj = new CPipePortal(scene_id, x, y, pipeUp);
+		float scene_id = atoi(tokens[4].c_str());
+		float start_x = atoi(tokens[6].c_str());
+		float start_y = atoi(tokens[7].c_str());
+		int tag = atoi(tokens[5].c_str());
+		obj = new CPipePortal(scene_id, x, y, pipeUp, start_x, start_y, tag);
 		break;
 	}
 	default:
@@ -274,6 +285,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	// General object setup
 	obj->SetPosition(x, y);
+
+	/*int scene_id = CGame::GetInstance()->GetCurrentScene()->GetSceneId();
+
+	if (scene_id == 4) {
+
+		player->dx = 0.0f;
+	}*/
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
@@ -474,6 +492,14 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
+
+	/*if (CGame::GetInstance()->GetCurrentScene()->GetSceneId() == 4) {
+		SetCam(player->x, player->y, dt);
+	}
+	else {
+		SetCam(player->x, player->y, dt);
+		hud->Update(dt, &coObjects);
+	}*/
 	SetCam(player->x, player->y, dt);
 	hud->Update(dt, &coObjects);
 	UpdateGrid();
@@ -561,6 +587,8 @@ void CPlayScene::Render()
 		objRenderFirst[i]->Render();
 	}
 
+	player->Render();
+
 	for (int i = 0; i < objRenderSecond.size(); i++)
 	{
 		if (!objRenderSecond[i]->isIgnore)
@@ -573,8 +601,6 @@ void CPlayScene::Render()
 			specialObjects[i]->Render();
 		}
 	}
-
-	player->Render();
 
 	hud->Render();
 }
@@ -599,6 +625,7 @@ void CPlayScene::Unload()
 	objRenderSecond.clear();
 	specialObjects.clear();
 	if (player != NULL) {
+		buh->SetPlayer(NULL);
 		buh->SetPlayer(player);
 	}
 	player = NULL;
@@ -614,18 +641,18 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario->GetState() == MARIO_STATE_DIE) return;
+	if (mario->GetState() == MARIO_STATE_DIE || mario->isIntoPipe) return;
 	switch (KeyCode)
 	{
-	/*case DIK_SPACE:
-		if (mario->isTailFlying) {
-			mario->vy = -0.025f;
-			mario->ay = -MARIO_GRAVITY;
-		}
-		else {
-			mario->SetState(MARIO_STATE_JUMP);
-		}
-		break;*/
+		/*case DIK_SPACE:
+			if (mario->isTailFlying) {
+				mario->vy = -0.025f;
+				mario->ay = -MARIO_GRAVITY;
+			}
+			else {
+				mario->SetState(MARIO_STATE_JUMP);
+			}
+			break;*/
 	case DIK_R:
 		mario->Reset();
 		break;
@@ -643,6 +670,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (mario->isTailFlying) {
 			mario->vy = -0.065f;
 			mario->ay = -0.005f;
+			mario->isFlappingTailFlying = true;
 		}
 		else if (mario->GetLevel() == MARIO_LEVEL_TAIL && !mario->GetIsOnGround())
 			mario->isFlapping = true;
@@ -650,16 +678,16 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetState(MARIO_STATE_JUMP);
 		}
 		break;
-	/*case DIK_Q:
-		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
-		if (mario->GetLevel() == MARIO_LEVEL_FIRE && !mario->GetIsHolding()) mario->ShootFireBall();
-		break;*/
+		/*case DIK_Q:
+			if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN) mario->SetState(MARIO_STATE_TAIL_ATTACK);
+			if (mario->GetLevel() == MARIO_LEVEL_FIRE && !mario->GetIsHolding()) mario->ShootFireBall();
+			break;*/
 	}
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario->GetState() == MARIO_STATE_DIE) return;
+	if (mario->GetState() == MARIO_STATE_DIE || mario->isIntoPipe) return;
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
@@ -675,6 +703,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) {
 	case DIK_S:
 		mario->isFlapping = false;
 		mario->ay = MARIO_GRAVITY;
+		mario->isFlappingTailFlying = false;
 		break;
 	}
 }
@@ -686,31 +715,6 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	sh = game->GetScreenHeight() - 32;
 	mw = currentMap->GetMapWidth();
 	mh = currentMap->GetMapHeight();
-	//DebugOut(L"dt %u\n", dt);
-	//Update camera to follow mario
-	//if (id == 4)
-	//{
-	//	sum_dt += dt;
-	//	// CamX
-	//	cx = game->GetCamPosX();
-	//	if (sum_dt >= CAM_CHANGE_TIME)
-	//	{
-	//		sum_dt = 0;
-	//		cx++;
-	//	}
-	//	if (cx <= 0)//Left Edge
-	//		cx = 0;
-	//	if (cx >= mw - sw)//Right Edge
-	//		cx = mw - sw;
-
-	//	cy = mh - sh;
-	//	game->SetCamPos(cx, ceil(cy));
-	//	current_map->SetCamPos(cx, ceil(cy));
-	//	hud->SetPosition(cx, ceil(cy + sh - HUD_HEIGHT));
-	//}
-	//hud->SetPosition(cx, ceil(cy + sh - 32));
-	/*else
-	{*/
 	cx -= sw / 2;
 	// CamX
 	if (cx <= 0)//Left Edge
@@ -738,10 +742,6 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	else if (cy > mh - sh - 16)
 		isTurnOnCamY = false;
 
-	//DebugOut(L"cy::%f\n", cy);
-	/*DebugOut(L"mh::%f\n", mh);
-	DebugOut(L"sh::%f\n", sh);*/
-
 	game->SetCamPos(ceil(cx), ceil(cy));
 	currentMap->SetCamPos(cx, cy);
 	hud->SetPosition(ceil(cx), ceil(cy + sh));
@@ -752,7 +752,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario == NULL) return;
+	if (mario == NULL || mario->isIntoPipe) return;
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT)) {
@@ -769,7 +769,16 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		if (mario->GetLevel() != MARIO_LEVEL_SMALL && mario->GetIsOnGround() && !mario->canGoIntoPipe)
 			mario->SetState(MARIO_STATE_SITDOWN);
 		if (mario->canGoIntoPipe) {
-			game->SwitchScene(mario->extra_scene_id);
+			mario->StartIntoPipe();
+			//game->SwitchScene(mario->extra_scene_id);
+			mario->canGoIntoPipe = false;
+		}
+	}
+	else if (game->IsKeyDown(DIK_UP)) {
+		if (mario->canGoIntoPipe) {
+			mario->StartIntoPipe();
+			//game->SwitchScene(mario->extra_scene_id);
+			mario->canGoIntoPipe = false;
 		}
 	}
 	/*else if (game->IsKeyDown(DIK_Q)) {

@@ -7,6 +7,7 @@
 #include "PlayScence.h"
 #include "WorldScene.h"
 #include "IntroScene.h"
+#include "BackupHud.h"
 
 
 CGame* CGame::__instance = NULL;
@@ -403,10 +404,29 @@ void CGame::SwitchScene(int scene_id)
 	scenes[current_scene]->Unload();
 
 	if (scene_id != 4) {
-		CTextures::GetInstance()->Clear();
-		CSprites::GetInstance()->Clear();
-		CAnimations::GetInstance()->Clear();
-		CAnimationSets::GetInstance()->Clear();
+		if (scene_id == 1 || scene_id == 2) {
+			CMario* mario = CBackupHud::GetInstance()->GetPlayer();
+			if (mario != NULL) {
+				if (!mario->backToMainScene) {
+					CTextures::GetInstance()->Clear();
+					CSprites::GetInstance()->Clear();
+					CAnimations::GetInstance()->Clear();
+					CAnimationSets::GetInstance()->Clear();
+				}
+			}
+			else {
+				CTextures::GetInstance()->Clear();
+				CSprites::GetInstance()->Clear();
+				CAnimations::GetInstance()->Clear();
+				CAnimationSets::GetInstance()->Clear();
+			}
+		}
+		else {
+			CTextures::GetInstance()->Clear();
+			CSprites::GetInstance()->Clear();
+			CAnimations::GetInstance()->Clear();
+			CAnimationSets::GetInstance()->Clear();
+		}
 	}
 
 	current_scene = scene_id;

@@ -1,11 +1,14 @@
 #include "PipePortal.h"
 
-CPipePortal::CPipePortal(int scene_id, float x, float y, int pipeUp)
+CPipePortal::CPipePortal(int scene_id, float x, float y, int pipeUp, float start_x, float start_y, int tag)
 {
 	this->scene_id = scene_id;
 	this->x = x;
 	this->y = y;
 	this->pipeUp = pipeUp;
+	this->extra_start_x = start_x;
+	this->extra_start_y = start_y;
+	this->tag = tag;
 }
 
 void CPipePortal::Render()

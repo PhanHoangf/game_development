@@ -179,6 +179,7 @@
 #define MARIO_ANI_TAIL_FLAPPING_LEFT			98
 
 #define MARIO_ANI_TAIL_FLY_UP_LEFT				110
+#define MARIO_ANI_TAIL_FLY_FLAPPING_LEFT		112
 
 #define MARIO_SPRITE_WHACK_LEFT_1_ID	12813
 #define MARIO_SPRITE_WHACK_LEFT_2_ID	12814
@@ -213,6 +214,7 @@
 #define MARIO_ANI_TAIL_FLAPPING_RIGHT			97
 
 #define MARIO_ANI_TAIL_FLY_UP_RIGHT				107
+#define MARIO_ANI_TAIL_FLY_FLAPPING_RIGHT		109
 
 #define MARIO_SPRITE_WHACK_RIGHT_1_ID	12803
 #define MARIO_SPRITE_WHACK_RIGHT_2_ID	12804
@@ -276,6 +278,14 @@
 #endif // !MARIO_FIRE_LEFT
 
 
+//! PIPE
+
+#define MARIO_SPRITE_PIPE_SMALL					10900
+#define MARIO_SPRITE_PIPE_BIG					11900
+#define MARIO_SPRITE_PIPE_TAIL					12900
+#define MARIO_SPRITE_PIPE_FIRE					13900
+
+//
 
 
 
@@ -302,6 +312,8 @@
 #define MARIO_MAX_BULLET	2
 #define STACK_SCORE_TIME	2000
 
+#define INTO_PIPE_SPEED 0.05f
+
 
 class CMario : public CGameObject
 {
@@ -320,6 +332,8 @@ class CMario : public CGameObject
 	DWORD tail_fly_start;
 	DWORD start_shooting;
 	DWORD start_score_time;
+	DWORD start_into_pipe;
+
 	int direction;
 
 	bool isOnGround = false;
@@ -362,6 +376,7 @@ public:
 
 	bool tailFlyPullDown = false;
 	bool isTailFlying = false;
+	bool isFlappingTailFlying = false;
 
 	bool isShooting = false;
 	bool isStackingScore = false;
@@ -373,7 +388,17 @@ public:
 	bool isJumping = false;
 
 	int extra_scene_id;
+	int main_scene_id;
 	bool canGoIntoPipe = false;
+	bool isIntoPipe = false;
+	bool isOutOfPipe = false;
+	bool isPipeUp = false;
+
+	bool backToMainScene = false;
+
+	float extra_scene_start_x;
+	float extra_scene_start_y;
+	float limitY; //! FOR GO INTO PIPE ONLY
 
 	vector<int> cards;
 
@@ -408,11 +433,13 @@ public:
 	void StartFlying() { fly_start = GetTickCount64(); }
 	void StartTailFlying() { tail_fly_start = GetTickCount64(); }
 	void StartShooting() { start_shooting = GetTickCount64(); isShooting = true; }
+	void StartIntoPipe() { start_into_pipe = GetTickCount64(); isIntoPipe = true; }
 
 	void StopTransform() { isTransforming = false; start_transform = 0; isChangingY = false; }
 	void StopKicking() { start_kicking = 0; isKicking = false; }
 	void StopSpeedStack() { start_speed_stack = 0; }
 	void StopShooting() { start_shooting = 0; isShooting = false; }
+	void StopIntoPipe() { start_into_pipe = 0; isIntoPipe = false; }
 
 	void limitMarioSpeed(float& vx, int nx);
 	void slowDownVx() { vx = int(abs(vx) / 2); }
@@ -439,6 +466,7 @@ public:
 	void HandleFlying();
 	void HandleTailFlying();
 	void HandleShooting();
+	void HandleIntoPipe();
 
 
 	void pullDown() {
