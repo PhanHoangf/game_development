@@ -366,8 +366,11 @@ public:
 	bool isTuring = false;
 	int turningStack = 0;
 	bool isKicking = false;
+	
 	int marioScore = 0;
 	int coin = 0;
+	int marioLife = 4;
+
 	bool isFlapping = false;
 	int speedStack = 0;
 

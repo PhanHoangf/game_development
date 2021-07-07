@@ -339,6 +339,7 @@ void WorldScene::Update(DWORD dt) {
 	if (player == NULL) return;
 	//player->Update(dt, &coObjects);
 	CGame::GetInstance()->SetCamPos(0, 0);
+	
 	hud->SetPosition(0, currentMap->GetMapHeight());
 }
 

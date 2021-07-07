@@ -103,4 +103,6 @@ public:
 	int GetScore() { return score; }
 	int GetMoney() { return money; }
 	vector<int> GetCards() { return cards; }
+
+	void LoadBackUpHud();
 };

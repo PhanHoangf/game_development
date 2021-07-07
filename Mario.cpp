@@ -43,6 +43,16 @@ CMario::CMario(float x, float y) : CGameObject()
 	this->x = x;
 	this->y = y;
 	this->tail = new Tail(80, y);
+
+	//!BACKUP MARIO HUD
+	CMario* marioBackUp = CBackupHud::GetInstance()->GetPlayer();
+	
+	if (marioBackUp != NULL) {
+		coin = marioBackUp->coin;
+		cards = marioBackUp->cards;
+		marioScore = marioBackUp->marioScore;
+		marioLife = marioBackUp->marioLife;
+	}
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -1590,7 +1600,7 @@ void CMario::HandleIntoPipe() {
 				isOutOfPipe = false;
 				backToMainScene = false;
 				StopIntoPipe();
-				//SetState(MARIO_STATE_IDLE);
+				SetState(MARIO_STATE_IDLE);
 			}
 		}
 	}

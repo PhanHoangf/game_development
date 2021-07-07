@@ -89,13 +89,32 @@ HUD::HUD(int typeHUD) {
 		powerMelterSprite.push_back((CSprites::GetInstance()->Get(SPRITE_FILLARROW_ID)));
 	int sceneId = CGame::GetInstance()->GetCurrentScene()->GetSceneId();
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-
 	mario = currentScene->GetPlayer();
-	//! 0: WORLD_SCENE_ID 
-	if (sceneId != 0 && mario != NULL) {
-		this->marioLife = CBackupHud::GetInstance()->GetMarioLife();
-		mario->marioScore = CBackupHud::GetInstance()->GetScore();
-		mario->coin = CBackupHud::GetInstance()->GetMoney();
+	CMario* backUpMario = CBackupHud::GetInstance()->GetPlayer();
+	
+	if (sceneId == 0) {
+		if (backUpMario == NULL) {
+			this->marioLife = 4;
+			this->score = 0;
+			this->money = 0;
+		}
+		else {
+			this->marioLife = backUpMario->marioLife;
+			this->score = backUpMario->marioScore;
+			this->money = backUpMario->coin;
+			this->cards = backUpMario->cards;
+		}
+		lifeSprites = StringToSprite(to_string(marioLife));
+		moneySprites = StringToSprite(to_string(money));
+		string score_str = to_string(score);
+		while (score_str.length() < HUD_SCORE_MAX) score_str = "0" + score_str;
+		scoreSprites = StringToSprite(score_str);
+		string time_str = to_string(DEFAULT_TIME);
+		while (time_str.length() < HUD_TIME_MAX) time_str = "0" + time_str;
+		remainTimeSprites = StringToSprite(time_str);
+	}
+	else {
+		LoadBackUpHud();
 	}
 }
 
@@ -151,16 +170,13 @@ void HUD::SetHUD(HUD* hud)
 }
 
 void HUD::AddScore() {
-	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-
-	mario = currentScene->GetPlayer();
-	this->score = mario->marioScore;
+	if (mario != NULL)
+		this->score = mario->marioScore;
 }
 
 void HUD::AddCoin() {
-	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-	mario = currentScene->GetPlayer();
-	this->money = mario->coin;
+	if (mario != NULL)
+		this->money = mario->coin;
 }
 
 void HUD::AddSpeedStack() {
@@ -170,20 +186,20 @@ void HUD::AddSpeedStack() {
 }
 
 void HUD::AddCard() {
-	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-	mario = currentScene->GetPlayer();
-	cards.clear();
 	if (mario != NULL) {
-		if (mario->cards.size() > 0) {
-			for (int i = 0; i < mario->cards.size(); i++) {
-				int index = mario->cards[i];
-				cards.push_back(index);
-				if (startTakingCard == 0) {
-					isTakingCard = true;
-					startTakingCard = GetTickCount64();
-				}
-				if (GetTickCount64() - startTakingCard > 1000) {
-					isTakingCard = false;
+		cards.clear();
+		if (mario != NULL) {
+			if (mario->cards.size() > 0) {
+				for (int i = 0; i < mario->cards.size(); i++) {
+					int index = mario->cards[i];
+					cards.push_back(index);
+					if (startTakingCard == 0) {
+						isTakingCard = true;
+						startTakingCard = GetTickCount64();
+					}
+					if (GetTickCount64() - startTakingCard > 1000) {
+						isTakingCard = false;
+					}
 				}
 			}
 		}
@@ -201,5 +217,13 @@ void HUD::RenderCard() {
 			else index = cards[i];
 			TakenCards->at(index)->Render(x + HUD_DIFF_CARD + i * 24, y + HUD_DIFF_SECOND_ROW - HUD_DIFF_FIRST_ROW);
 		}
+	}
+}
+
+void HUD::LoadBackUpHud() {
+	if (mario != NULL) {
+		this->marioLife = mario->marioLife;
+		this->score = mario->marioScore;
+		this->money = mario->coin;
 	}
 }

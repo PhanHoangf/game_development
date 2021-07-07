@@ -571,17 +571,6 @@ void CPlayScene::Render()
 {
 	currentMap->DrawMap();
 
-	/*for (int i = 0; i < mObjects.size(); i++)
-	{
-		if (!mObjects[i]->isDestroyed) {
-			mObjects[i]->Render();
-		}
-	}*/
-
-
-
-
-
 	for (int i = 0; i < objRenderFirst.size(); i++)
 	{
 		objRenderFirst[i]->Render();
@@ -661,7 +650,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->StartTransform(MARIO_LEVEL_BIG);
 		break;
 	case DIK_A:
-		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN && !mario->GetIsReadyToRun()) mario->SetState(MARIO_STATE_TAIL_ATTACK);
+		if (mario->GetLevel() == MARIO_LEVEL_TAIL && mario->GetState() != MARIO_STATE_SITDOWN && !mario->GetIsReadyToRun() && !mario->GetIsHolding()) mario->SetState(MARIO_STATE_TAIL_ATTACK);
 		if (mario->GetLevel() == MARIO_LEVEL_FIRE && !mario->GetIsHolding()) mario->ShootFireBall();
 		mario->SetIsReadyToRun(true);
 		mario->SetIsReadyToHold(true);
