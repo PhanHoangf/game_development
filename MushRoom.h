@@ -15,9 +15,12 @@
 
 #define MUSHROOM_GRAVITY 0.2f
 
+#define MUSHROOM_GREEN	4
+
 class MushRoom:public CGameObject
 {
 	bool isAppear;
+	int typeMushRoom;
 public:
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
@@ -32,7 +35,7 @@ public:
 		isAppear = appear;
 	}
 	bool GetAppear() { return isAppear; }
-	MushRoom();
+	MushRoom(int type = 0);
 	~MushRoom();
 };
 

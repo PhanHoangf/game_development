@@ -98,6 +98,7 @@ public:
 	void RenderCard();
 	void AddCard();
 	void AddSpeedStack();
+	void AddLife();
 
 	int GetMarioLife() { return marioLife; }
 	int GetScore() { return score; }

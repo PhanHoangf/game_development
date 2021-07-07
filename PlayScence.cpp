@@ -578,18 +578,20 @@ void CPlayScene::Render()
 
 	player->Render();
 
-	for (int i = 0; i < objRenderSecond.size(); i++)
-	{
-		if (!objRenderSecond[i]->isIgnore)
-			objRenderSecond[i]->Render();
-	}
-
 	for (int i = 0; i < specialObjects.size(); i++)
 	{
 		if (!specialObjects[i]->isDestroyed) {
 			specialObjects[i]->Render();
 		}
 	}
+
+	for (int i = 0; i < objRenderSecond.size(); i++)
+	{
+		if (!objRenderSecond[i]->isIgnore)
+			objRenderSecond[i]->Render();
+	}
+
+	
 
 	hud->Render();
 }

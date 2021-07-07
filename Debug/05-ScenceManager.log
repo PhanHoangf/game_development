@@ -18,6 +18,6 @@ D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(67,56): warning C42
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(68,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\Koopas.h(73,50): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
 D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\BoomerangKoopas.h(64,48): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\HUD.cpp(193,23): warning C4018: '<': signed/unsigned mismatch
-D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\HUD.cpp(198,39): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\HUD.cpp(198,23): warning C4018: '<': signed/unsigned mismatch
+D:\pt_game\gamedev-intro-tutorials\05-ScenceManager\HUD.cpp(203,39): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
   05-ScenceManager.vcxproj -> D:\pt_game\gamedev-intro-tutorials\Debug\05-ScenceManager.exe

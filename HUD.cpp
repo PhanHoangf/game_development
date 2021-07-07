@@ -146,6 +146,7 @@ void HUD::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	AddCoin();
 	AddCard();
 	AddSpeedStack();
+	AddLife();
 	time += dt;
 	remainTime = DEFAULT_TIME - time / 1000;
 
@@ -166,7 +167,6 @@ void HUD::SetHUD(HUD* hud)
 	marioLife = hud->marioLife;
 	score = hud->score;
 	money = hud->money;
-	//runningStacks = hud->runningStacks;
 }
 
 void HUD::AddScore() {
@@ -177,6 +177,11 @@ void HUD::AddScore() {
 void HUD::AddCoin() {
 	if (mario != NULL)
 		this->money = mario->coin;
+}
+
+void HUD::AddLife() {
+	if (mario != NULL)
+		this->marioLife = mario->marioLife;
 }
 
 void HUD::AddSpeedStack() {

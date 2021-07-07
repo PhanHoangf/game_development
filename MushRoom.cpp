@@ -6,13 +6,17 @@
 #include "QuestionBrick.h"
 #include "Point.h"
 
-MushRoom::MushRoom() {
+MushRoom::MushRoom(int type) {
 	SetAppear(false);
+	typeMushRoom = type;
 }
 
 void MushRoom::Render() {
 	if (isAppear) {
-		animation_set->at(0)->Render(x, y);
+		if (typeMushRoom == MUSHROOM_GREEN) {
+			animation_set->at(1)->Render(x, y);
+		}
+		else animation_set->at(0)->Render(x, y);
 	}
 	RenderBoundingBox();
 }
@@ -22,7 +26,7 @@ void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (!IsInViewPort()) {
 		isDestroyed = true;
 	}
-
+	if (isDestroyed) return;
 	CGameObject::Update(dt);
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
@@ -32,23 +36,20 @@ void MushRoom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		mario->GetBoundingBox(mLeft, mTop, mRight, mBottom);
 		if (isColliding(mLeft, mTop, mRight, mBottom))
 		{
-
-			if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
-				mario->StartTransform(MARIO_LEVEL_BIG);
+			if (typeMushRoom != 4 && !isDestroyed) {
+				if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
+					mario->StartTransform(MARIO_LEVEL_BIG);
+					isAppear = false;
+					isDestroyed = true;
+					mario->AddScore(x, y, 1000, false);
+				}
+			}
+			else if (typeMushRoom == 4 && !isDestroyed) {
 				isAppear = false;
 				isDestroyed = true;
-				mario->AddScore(x, y, 1000, false);
+				mario->AddScore(x, y, 1, false);
+				mario->AddMarioLife(1);
 			}
-			/*if (tag == MUSHROOM_TYPE_RED)
-			{
-
-			}*/
-			/*else
-			{
-				mario->AddScore(x, y, 1);
-				mario->AddLife();
-			}*/
-
 		}
 	}
 	if (state == MUSHROOM_STATE_UP)

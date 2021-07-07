@@ -369,12 +369,15 @@ void CKoopas::HandleBeingHeld(LPGAMEOBJECT player) {
 	CMario* mario = dynamic_cast<CMario*>(player);
 	if (isBeingHeld && mario->GetIsHolding()) {
 		if (state == KOOPAS_STATE_IN_SHELL || state == KOOPAS_STATE_SHELL_UP) {
-			x = mario->x + MARIO_BIG_BBOX_WIDTH * mario->nx;
+			if (mario->nx > 0) {
+				x = mario->x + MARIO_BIG_BBOX_WIDTH * mario->nx - 3.0f;
+			}
+			else x = mario->x + MARIO_BIG_BBOX_WIDTH * mario->nx;
 			if (mario->GetLevel() != MARIO_LEVEL_SMALL) {
-				y = mario->y + 9;
+				y = mario->y + 9.0f;
 			}
 			else {
-				y = mario->y;
+				y = mario->y - 2.0f;
 			}
 			vy = 0;
 		}

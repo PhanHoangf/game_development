@@ -179,6 +179,12 @@ CGameObject* QuestionBrick::SetUpItem(int itemType) {
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 	}
+	if (itemType == ITEM_MUSHROOM_GREEN) {
+		obj = new MushRoom(ITEM_MUSHROOM_GREEN);
+		ani_set_id = ITEM_MUSHROOM_ANI_SET_ID;
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+	}
 	return obj;
 }
 

@@ -477,9 +477,11 @@ public:
 	}
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
+	//!HUD
 	void AddScore(float x, float y, int score, bool isStack = true);
 	void AddCoin() { this->coin++; }
 	void AddCard(int cardId) { cards.push_back(cardId); }
+	void AddMarioLife(int life) { marioLife += life; }
 
 	//void InitTail();
 
