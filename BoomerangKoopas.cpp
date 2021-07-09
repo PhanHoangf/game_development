@@ -147,8 +147,11 @@ void BoomerangKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 			if (dynamic_cast<CKoopas*>(e->obj)) {
 				CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
 				if (e->nx != 0 || e->ny != 0) {
-					if (koopas->GetState() == KOOPAS_STATE_SPINNING)
+					if (koopas->GetState() == KOOPAS_STATE_SPINNING) {
 						SetState(BOOMERANG_KOOPAS_STATE_DIE);
+						mario->AddScore(x, y, 100);
+					}
+						
 				}
 			}
 		}

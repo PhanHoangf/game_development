@@ -591,7 +591,7 @@ void CPlayScene::Render()
 			objRenderSecond[i]->Render();
 	}
 
-	
+
 
 	hud->Render();
 }
@@ -743,7 +743,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario == NULL || mario->isIntoPipe) return;
+	if (mario == NULL || mario->isIntoPipe || mario->isFinish) return;
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT)) {

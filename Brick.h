@@ -24,10 +24,11 @@ class CBrick : public CGameObject
 {
 	int type = 0;
 	int item = 0;
-	int totalItems = 0;
 
 	bool isPushed = false;
 public:
+	int totalItems = 0;
+
 	CBrick(float x = 0, float y = 0, int type = 0, int item = 0, int totalItems = 0); //! type means can push -- 1: PUSH UP, 2: PUSH TO RIGHT, item means item in brick -- 1: COIN, 2: MUSHROOM, 3: LEAF
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();

@@ -402,6 +402,7 @@ public:
 	float extra_scene_start_x;
 	float extra_scene_start_y;
 	float limitY; //! FOR GO INTO PIPE ONLY
+	bool isFinish = false;
 
 	vector<int> cards;
 
@@ -470,7 +471,7 @@ public:
 	void HandleTailFlying();
 	void HandleShooting();
 	void HandleIntoPipe();
-
+	void HandleFinishScene();
 
 	void pullDown() {
 		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;

@@ -31,8 +31,8 @@ CMario::CMario(float x, float y) : CGameObject()
 {
 	//level = MARIO_LEVEL_BIG;
 	//level = MARIO_LEVEL_SMALL;
-	level = MARIO_LEVEL_TAIL;
-	//level = MARIO_LEVEL_FIRE;
+	//level = MARIO_LEVEL_TAIL;
+	level = MARIO_LEVEL_FIRE;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
 	ay = MARIO_ACCELERATION_JUMP;
@@ -60,9 +60,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	DebugOut(L"mario->y: %f\n", y);
-	/*DebugOut(L"mario->x: %f\n", x);
-	DebugOut(L"[mario->start_x]::%f \n", start_x);*/
+	//DebugOut(L"mario->y: %f\n", y);
+	DebugOut(L"mario->x: %f\n", x);
+	//DebugOut(L"[mario->start_x]::%f \n", start_x);
 	// Simple fall down
 	if (!isJumpOnMusicBrick)
 	{
@@ -168,7 +168,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->ny < 0) {
 					isOnGround = true; vy = 0;
 				}
-				//else isOnGround = false;
 				if (dynamic_cast<QuestionBrick*>(e->obj)) {
 					if (e->ny > 0) {
 						e->obj->SetState(QUESTION_BRICK_HIT);
@@ -201,13 +200,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				if (e->nx < 0 && brick != NULL && ceil(mBottom) != oTop) {
 					vx = 0;
-					if (brick->GetType() == PUSH_TO_RIGHT)
+					if (brick->GetType() == PUSH_TO_RIGHT && brick->totalItems > 0)
 						brick->SetState(BRICK_STATE_HIT);
 				}
 				if (e->ny > 0 && brick != NULL) {
 					vy = 0;
 					ay = MARIO_GRAVITY;
-					if (brick->GetType() == PUSH_UP)
+					if (brick->GetType() == PUSH_UP && brick->totalItems > 0)
 						brick->SetState(BRICK_STATE_HIT);
 				}
 			}
@@ -393,6 +392,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					card->SetAppear(false);
 					card->isDestroyed = true;
 					AddCard(card->state - 1);
+					isFinish = true;
 				}
 			}
 			if (dynamic_cast<MusicBrick*>(e->obj)) {
@@ -446,6 +446,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				DebugOut(L"portal");
 				isSwitchScene = true;
+				isFinish = false;
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			}
@@ -1603,5 +1604,13 @@ void CMario::HandleIntoPipe() {
 				SetState(MARIO_STATE_IDLE);
 			}
 		}
+	}
+}
+
+void CMario::HandleFinishScene() {
+	if (isFinish) {
+		ax = MARIO_ACCELERATION;
+		ay = MARIO_GRAVITY;
+		SetState(MARIO_STATE_WALKING_RIGHT);
 	}
 }
