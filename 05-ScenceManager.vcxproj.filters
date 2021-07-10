@@ -359,5 +359,8 @@
     <ClInclude Include="PipePortal.h">
       <Filter>GameObject\Others</Filter>
     </ClInclude>
+    <ClInclude Include="DefineScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

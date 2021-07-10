@@ -26,13 +26,14 @@
 #include "MarioBullet.h"
 #include "IntroGround.h"
 #include "PipePortal.h"
+#include "DefineScene.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
 	//level = MARIO_LEVEL_BIG;
 	//level = MARIO_LEVEL_SMALL;
-	//level = MARIO_LEVEL_TAIL;
-	level = MARIO_LEVEL_FIRE;
+	level = MARIO_LEVEL_TAIL;
+	//level = MARIO_LEVEL_FIRE;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
 	ay = MARIO_ACCELERATION_JUMP;
@@ -46,7 +47,7 @@ CMario::CMario(float x, float y) : CGameObject()
 
 	//!BACKUP MARIO HUD
 	CMario* marioBackUp = CBackupHud::GetInstance()->GetPlayer();
-	
+
 	if (marioBackUp != NULL) {
 		coin = marioBackUp->coin;
 		cards = marioBackUp->cards;
@@ -64,6 +65,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	DebugOut(L"mario->x: %f\n", x);
 	//DebugOut(L"[mario->start_x]::%f \n", start_x);
 	// Simple fall down
+
+
 	if (!isJumpOnMusicBrick)
 	{
 		vy += ay * dt;
@@ -106,6 +109,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	HandleFlying();
 	HandleShooting();
 	HandleIntoPipe();
+	HandleFinishScene();
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
@@ -468,6 +472,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	tail->Update(dt, coObjects);
 	// clean up collision events
+
+	if (y >= MAP_1_HEIGHT + 32.0f) {
+		marioLife -= 1;
+		CGame::GetInstance()->SwitchScene(SCENE_WORLD_ID);
+	}
+
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
@@ -530,14 +540,22 @@ void CMario::Render()
 			}
 		}
 		else if (isIntoPipe || isOutOfPipe) {
-			int res = isOutOfPipe ? 1 : 0;
-			DebugOut(L"[OUT OF PIPE]: %d\n", res);
+			/*int res = isOutOfPipe ? 1 : 0;
+			DebugOut(L"[OUT OF PIPE]: %d\n", res);*/
 			CSprites::GetInstance()->Get(MARIO_SPRITE_PIPE_TAIL)->Draw(x, y, alpha);
 		}
 		else animation_set->at(ani)->Render(nx > 0 ? x - 6 : x, y, alpha);
 		this->tail->Render();
 		//if (isTuring)
 			//this->tail->Render();
+	}
+	else if (isIntoPipe || isOutOfPipe) {
+		if (level == MARIO_LEVEL_BIG)
+			CSprites::GetInstance()->Get(MARIO_SPRITE_PIPE_BIG)->Draw(x, y, alpha);
+		if (level == MARIO_LEVEL_SMALL)
+			CSprites::GetInstance()->Get(MARIO_SPRITE_PIPE_SMALL)->Draw(x, y, alpha);
+		if (level == MARIO_LEVEL_FIRE)
+			CSprites::GetInstance()->Get(MARIO_SPRITE_PIPE_FIRE)->Draw(x, y, alpha);
 	}
 	else animation_set->at(ani)->Render(x, y, alpha);
 
@@ -788,6 +806,7 @@ void CMario::RenderMarioAniBig(int& ani) {
 			if (nx < 0) ani = MARIO_ANI_BIG_HOLD_WALKING_LEFT;
 		}
 	}
+
 }
 
 void CMario::RenderMarioAniTail(int& ani) {
@@ -1102,7 +1121,8 @@ void CMario::SetState(int state)
 			vx = 0;
 		}
 		else {
-			vx /= 1.15f;
+			//vx /= 1.15f;
+			vx = 0;
 			ax = 0;
 		}
 		ay = MARIO_GRAVITY;
@@ -1611,6 +1631,28 @@ void CMario::HandleFinishScene() {
 	if (isFinish) {
 		ax = MARIO_ACCELERATION;
 		ay = MARIO_GRAVITY;
+		nx = 1;
 		SetState(MARIO_STATE_WALKING_RIGHT);
 	}
+}
+
+void CMario::HandleTeleport(bool destination) {
+	CPlayScene* currentScene = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene());
+	int mapWidth = currentScene->GetMap()->GetMapWidth();
+	switch (destination)
+	{
+	case TELE_END_OF_MAP:
+		this->x = mapWidth - 50.0f;
+		this->y = start_y;
+		break;
+	case TELE_TO_PIPE_EXTRA_1_1:
+		this->x = EXTRA_1_X;
+		this->y = EXTRA_1_Y;
+		currentScene->SetTurnOnCamY(true);
+		CGame::GetInstance()->SetCamPos(this->x, this->y);
+		break;
+	default:
+		break;
+	}
+
 }

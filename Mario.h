@@ -472,6 +472,7 @@ public:
 	void HandleShooting();
 	void HandleIntoPipe();
 	void HandleFinishScene();
+	void HandleTeleport(bool destination);
 
 	void pullDown() {
 		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;

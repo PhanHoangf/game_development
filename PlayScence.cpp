@@ -17,6 +17,7 @@
 #include "RedGoomba.h"
 #include "Leaf.h"
 #include "PipePortal.h"
+#include "DefineScene.h"
 
 using namespace std;
 
@@ -578,19 +579,18 @@ void CPlayScene::Render()
 
 	player->Render();
 
-	for (int i = 0; i < specialObjects.size(); i++)
-	{
-		if (!specialObjects[i]->isDestroyed) {
-			specialObjects[i]->Render();
-		}
-	}
-
 	for (int i = 0; i < objRenderSecond.size(); i++)
 	{
 		if (!objRenderSecond[i]->isIgnore)
 			objRenderSecond[i]->Render();
 	}
 
+	for (int i = 0; i < specialObjects.size(); i++)
+	{
+		if (!specialObjects[i]->isDestroyed) {
+			specialObjects[i]->Render();
+		}
+	}
 
 
 	hud->Render();
@@ -771,6 +771,12 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 			//game->SwitchScene(mario->extra_scene_id);
 			mario->canGoIntoPipe = false;
 		}
+	}
+	else if (game->IsKeyDown(DIK_E)) {
+		mario->HandleTeleport(TELE_END_OF_MAP);
+	}
+	else if (game->IsKeyDown(DIK_P)) {
+		mario->HandleTeleport(TELE_TO_PIPE_EXTRA_1_1);
 	}
 	/*else if (game->IsKeyDown(DIK_Q)) {
 		if (mario->GetLevel() == MARIO_LEVEL_TAIL) {

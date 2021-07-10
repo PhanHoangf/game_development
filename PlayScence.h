@@ -98,6 +98,9 @@ public:
 	//void deleteLastObject() { this->objects.pop_back(); }
 
 	Grid* GetGrid() { if (this->grid != NULL) return this->grid; }
+	CMap* GetMap() { return currentMap; }
+	
+	void SetTurnOnCamY(bool isOn) { isTurnOnCamY = isOn; }
 	//friend class CPlayScenceKeyHandler;
 };
 

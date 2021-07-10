@@ -183,6 +183,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CardItem.h" />
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="DefineScene.h" />
     <ClInclude Include="FireBullet.h" />
     <ClInclude Include="FireFlower.h" />
     <ClInclude Include="GreenBush.h" />

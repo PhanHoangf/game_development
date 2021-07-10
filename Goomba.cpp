@@ -136,6 +136,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->nx != 0 || e->ny != 0) {
 					if (e->obj->GetState() == KOOPAS_STATE_SPINNING) {
 						SetState(GOOMBA_STATE_DIE_BY_TAIL);
+						mario->AddScore(x, y, 100);
 					}
 				}
 			}
