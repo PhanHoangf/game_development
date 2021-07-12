@@ -347,7 +347,7 @@ void CGame::_ParseSection_SCENES(string line)
 		LPSCENE worldScene = new WorldScene(id, path);
 		scenes[id] = worldScene;
 	}
-	if (type == 1) {
+	if (type == 1 || type == 2) {
 		LPSCENE scene = new CPlayScene(id, path);
 		scenes[id] = scene;
 	}
@@ -355,7 +355,7 @@ void CGame::_ParseSection_SCENES(string line)
 		LPSCENE scene = new CIntroScene(id, path);
 		scenes[id] = scene;
 	}
-
+	scenes[id]->SetType(type);
 }
 
 /*
@@ -403,7 +403,7 @@ void CGame::SwitchScene(int scene_id)
 
 	scenes[current_scene]->Unload();
 
-	if (scene_id != 4) {
+	if (scenes[scene_id]->GetType() != 2) {
 		if (scene_id == 1 || scene_id == 2) {
 			CMario* mario = CBackupHud::GetInstance()->GetPlayer();
 			if (mario != NULL) {

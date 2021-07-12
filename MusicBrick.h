@@ -18,11 +18,12 @@ class MusicBrick :public CGameObject {
 	bool isPushedDown = false;
 	bool isPushedUp = false;
 	bool isGoDown = false;
-
-	
+	int hidden = 0;
+	bool isAppear = true;
+	bool canGoToExtra = false;
 	void Reset() { isGoUp = false; isPushedDown = false; isPushedUp = false; isGoDown = false; }
 public:
-	MusicBrick(float x, float y);
+	MusicBrick(float x, float y, int hidden = 0);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -30,6 +31,7 @@ public:
 
 	void SetIsPushedUp(bool isPushedUp) { this->isPushedUp = isPushedUp; }
 	void SetIsPushedDown(bool isPushedDown) { this->isPushedDown = isPushedDown; }
+	void SetAppear(bool appear) { this->isAppear = appear; }
 	
 	void StartPushedDown() { isPushedDown = true; isGoUp = false; }
 	void StopPushedDown() { isPushedDown = false; isGoUp = true; }
@@ -38,4 +40,7 @@ public:
 	void StopPushedUp() { isPushedUp = false; isGoDown = true; }
 
 	bool GetIsGoUp() { return this->isGoUp; }
+
+	int GetHidden() { return this->hidden; }
+	bool GetIsAppear() { return this->isAppear; }
 };

@@ -314,6 +314,9 @@
 
 #define INTO_PIPE_SPEED 0.05f
 
+#define MARIO_DEFAULT_X	80.0f
+#define MARIO_DEFAULT_Y	370.0f
+
 
 class CMario : public CGameObject
 {
@@ -397,6 +400,8 @@ public:
 	bool isOutOfPipe = false;
 	bool isPipeUp = false;
 
+	bool canGoToExtra = false;
+
 	bool backToMainScene = false;
 
 	float extra_scene_start_x;
@@ -468,11 +473,12 @@ public:
 	void HandleFlapping();
 	void HandleSpeedStack();
 	void HandleFlying();
-	void HandleTailFlying();
+	//void HandleTailFlying();
 	void HandleShooting();
 	void HandleIntoPipe();
 	void HandleFinishScene();
 	void HandleTeleport(bool destination);
+	void HandleToExtraByMusicBrick();
 
 	void pullDown() {
 		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;

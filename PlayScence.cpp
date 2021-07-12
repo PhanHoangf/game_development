@@ -157,9 +157,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int scene_id = CGame::GetInstance()->GetCurrentScene()->GetSceneId();
 
 	//!LOAD MARIO FOR EXTRA_SCENE 
-	if (buh->GetPlayer() != NULL && scene_id == EXTRA_SCENE_ID_1) {
+	if (buh->GetPlayer() != NULL && scene_id == EXTRA_SCENE_ID_1 || buh->GetPlayer() != NULL && scene_id == SCENE_3_EXTRA_ID) {
 		player = buh->GetPlayer();
-		player->SetPosition(player->extra_scene_start_x, player->extra_scene_start_y);
+		scene_id == EXTRA_SCENE_ID_1 ? player->SetPosition(player->extra_scene_start_x, player->extra_scene_start_y) : player->SetPosition(MARIO_DEFAULT_X, MARIO_DEFAULT_Y);
 		player->isOutOfPipe = true;
 	}
 
@@ -267,7 +267,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new BoomerangKoopas(x, y);
 		break;
 	case OBJECT_TYPE_MUSICAL_BRICK: {
-		obj = new MusicBrick(x, y);
+		obj = new MusicBrick(x, y, option_tag_1);
 		break;
 	}
 	case OBJECT_TYPE_PIPE_PORTAL: {
@@ -552,19 +552,21 @@ void CPlayScene::UpdateGrid() {
 	for (unsigned int i = 0; i < objectGrid.size(); i++)
 	{
 		LPGAMEOBJECT obj = objectGrid[i]->GetObject();
-		float newPosX, newPosY;
-		if (dynamic_cast<CKoopas*>(obj)) {
-			CKoopas* kp = dynamic_cast<CKoopas*>(obj);
-			if (player != NULL) {
-				bool playerRightToLeft = player->x >= player->x0;
-				if (!kp->IsInViewPort() && kp->x < player->x && playerRightToLeft) {
-					kp->Reset();
-					kp->isReviable = true;
+		if (obj != NULL) {
+			float newPosX, newPosY;
+			if (dynamic_cast<CKoopas*>(obj)) {
+				CKoopas* kp = dynamic_cast<CKoopas*>(obj);
+				if (player != NULL) {
+					bool playerRightToLeft = player->x >= player->x0;
+					if (!kp->IsInViewPort() && kp->x < player->x && playerRightToLeft) {
+						kp->Reset();
+						kp->isReviable = true;
+					}
 				}
 			}
+			obj->GetPosition(newPosX, newPosY);
+			objectGrid[i]->Move(newPosX, newPosY);
 		}
-		obj->GetPosition(newPosX, newPosY);
-		objectGrid[i]->Move(newPosX, newPosY);
 	}
 }
 
@@ -747,11 +749,14 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT)) {
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		if (!mario->isTuring)
+			mario->SetState(MARIO_STATE_WALKING_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
+		if (!mario->isTuring) {
+			mario->SetState(MARIO_STATE_WALKING_LEFT);
+		}
 	}
 	else if (game->IsKeyDown(DIK_X)) {
 		mario->SetState(MARIO_STATE_JUMP_X);

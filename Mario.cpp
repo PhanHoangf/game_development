@@ -110,7 +110,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	HandleShooting();
 	HandleIntoPipe();
 	HandleFinishScene();
-
+	HandleToExtraByMusicBrick();
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
@@ -405,17 +405,27 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->nx != 0) {
 					vx = 0;
 				}
-				if (e->ny < 0) {
-					if (msBrick->GetState() == MUSIC_BRICK_STATE_IDLE && !msBrick->GetIsGoUp()) {
-						msBrick->SetState(MUSIC_BRICK_STATE_DOWN);
-						msBrick->SetIsPushedDown(true);
+				if (msBrick->GetIsAppear()) {
+					if (e->ny < 0) {
+						if (msBrick->GetState() == MUSIC_BRICK_STATE_IDLE && !msBrick->GetIsGoUp()) {
+							msBrick->SetState(MUSIC_BRICK_STATE_DOWN);
+							msBrick->SetIsPushedDown(true);
+						}
+					}
+					else if (e->ny > 0) {
+						msBrick->SetState(MUSIC_BRICK_STATE_UP);
+						msBrick->SetIsPushedUp(true);
+						vy = 0;
+						ay = MARIO_GRAVITY;
 					}
 				}
-				if (e->ny > 0) {
-					msBrick->SetState(MUSIC_BRICK_STATE_UP);
-					msBrick->SetIsPushedUp(true);
-					vy = 0;
-					ay = MARIO_GRAVITY;
+				else {
+					if (e->ny > 0) {
+						msBrick->SetAppear(true);
+					}
+					else {
+						y += dy;
+					}
 				}
 			}
 			if (dynamic_cast<Boomerang*>(e->obj)) {
@@ -438,7 +448,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->ny < 0)
 				{
 					vy = -0.7f;
-					//isDeflect = true;
 				}
 				else
 				{
@@ -1655,4 +1664,17 @@ void CMario::HandleTeleport(bool destination) {
 		break;
 	}
 
+}
+
+void CMario::HandleToExtraByMusicBrick() {
+	float cam_y = CGame::GetInstance()->GetCamPosY();
+	if (canGoToExtra) {
+		ay = -MARIO_ACCELERATION_JUMP;
+		if (y < cam_y)
+		{
+			CGame::GetInstance()->SwitchScene(SCENE_3_EXTRA_ID);
+			canGoToExtra = false;
+			ay = MARIO_GRAVITY;
+		}
+	}
 }

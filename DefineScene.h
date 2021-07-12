@@ -3,6 +3,7 @@
 #define SCENE_3_ID	2
 #define SCENE_1_EXTRA_ID	4
 #define SCENE_WORLD_ID	0
+#define SCENE_3_EXTRA_ID	5
 
 #define MAP_1_HEIGHT	432
 

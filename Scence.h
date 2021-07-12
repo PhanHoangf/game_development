@@ -9,7 +9,7 @@ protected:
 	CKeyEventHandler * key_handler;
 	int id;
 	LPCWSTR sceneFilePath;
-
+	int type;
 public: 
 	CScene(int id, LPCWSTR filePath);
 	int GetSceneId() { return id; }
@@ -18,6 +18,8 @@ public:
 	virtual void Unload() = 0;
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0; 
+	void SetType(int t) { this->type = t; }
+	int GetType() { return this->type; }
 };
 typedef CScene * LPSCENE;
 

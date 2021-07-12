@@ -1,9 +1,12 @@
 #include "MusicBrick.h"
 #include "PlayScence.h"
 
-MusicBrick::MusicBrick(float x, float y) {
+MusicBrick::MusicBrick(float x, float y, int hidden) {
 	start_y = y;
 	start_x = x;
+	this->hidden = hidden;
+	isAppear = hidden == 0;
+	canGoToExtra = hidden == 1;
 	SetState(MUSIC_BRICK_STATE_IDLE);
 }
 
@@ -16,6 +19,7 @@ void MusicBrick::GetBoundingBox(float& left, float& top, float& right, float& bo
 }
 
 void MusicBrick::Render() {
+	if (!isAppear) return;
 	animation_set->at(0)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -65,8 +69,11 @@ void MusicBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	mario->GetBoundingBox(mLeft, mTop, mRight, mBottom);
 	GetBoundingBox(oLeft, oTop, oRight, oBottom);
 
-	if (isColliding(mLeft, mTop, mRight, mBottom)) {
+	if (isColliding(mLeft, mTop, mRight, mBottom) && isAppear) {
 		//DebugOut(L"Mario->vy::%f\n", mario->vy);
+		if (canGoToExtra) {
+			mario->canGoToExtra = true;
+		}
 		if (state == MUSIC_BRICK_STATE_UP) {
 			mario->SetIsJumpOnMusicBrick(true);
 			mario->vy = -0.5f;
