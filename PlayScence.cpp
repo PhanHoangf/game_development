@@ -715,8 +715,6 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt) {
 	if (cx >= mw - sw)//Right Edge
 		cx = mw - sw;
 
-
-
 	//CamY
 	if (isTurnOnCamY)
 		cy -= sh / 2;
