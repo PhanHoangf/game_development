@@ -152,6 +152,7 @@
     <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="PiranhaPlantFire.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="PoopGoomba.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="RedGoomba.cpp" />

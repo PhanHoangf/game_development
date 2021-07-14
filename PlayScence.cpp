@@ -301,10 +301,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	obj->SetAnimationSet(ani_set);
 
-	/*if (dynamic_cast<MushRoom*>(obj) || dynamic_cast<PiranhaPlant*>(obj)) {
-		mObjects.push_back(obj);
-	}
-	else objects.push_back(obj);*/
 	if (dynamic_cast<CMario*>(obj)) {
 		return;
 	}
@@ -478,6 +474,11 @@ void CPlayScene::Update(DWORD dt)
 		}
 	}
 
+	for (int i = 0; i < renderOnlyObjects.size(); i++)
+	{
+		renderOnlyObjects[i]->Update(dt, &coObjects);
+	}
+
 	if (player != NULL) {
 		for (size_t i = 0;i < reviableObjects.size(); i++) {
 			if (dynamic_cast<CKoopas*>(reviableObjects.at(i))) {
@@ -490,9 +491,6 @@ void CPlayScene::Update(DWORD dt)
 		}
 	}
 
-	//for (size_t i = 0; i < mObjects.size(); i++) {
-	//	mObjects[i]->Update(dt, &coObjects);
-	//}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -597,6 +595,12 @@ void CPlayScene::Render()
 		}
 	}
 
+	for (int i = 0; i < renderOnlyObjects.size(); i++)
+	{
+		if (!renderOnlyObjects[i]->isDestroyed) {
+			renderOnlyObjects[i]->Render();
+		}
+	}
 
 	hud->Render();
 }

@@ -56,13 +56,12 @@ protected:
 	CMario* player;					// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;  // Static objects
-	vector<LPGAMEOBJECT> mObjects; //! Moving objects
 	vector<LPGAMEOBJECT> specialObjects; //! Coin in brick 
-	vector<LPGAMEOBJECT> objInPipe;
 	vector<LPGAMEOBJECT> reviableObjects; // koopas
 
 	vector<LPGAMEOBJECT> objRenderFirst;
 	vector<LPGAMEOBJECT> objRenderSecond;
+	vector<LPGAMEOBJECT> renderOnlyObjects;
 
 	vector<Unit*> objectGrid;
 
@@ -95,12 +94,13 @@ public:
 	vector<LPGAMEOBJECT> GetObjects() { return objRenderSecond; }
 	//void AddObject(LPGAMEOBJECT obj) { this->objects.push_back(obj); }
 	void AddSpecialObject(LPGAMEOBJECT obj) { this->specialObjects.push_back(obj); }
-	void AddMovingObject(LPGAMEOBJECT obj) { this->mObjects.push_back(obj); }
+	void AddRenderOnlyObject(LPGAMEOBJECT obj) { this->renderOnlyObjects.push_back(obj); }
+	//void AddMovingObject(LPGAMEOBJECT obj) { this->mObjects.push_back(obj); }
 	//void deleteLastObject() { this->objects.pop_back(); }
 
 	Grid* GetGrid() { if (this->grid != NULL) return this->grid; }
 	CMap* GetMap() { return currentMap; }
-	
+
 	void SetTurnOnCamY(bool isOn) { isTurnOnCamY = isOn; }
 	//friend class CPlayScenceKeyHandler;
 };

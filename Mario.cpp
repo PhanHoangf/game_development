@@ -234,13 +234,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				// jump on top >> kill Goomba and deflect a bit 
 				if (e->ny < 0)
 				{
-					if (goomba->GetState() != GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -MARIO_JUMP_DEFLECT_SPEED;
+					if (goomba->tag == GOOMBA_NORMAL) {
+						if (goomba->GetState() != GOOMBA_STATE_DIE)
+						{
+							goomba->SetState(GOOMBA_STATE_DIE);
+							vy = -MARIO_JUMP_DEFLECT_SPEED;
+						}
+					}
+					else if (goomba->tag == GOOMBA_BIG) {
+						goomba->SetTag(GOOMBA_NORMAL);
 					}
 				}
 				if (e->nx > 0 || e->nx < 0) {
+					HandleBasicMarioDie();
+				}
+				if (e->ny > 0) {
+					y = y0 - 1.0f;
 					HandleBasicMarioDie();
 				}
 			} // if Goomba

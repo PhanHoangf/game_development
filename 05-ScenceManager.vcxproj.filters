@@ -219,6 +219,9 @@
     <ClCompile Include="PipePortal.cpp">
       <Filter>GameObject\Others</Filter>
     </ClCompile>
+    <ClCompile Include="PoopGoomba.cpp">
+      <Filter>GameObject\Enemies\Goomba</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">

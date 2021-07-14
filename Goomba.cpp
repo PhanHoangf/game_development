@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "Koopas.h"
 #include "Point.h"
+#include "PoopGoomba.h"
 
 CGoomba::CGoomba()
 {
@@ -63,7 +64,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
-	vy += GOOMBA_GRAVITY * dt;
+	vy += ay * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -97,6 +98,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	HandleBigGoomba();
+	//SetSpeedDirection(mario->x);
 
 	if (coEvents.size() == 0 || state == GOOMBA_STATE_DIE_BY_TAIL) {
 		x += dx;
@@ -159,7 +161,12 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 			if (dynamic_cast<Block*>(e->obj)) {
-
+				x += dx;
+				y += dy;
+			}
+			if (dynamic_cast<CardItem*>(e->obj)) {
+				x += dx;
+				y += dy;
 			}
 			/*if (dynamic_cast<CMario*>(e->obj)) {
 				CPlayScene* current_scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -219,6 +226,7 @@ void CGoomba::SetState(int state)
 		break;
 	case GOOMBA_STATE_WALKING:
 		vx = -GOOMBA_WALKING_SPEED;
+		ay = GOOMBA_GRAVITY;
 		break;
 	case GOOMBA_STATE_DIE_BY_TAIL:
 		vy = -GOOMBA_DIE_DEFLECT_SPEED;
@@ -227,14 +235,13 @@ void CGoomba::SetState(int state)
 		StartDying(true);
 		break;
 	case GOOMBA_STATE_FLYING:
+		ay = -0.0005f;
+		SetSpeedDirection(mario->x);
+		StartFlying();
 		break;
 	case GOOMBA_STATE_WINGSWALKING:
-		if (x < mario->x) {
-			vx = GOOMBA_WALKING_SPEED;
-		}
-		if (x > mario->x) {
-			vx = -GOOMBA_WALKING_SPEED;
-		}
+		SetSpeedDirection(mario->x);
+		ay = GOOMBA_GRAVITY;
 		StartWalking();
 		break;
 	}
@@ -242,9 +249,70 @@ void CGoomba::SetState(int state)
 
 void CGoomba::HandleBigGoomba() {
 	if (tag == GOOMBA_BIG) {
-		if (isWalking && walking_start >= GOOMBA_BIG_TIME_WALKING) {
+		if (isWalking && GetTickCount64() - walking_start >= GOOMBA_BIG_TIME_WALKING && !isFlying) {
 			isReadyToFly = true;
 			start_ready_fly = GetTickCount64();
+			y -= GOOMBA_BIG_BBOX_WINGS_HEIGHT - GOOMBA_BIG_BBOX_HEIGHT + 2;
+			StopWalking();
+		}
+
+		if (isReadyToFly && GetTickCount64() - start_ready_fly >= GOOMBA_BIG_TIME_READY_FLY && !isFlying) {
+			isReadyToFly = false;
+			start_ready_fly = 0;
+			SetState(GOOMBA_STATE_FLYING);
+		}
+
+		if (isFlying && GetTickCount64() - start_drop >= GOOMBA_BIG_TIME_DROP) {
+			DebugOut(L"[IN]::%d\n", poopGoomba);
+			start_drop = 0;
+			poopGoomba++;
+			CreatePoopGoomba();
+		}
+
+		if (poopGoomba > MAX_POOP_GOOMBA) {
+			ay = GOOMBA_GRAVITY;
+			isFlying = false;
+			poopGoomba = 0;
+			SetState(GOOMBA_STATE_WINGSWALKING);
+		}
+
+		else if (poopGoomba <= MAX_POOP_GOOMBA && start_drop == 0) {
+			start_drop = GetTickCount64();
+		}
+
+		DebugOut(L"[POOP_GOOMBA]::%d\n", poopGoomba);
+
+		//! LIMIT Y
+		if (y <= 300.0f) {
+			if (vy < 0) {
+				vy = 0.03f;
+			}
+		}
+
+		if (vy <= -0.07f) {
+			vy = -0.07f;
 		}
 	}
+}
+
+//! BIG_GOOMBA ONLY
+void CGoomba::SetSpeedDirection(float condition) {
+	if (tag == GOOMBA_BIG) {
+		if (x < condition) {
+			vx = GOOMBA_WALKING_SPEED;
+		}
+		if (x > condition) {
+			vx = -GOOMBA_WALKING_SPEED;
+		}
+	}
+}
+
+void CGoomba::CreatePoopGoomba() {
+	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	LPANIMATION_SET ani_set = animation_sets->Get(GOOMBA_ANISET_ID);
+	CPoopGoomba* pGoomba = new CPoopGoomba();
+	pGoomba->SetAnimationSet(ani_set);
+	pGoomba->SetPosition(x, y);
+	currentScene->AddRenderOnlyObject(pGoomba);
 }
