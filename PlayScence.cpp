@@ -219,6 +219,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA_RED:
 		obj = new RedGoomba();
 		break;
+	case OBJECT_TYPE_BIG_GOOMBA:
+		obj = new CGoomba(tag);
+		break;
 	case OBJECT_TYPE_BRICK:
 		obj = new CBrick(x, y, option_tag_1, option_tag_2, option_tag_3);
 		break;

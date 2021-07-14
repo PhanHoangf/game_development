@@ -201,6 +201,7 @@
     <ClInclude Include="PiranhaPlant.h" />
     <ClInclude Include="PiranhaPlantFire.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="PoopGoomba.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="RedGoomba.h" />

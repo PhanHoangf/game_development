@@ -362,5 +362,8 @@
     <ClInclude Include="DefineScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="PoopGoomba.h">
+      <Filter>GameObject\Enemies\Goomba</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

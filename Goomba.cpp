@@ -13,16 +13,30 @@ CGoomba::CGoomba()
 	SetState(GOOMBA_STATE_WALKING);
 }
 
+CGoomba::CGoomba(int tag) {
+	this->tag = tag;
+	SetState(GOOMBA_STATE_WINGSWALKING);
+}
+
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
-	right = x + GOOMBA_NORMAL_BBOX_WIDTH;
+	if (tag == GOOMBA_NORMAL) {
+		right = x + GOOMBA_NORMAL_BBOX_WIDTH;
 
-	if (state == GOOMBA_STATE_DIE)
-		bottom = y + GOOMBA_BBOX_HEIGHT_DIE;
-	else
-		bottom = y + GOOMBA_NORMAL_BBOX_HEIGHT;
+		if (state == GOOMBA_STATE_DIE)
+			bottom = y + GOOMBA_BBOX_HEIGHT_DIE;
+		else
+			bottom = y + GOOMBA_NORMAL_BBOX_HEIGHT;
+	}
+	else if (tag == GOOMBA_BIG) {
+		right = x + GOOMBA_BIG_BBOX_WIDTH;
+		if (!isReadyToFly) {
+			bottom = y + GOOMBA_BIG_BBOX_HEIGHT;
+		}
+		else bottom = y + GOOMBA_BIG_BBOX_WINGS_HEIGHT;
+	}
 }
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -65,6 +79,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
+
 	if (mario != NULL && state != GOOMBA_STATE_DIE) {
 		if (mario->isTuring && mario->GetLevel() == MARIO_LEVEL_TAIL && state != GOOMBA_STATE_DIE && state != GOOMBA_STATE_DIE_BY_TAIL)
 		{
@@ -80,6 +95,9 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
+
+	HandleBigGoomba();
+
 	if (coEvents.size() == 0 || state == GOOMBA_STATE_DIE_BY_TAIL) {
 		x += dx;
 		y += dy;
@@ -140,6 +158,9 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 			}
+			if (dynamic_cast<Block*>(e->obj)) {
+
+			}
 			/*if (dynamic_cast<CMario*>(e->obj)) {
 				CPlayScene* current_scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 				CMario* mario = current_scene->GetPlayer();
@@ -159,19 +180,32 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CGoomba::Render()
 {
-	int ani = GOOMBA_NORMAL_ANI_WALKING;
-	if (state == GOOMBA_STATE_DIE) {
-		if (isDiedByKoopas) ani = GOOMBA_NORMAL_ANI_DIE;
-		else ani = GOOMBA_NORMAL_ANI_DIE;
+	int ani = -1;
+	if (tag == GOOMBA_NORMAL) {
+		ani = GOOMBA_NORMAL_ANI_WALKING;
+		if (state == GOOMBA_STATE_DIE) {
+			if (isDiedByKoopas) ani = GOOMBA_NORMAL_ANI_DIE;
+			else ani = GOOMBA_NORMAL_ANI_DIE;
+		}
 	}
-
+	else if (tag == GOOMBA_BIG) {
+		ani = GOOMBA_ANI_WALK;
+		if (state == GOOMBA_STATE_FLYING) {
+			ani = GOOMBA_ANI_FLY;
+		}
+		else if (state == GOOMBA_STATE_WINGSWALKING) {
+			if (!isReadyToFly) ani = GOOMBA_ANI_WALK;
+			else if (isReadyToFly) ani = GOOMBA_ANI_WING_WALK;
+		}
+	}
 	animation_set->at(ani)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CGoomba::SetState(int state)
 {
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	int previousState = state;
 	CGameObject::SetState(state);
 	switch (state)
@@ -192,5 +226,25 @@ void CGoomba::SetState(int state)
 		ay = GOOMBA_GRAVITY;
 		StartDying(true);
 		break;
+	case GOOMBA_STATE_FLYING:
+		break;
+	case GOOMBA_STATE_WINGSWALKING:
+		if (x < mario->x) {
+			vx = GOOMBA_WALKING_SPEED;
+		}
+		if (x > mario->x) {
+			vx = -GOOMBA_WALKING_SPEED;
+		}
+		StartWalking();
+		break;
+	}
+}
+
+void CGoomba::HandleBigGoomba() {
+	if (tag == GOOMBA_BIG) {
+		if (isWalking && walking_start >= GOOMBA_BIG_TIME_WALKING) {
+			isReadyToFly = true;
+			start_ready_fly = GetTickCount64();
+		}
 	}
 }

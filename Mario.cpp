@@ -62,7 +62,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	//DebugOut(L"mario->y: %f\n", y);
-	DebugOut(L"mario->x: %f\n", x);
+	//DebugOut(L"mario->x: %f\n", x);
 	//DebugOut(L"[mario->start_x]::%f \n", start_x);
 	// Simple fall down
 
