@@ -1696,9 +1696,8 @@ void CMario::HandleMarioTakingGoombaPoop() {
 		isTailFlying = false;
 		isReadyToRun = false;
 		vx = nx * 0.08f;
-		if (vy <= 0.2f) {
+		if (vy <= 0.2f)
 			pullDown();
-		}
 	}
-	
+
 }
