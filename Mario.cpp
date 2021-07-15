@@ -111,6 +111,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	HandleIntoPipe();
 	HandleFinishScene();
 	HandleToExtraByMusicBrick();
+	HandleMarioTakingGoombaPoop();
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
@@ -1686,4 +1687,18 @@ void CMario::HandleToExtraByMusicBrick() {
 			ay = MARIO_GRAVITY;
 		}
 	}
+}
+
+void CMario::HandleMarioTakingGoombaPoop() {
+	if (isTakingPoopGoomba) {
+		speedStack = 0;
+		isFlying = false;
+		isTailFlying = false;
+		isReadyToRun = false;
+		vx = nx * 0.08f;
+		if (vy <= 0.2f) {
+			pullDown();
+		}
+	}
+	
 }

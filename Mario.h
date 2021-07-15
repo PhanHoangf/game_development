@@ -409,6 +409,8 @@ public:
 	float limitY; //! FOR GO INTO PIPE ONLY
 	bool isFinish = false;
 
+	bool isTakingPoopGoomba = false;
+
 	vector<int> cards;
 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -479,6 +481,7 @@ public:
 	void HandleFinishScene();
 	void HandleTeleport(bool destination);
 	void HandleToExtraByMusicBrick();
+	void HandleMarioTakingGoombaPoop();
 
 	void pullDown() {
 		if (!isFlapping) ay = MARIO_GRAVITY; isJumping = false; isOnGround = true;

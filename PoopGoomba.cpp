@@ -9,10 +9,12 @@ void CPoopGoomba::Render() {
 void CPoopGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	CGameObject::Update(dt);
+
 	x += dx;
 	y += dy;
 
 	vy = ay * dt;
+	vx = ax * dt;
 
 	float mLeft, mTop, mRight, mBottom;
 	float oLeft, oTop, oRight, oBottom;
@@ -24,10 +26,26 @@ void CPoopGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		}
 
 		if (isCollide) {
-			this->x = mario->x;
+			mario->isTakingPoopGoomba = true;
+			//this->x = mario->x;
 			DebugOut(L"[ma->y]::%f\n", mario->y);
 			DebugOut(L"[ma->bt]::%f\n", mBottom);
-			vx = 0.002f;
+			if (x <= mario->x) {
+				x = mario->x;
+				ax = 0.002f;
+			}
+			else if (x >= mario->x + MARIO_BIG_BBOX_WIDTH - POOP_GOOMBA_BBOX_WIDTH) {
+				ax = -0.002f;
+				x = mario->x + MARIO_BIG_BBOX_WIDTH - POOP_GOOMBA_BBOX_WIDTH;
+			}
+			if (y >= mario->y + MARIO_BIG_BBOX_HEIGHT - POOP_GOOMBA_BBOX_HEIGHT) {
+				ay = -0.003f;
+				y = mario->y + MARIO_BIG_BBOX_HEIGHT - POOP_GOOMBA_BBOX_HEIGHT;
+			}
+			if (y <= mario->y) {
+				ay = 0.003f;
+				y = mario->y;
+			}
 		}
 	}
 }

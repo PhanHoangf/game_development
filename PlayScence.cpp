@@ -560,8 +560,8 @@ void CPlayScene::UpdateGrid() {
 				if (player != NULL) {
 					bool playerRightToLeft = player->x >= player->x0;
 					if (!kp->IsInViewPort() && kp->x < player->x && playerRightToLeft) {
-						kp->Reset();
 						kp->isReviable = true;
+						kp->Reset();
 					}
 				}
 			}
