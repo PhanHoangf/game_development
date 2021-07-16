@@ -584,8 +584,16 @@ void CPlayScene::Render()
 
 	for (int i = 0; i < objRenderSecond.size(); i++)
 	{
-		if (!objRenderSecond[i]->isIgnore)
-			objRenderSecond[i]->Render();
+		if (!objRenderSecond[i]->isIgnore) {
+			if (dynamic_cast<CKoopas*>(objRenderSecond[i])) {
+				CKoopas* kp = dynamic_cast<CKoopas*>(objRenderSecond[i]);
+				if (!kp->isReviable)
+					objRenderSecond[i]->Render();
+			}
+			else
+				objRenderSecond[i]->Render();
+		}
+
 	}
 
 	for (int i = 0; i < specialObjects.size(); i++)

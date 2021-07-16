@@ -30,9 +30,9 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	//level = MARIO_LEVEL_BIG;
+	level = MARIO_LEVEL_BIG;
 	//level = MARIO_LEVEL_SMALL;
-	level = MARIO_LEVEL_TAIL;
+	//level = MARIO_LEVEL_TAIL;
 	//level = MARIO_LEVEL_FIRE;
 	untouchable = 0;
 	ax = MARIO_ACCELERATION;
@@ -1695,9 +1695,11 @@ void CMario::HandleMarioTakingGoombaPoop() {
 		isFlying = false;
 		isTailFlying = false;
 		isReadyToRun = false;
-		vx = nx * 0.08f;
+		if (abs(vx) >= 0.08f) {
+			vx = nx * 0.08f;
+		}
 		if (vy <= 0.2f)
-			pullDown();
+			ay = MARIO_GRAVITY;
 	}
 
 }

@@ -248,6 +248,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			if (dynamic_cast<CGoomba*>(e->obj)) {
 				x += dx;
+				y -= dy;
 			}
 			if (dynamic_cast<BreakableBrick*>(e->obj) && state == KOOPAS_STATE_SPINNING && e->nx != 0 && ceil(mBottom) != oTop)
 			{
